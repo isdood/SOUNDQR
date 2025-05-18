@@ -116,7 +116,6 @@ export class FlacPattern extends GLIMMERPattern {
     return `glimmer_${this.config.intensity}_${this.patternConfig.sampleRate}`;
   }
 
-(cat /tmp/decoder_methods.tmp)
   async verify(): Promise<boolean> {
     const resonanceKey = this.generateResonanceKey();
     const hasPattern = this.resonanceCache.has(resonanceKey);
