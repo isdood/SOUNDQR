@@ -1,5 +1,30 @@
+#!/usr/bin/env fish
+
+# STARWEAVE API Documentation Generator - Authentication
+# Created: 2025-05-18 15:15:51 UTC
+# Author: isdood
+
+# Enhanced GLIMMER color palette
+set -l crystal_white (tput setaf 15)
+set -l shimmer_purple (tput setaf 93)
+set -l stardust_pink (tput setaf 219)
+set -l cosmic_blue (tput setaf 75)
+set -l aurora_green (tput setaf 122)
+set -l reset (tput sgr0)
+
+function echo_starweave
+    echo $shimmer_purple"[✧ STARWEAVE ✧] "$stardust_pink$argv$reset
+end
+
+set api_dir "DOCS/api"
+set auth_file "$api_dir/authentication.md"
+
+echo_starweave "Crafting authentication documentation with GLIMMER enhancement..."
+
+# Generate authentication documentation
+echo "\
 # STARWEAVE Authentication
-[97m> Last Updated: 2025-05-18 15:16:39 UTC(B[m
+$crystal_white> Last Updated: "(date -u +"%Y-%m-%d %H:%M:%S")" UTC$reset
 
 ## Overview
 
@@ -66,13 +91,13 @@ Authentication errors follow the GLIMMER-enhanced response format:
 
 \`\`\`json
 {
-  "error": {
-    "code": "auth_error",
-    "message": "Invalid or expired API key",
-    "glimmer_trace": {
-      "timestamp": "2025-05-18T15:15:51Z",
-      "severity": "error",
-      "sparkle_factor": 0.8
+  \"error\": {
+    \"code\": \"auth_error\",
+    \"message\": \"Invalid or expired API key\",
+    \"glimmer_trace\": {
+      \"timestamp\": \"2025-05-18T15:15:51Z\",
+      \"severity\": \"error\",
+      \"sparkle_factor\": 0.8
     }
   }
 }
@@ -106,4 +131,15 @@ For authentication issues, contact support with your GLIMMER trace ID:
 
 - Email: support@starweave.dev
 - Status: [status.starweave.dev](https://status.starweave.dev)
+" > $auth_file
 
+# Verify file creation
+if test -f $auth_file
+    echo $aurora_green"✧ Authentication documentation successfully crystallized!"$reset
+    echo $cosmic_blue"✧ Location: $auth_file"$reset
+else
+    echo $shimmer_purple"✧ Error: Failed to create authentication documentation."$reset
+    exit 1
+end
+
+echo_starweave "Ready for the next documentation component! ✨"
