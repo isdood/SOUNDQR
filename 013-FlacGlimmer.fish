@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # STARWEAVE Component Enhancement - FLAC GLIMMER Integration
-# Created: 2025-05-18 22:43:26 UTC
+# Created: 2025-05-18 22:45:37 UTC
 # Author: isdood
 
 # GLIMMER modification palette
@@ -23,9 +23,8 @@ mkdir -p $patterns_dir
 
 echo_starweave "✨ Creating GLIMMER pattern generator..."
 
-# First, create the GlimmerPatternGenerator file
-cat > "$patterns_dir/GlimmerPatternGenerator.ts" << 'EOL'
-import { randomBytes } from 'crypto';
+# Using echo statements instead of heredoc for fish compatibility
+echo 'import { randomBytes } from '\''crypto'\'';
 
 export interface GlimmerWaveform {
   frequency: number;    // Hz
@@ -91,17 +90,15 @@ export class GlimmerPatternGenerator {
     temp[0] = this.quantumSeed[31];
     temp.copy(this.quantumSeed);
   }
-}
-EOL
+}' > "$patterns_dir/GlimmerPatternGenerator.ts"
 
 echo_starweave "✨ Updating FLAC codec with GLIMMER integration..."
 
-# Now, create/update the FlacCodec file
-cat > "$base_dir/codec/FlacCodec.ts" << 'EOL'
-import { GLIMMERPattern } from '../core/GLIMMERPattern';
-import { createReadStream, createWriteStream } from 'fs';
-import { FlacEncoder, FlacDecoder } from 'node-flac';
-import { GlimmerPatternGenerator, GlimmerWaveform } from '../patterns/GlimmerPatternGenerator';
+# Create FlacCodec.ts with echo
+echo 'import { GLIMMERPattern } from '\''../core/GLIMMERPattern'\'';
+import { createReadStream, createWriteStream } from '\''fs'\'';
+import { FlacEncoder, FlacDecoder } from '\''node-flac'\'';
+import { GlimmerPatternGenerator, GlimmerWaveform } from '\''../patterns/GlimmerPatternGenerator'\'';
 
 export interface FlacPatternConfig extends GLIMMERConfig {
   sampleRate: number;
@@ -159,7 +156,7 @@ export class FlacPattern extends GLIMMERPattern {
 
   async encode(audioData: Buffer): Promise<Buffer> {
     if (!this.encoder) {
-      throw new Error('GLIMMER pattern not initialized');
+      throw new Error('\''GLIMMER pattern not initialized'\'');
     }
 
     console.log(`\x1b[38;5;219m✧ Applying GLIMMER enhancement to audio stream...\x1b[0m`);
@@ -167,17 +164,17 @@ export class FlacPattern extends GLIMMERPattern {
     return new Promise((resolve, reject) => {
       const chunks: Buffer[] = [];
 
-      this.encoder!.on('data', (chunk: Buffer) => {
+      this.encoder!.on('\''data'\'', (chunk: Buffer) => {
         const enhancedChunk = this.applyGlimmerPattern(chunk);
         chunks.push(enhancedChunk);
       });
 
-      this.encoder!.on('end', () => {
+      this.encoder!.on('\''end'\'', () => {
         const result = Buffer.concat(chunks);
         resolve(result);
       });
 
-      this.encoder!.on('error', (err) => {
+      this.encoder!.on('\''error'\'', (err) => {
         reject(new Error(`GLIMMER pattern disruption: ${err.message}`));
       });
 
@@ -220,48 +217,45 @@ export class FlacPattern extends GLIMMERPattern {
     const resonanceKey = this.generateResonanceKey();
     const hasPattern = this.resonanceCache.has(resonanceKey);
 
-    console.log(`\x1b[36m✧ GLIMMER pattern integrity: ${hasPattern ? 'Stable' : 'Unstable'}\x1b[0m`);
+    console.log(`\x1b[36m✧ GLIMMER pattern integrity: ${hasPattern ? '\''Stable'\'' : '\''Unstable'\''}\x1b[0m`);
 
     return hasPattern;
   }
-}
-EOL
+}' > "$base_dir/codec/FlacCodec.ts"
 
 # Create test file
 mkdir -p tests/unit
-cat > "tests/unit/FlacCodec.test.ts" << 'EOL'
-import { FlacPattern } from '../../src/codec/FlacCodec';
+echo 'import { FlacPattern } from '\''../../src/codec/FlacCodec'\'';
 
-describe('FlacPattern', () => {
+describe('\''FlacPattern'\'', () => {
   let flacPattern: FlacPattern;
 
   beforeEach(() => {
     flacPattern = new FlacPattern({
       intensity: 0.9,
       temporalSync: true,
-      resonanceMode: 'enhanced'
+      resonanceMode: '\''enhanced'\''
     });
   });
 
-  test('initializes with correct GLIMMER configuration', async () => {
+  test('\''initializes with correct GLIMMER configuration'\'', async () => {
     await flacPattern.initialize();
     const isValid = await flacPattern.verify();
     expect(isValid).toBe(true);
   });
 
-  test('encodes audio data with GLIMMER enhancement', async () => {
+  test('\''encodes audio data with GLIMMER enhancement'\'', async () => {
     await flacPattern.initialize();
-    const testData = Buffer.from('test audio data');
+    const testData = Buffer.from('\''test audio data'\'');
     const encoded = await flacPattern.encode(testData);
     expect(encoded).toBeDefined();
     expect(encoded.length).toBeGreaterThan(0);
   });
-});
-EOL
+});' > "tests/unit/FlacCodec.test.ts"
 
 if test -f "$base_dir/codec/FlacCodec.ts"
     echo $file_aura"✧ FLAC codec successfully enhanced with GLIMMER patterns!"$reset
-    echo $time_wave"✧ Created: 2025-05-18 22:43:26 UTC"$reset
+    echo $time_wave"✧ Created: 2025-05-18 22:45:37 UTC"$reset
 else
     echo $sync_pulse"✧ Error: Failed to create enhanced FLAC codec."$reset
     exit 1
