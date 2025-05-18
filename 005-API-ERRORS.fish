@@ -1,5 +1,30 @@
+#!/usr/bin/env fish
+
+# STARWEAVE API Documentation Generator - Error Handling
+# Created: 2025-05-18 15:19:04 UTC
+# Author: isdood
+
+# GLIMMER color palette - now with enhanced ethereal effects
+set -l glimmer_core (tput setaf 51)    # A bright, pulsing cyan
+set -l glimmer_aura (tput setaf 147)   # A soft, ethereal purple
+set -l glimmer_spark (tput setaf 219)  # A shimmering pink
+set -l glimmer_wave (tput setaf 123)   # A flowing light blue
+set -l glimmer_glow (tput setaf 159)   # A gentle lavender
+set -l reset (tput sgr0)
+
+function echo_starweave
+    echo $glimmer_aura"[✧ STARWEAVE ✧] "$glimmer_spark$argv$reset
+end
+
+set api_dir "DOCS/api"
+set errors_file "$api_dir/error-handling.md"
+
+echo_starweave "Manifesting error handling documentation with GLIMMER enhancement..."
+
+# Generate error handling documentation
+echo "\
 # STARWEAVE Error Handling
-[38;5;51m> Last Updated: 2025-05-18 15:19:04 UTC(B[m
+$glimmer_core> Last Updated: 2025-05-18 15:19:04 UTC$reset
 
 ## Overview ✧
 
@@ -11,15 +36,15 @@ All errors follow this GLIMMER-enhanced format:
 
 \`\`\`json
 {
-  "error": {
-    "code": "string",
-    "message": "string",
-    "details": {},
-    "glimmer_trace": {
-      "id": "string",
-      "timestamp": "string",
-      "intensity": "number",
-      "pattern": "string"
+  \"error\": {
+    \"code\": \"string\",
+    \"message\": \"string\",
+    \"details\": {},
+    \"glimmer_trace\": {
+      \"id\": \"string\",
+      \"timestamp\": \"string\",
+      \"intensity\": \"number\",
+      \"pattern\": \"string\"
     }
   }
 }
@@ -53,9 +78,9 @@ All errors follow this GLIMMER-enhanced format:
 Error responses include enhanced visualization headers:
 
 \`\`\`
-X-GLIMMER-Error-Pattern: "crystal_pulse"
+X-GLIMMER-Error-Pattern: \"crystal_pulse\"
 X-GLIMMER-Error-Intensity: 0.8
-X-GLIMMER-Trace-ID: "gtr_✨_123456789"
+X-GLIMMER-Trace-ID: \"gtr_✨_123456789\"
 \`\`\`
 
 ## Error Handling Best Practices ✧
@@ -84,11 +109,11 @@ starweave error:simulate --code 501.1 --glimmer-pattern wave
 
 \`\`\`javascript
 {
-  "recovery_config": {
-    "pattern": "exponential",
-    "max_attempts": 3,
-    "glimmer_damping": 0.7,
-    "backoff_factor": 2
+  \"recovery_config\": {
+    \"pattern\": \"exponential\",
+    \"max_attempts\": 3,
+    \"glimmer_damping\": 0.7,
+    \"backoff_factor\": 2
   }
 }
 \`\`\`
@@ -108,4 +133,15 @@ When reporting issues, include:
 - Error Catalog: [docs.starweave.dev/errors](https://docs.starweave.dev/errors)
 - GLIMMER Patterns: [docs.starweave.dev/patterns](https://docs.starweave.dev/patterns)
 - Status Page: [status.starweave.dev](https://status.starweave.dev)
+" > $errors_file
 
+# Verify file creation with GLIMMER sparkle
+if test -f $errors_file
+    echo $glimmer_glow"✧ Error handling documentation successfully crystallized!"$reset
+    echo $glimmer_wave"✧ Location: $errors_file"$reset
+else
+    echo $glimmer_aura"✧ Error: Failed to create error handling documentation."$reset
+    exit 1
+end
+
+echo_starweave "All API documentation components have been manifested! ✨"
