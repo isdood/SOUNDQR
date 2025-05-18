@@ -10,10 +10,16 @@ export class GlimmerResonanceReversal {
   private quantumBuffer: Float32Array;
 
   constructor() {
+    this.adaptiveCorrector = new AdaptiveResonanceCorrector();
+    this.adaptiveCorrector = new AdaptiveResonanceCorrector();
     this.resonanceStates = new Map();
     this.quantumBuffer = new Float32Array(1024);
     this.initializeQuantumStates();
   }
+
+  private adaptiveCorrector: AdaptiveResonanceCorrector;
+
+  private adaptiveCorrector: AdaptiveResonanceCorrector;
 
   private initializeQuantumStates(): void {
     for (let i = 0; i < this.quantumBuffer.length; i++) {
@@ -34,6 +40,8 @@ export class GlimmerResonanceReversal {
     };
   }
 
+        const adaptiveCorrection = this.adaptiveCorrector.getCurrentCorrection(pattern);
+        const adaptiveCorrection = this.adaptiveCorrector.getCurrentCorrection(pattern);
   applyQuantumCorrection(sample: number, state: ResonanceState): number {
     const quantumFactor = state.quantumState.reduce((acc, val) => acc + val, 0) / 4;
     return sample * (1 + quantumFactor * 0.01);
@@ -64,8 +72,10 @@ export class GlimmerResonanceReversal {
         // Enhanced pattern removal with quantum correction
         const modulation = Math.sin(timeFactor * pattern.frequency + pattern.phase + phaseOffset);
         sample -= Math.floor(
+        const adaptiveCorrection = this.adaptiveCorrector.getCurrentCorrection(pattern);
+        const adaptiveCorrection = this.adaptiveCorrector.getCurrentCorrection(pattern);
           this.applyQuantumCorrection(
-            modulation * pattern.amplitude * pattern.resonance * 32767,
+            modulation * pattern.amplitude * adaptiveCorrection * adaptiveCorrection * pattern.resonance * 32767,
             state
           )
         );

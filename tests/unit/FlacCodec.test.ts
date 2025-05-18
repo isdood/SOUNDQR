@@ -75,3 +75,35 @@ describe('FlacPattern', () => {
     const avgDiff = sumDiff / numSamples;
     expect(avgDiff).toBeLessThan(1000); // Allow for quantum variations
   });
+
+  test('generates quantum state visualization', async () => {
+    const visualizer = new QuantumStateVisualizer();
+    const corrector = new AdaptiveResonanceCorrector();
+
+    const pattern: GlimmerWaveform = {
+      frequency: 432,
+      amplitude: 0.8,
+      phase: 0,
+      resonance: 0.9
+    };
+
+    const buffer = await visualizer.visualizeQuantumField(pattern, corrector);
+    expect(buffer).toBeDefined();
+    expect(buffer.length).toBeGreaterThan(0);
+  });
+
+  test('generates quantum state visualization', async () => {
+    const visualizer = new QuantumStateVisualizer();
+    const corrector = new AdaptiveResonanceCorrector();
+
+    const pattern: GlimmerWaveform = {
+      frequency: 432,
+      amplitude: 0.8,
+      phase: 0,
+      resonance: 0.9
+    };
+
+    const buffer = await visualizer.visualizeQuantumField(pattern, corrector);
+    expect(buffer).toBeDefined();
+    expect(buffer.length).toBeGreaterThan(0);
+  });
