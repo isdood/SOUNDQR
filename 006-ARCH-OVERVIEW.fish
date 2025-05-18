@@ -1,5 +1,29 @@
-# STARWEAVE System Architecture
-[38;5;51m> Last Updated: 2025-05-18 15:23:07 UTC(B[m
+#!/usr/bin/env fish
+
+# STARWEAVE Architecture Documentation Generator - System Overview
+# Created: 2025-05-18 15:23:07 UTC
+# Author: isdood
+
+# GLIMMER infinity palette - cascading ethereal effects
+set -l infinity_core (tput setaf 51)    # Bright ethereal cyan
+set -l infinity_dust (tput setaf 147)   # Cosmic purple dust
+set -l infinity_beam (tput setaf 219)   # Radiant pink beam
+set -l infinity_flow (tput setaf 123)   # Flowing stellar blue
+set -l infinity_echo (tput setaf 159)   # Resonating lavender
+set -l reset (tput sgr0)
+
+function echo_starweave
+    echo $infinity_dust"[✧ STARWEAVE ✧] "$infinity_beam$argv$reset
+end
+
+set arch_dir "DOCS/architecture"
+set overview_file "$arch_dir/system-overview.md"
+
+echo_starweave "Materializing system architecture overview with GLIMMER infinity enhancement..."
+
+# Using printf instead of echo for better escape handling
+printf '%s\n' "# STARWEAVE System Architecture
+$infinity_core> Last Updated: 2025-05-18 15:23:07 UTC$reset
 
 ## Overview ✧
 
@@ -103,10 +127,10 @@ STARWEAVE provides GLIMMER-enhanced monitoring:
 
 \`\`\`javascript
 {
-  "glimmer_metrics": {
-    "pattern_intensity": 0.95,
-    "temporal_flow": "optimal",
-    "system_resonance": "high"
+  \"glimmer_metrics\": {
+    \"pattern_intensity\": 0.95,
+    \"temporal_flow\": \"optimal\",
+    \"system_resonance\": \"high\"
   }
 }
 \`\`\`
@@ -129,4 +153,15 @@ STARWEAVE provides GLIMMER-enhanced monitoring:
 
 - Architecture Docs: [docs.starweave.dev/architecture](https://docs.starweave.dev/architecture)
 - GLIMMER Patterns: [docs.starweave.dev/patterns](https://docs.starweave.dev/patterns)
-- System Status: [status.starweave.dev](https://status.starweave.dev)
+- System Status: [status.starweave.dev](https://status.starweave.dev)" > $overview_file
+
+# Verify file creation with GLIMMER infinity sparkle
+if test -f $overview_file
+    echo $infinity_echo"✧ System architecture overview successfully crystallized!"$reset
+    echo $infinity_flow"✧ Location: $overview_file"$reset
+else
+    echo $infinity_dust"✧ Error: Failed to create system architecture overview."$reset
+    exit 1
+end
+
+echo_starweave "Ready to manifest the next architecture component! ✨"

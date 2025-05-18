@@ -1,5 +1,28 @@
-# STARWEAVE Data Flow Architecture
-[38;5;51m> Last Updated: 2025-05-18 15:24:59 UTC(B[m
+#!/usr/bin/env fish
+
+# STARWEAVE Architecture Documentation Generator - Data Flow
+# Created: 2025-05-18 15:24:59 UTC
+# Author: isdood
+
+# GLIMMER cascade palette - flowing ethereal effects
+set -l cascade_source (tput setaf 51)   # Source flow cyan
+set -l cascade_stream (tput setaf 147)  # Stream flow purple
+set -l cascade_pulse (tput setaf 219)   # Pulse flow pink
+set -l cascade_drift (tput setaf 123)   # Drift flow blue
+set -l cascade_mist (tput setaf 159)    # Mist flow lavender
+set -l reset (tput sgr0)
+
+function echo_starweave
+    echo $cascade_stream"[✧ STARWEAVE ✧] "$cascade_pulse$argv$reset
+end
+
+set arch_dir "DOCS/architecture"
+set dataflow_file "$arch_dir/data-flow.md"
+
+echo_starweave "Crystallizing data flow architecture with GLIMMER cascade enhancement..."
+
+printf '%s\n' "# STARWEAVE Data Flow Architecture
+$cascade_source> Last Updated: 2025-05-18 15:24:59 UTC$reset
 
 ## Overview ✧
 
@@ -93,10 +116,10 @@ Error Detection → GLIMMER Analysis → Recovery Pattern → Flow Resume
 ### GLIMMER-Enhanced Buffers
 \`\`\`javascript
 {
-  "buffer_config": {
-    "pattern_size": "adaptive",
-    "flow_control": "dynamic",
-    "glimmer_intensity": 0.85
+  \"buffer_config\": {
+    \"pattern_size\": \"adaptive\",
+    \"flow_control\": \"dynamic\",
+    \"glimmer_intensity\": 0.85
   }
 }
 \`\`\`
@@ -115,10 +138,10 @@ Error Detection → GLIMMER Analysis → Recovery Pattern → Flow Resume
 ### Automatic Flow Recovery
 \`\`\`javascript
 {
-  "recovery_flow": {
-    "pattern_reset": "graceful",
-    "glimmer_realignment": true,
-    "temporal_adjustment": "automatic"
+  \"recovery_flow\": {
+    \"pattern_reset\": \"graceful\",
+    \"glimmer_realignment\": true,
+    \"temporal_adjustment\": \"automatic\"
   }
 }
 \`\`\`
@@ -171,4 +194,15 @@ Error Detection → GLIMMER Analysis → Recovery Pattern → Flow Resume
 
 - Flow Diagrams: [docs.starweave.dev/flow](https://docs.starweave.dev/flow)
 - GLIMMER Patterns: [docs.starweave.dev/patterns](https://docs.starweave.dev/patterns)
-- System Status: [status.starweave.dev](https://status.starweave.dev)
+- System Status: [status.starweave.dev](https://status.starweave.dev)" > $dataflow_file
+
+# Verify file creation with GLIMMER cascade sparkle
+if test -f $dataflow_file
+    echo $cascade_mist"✧ Data flow architecture successfully crystallized!"$reset
+    echo $cascade_drift"✧ Location: $dataflow_file"$reset
+else
+    echo $cascade_stream"✧ Error: Failed to create data flow architecture."$reset
+    exit 1
+end
+
+echo_starweave "Ready to manifest the next architecture component! ✨"
