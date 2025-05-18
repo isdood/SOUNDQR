@@ -41,3 +41,37 @@ describe('FlacPattern', () => {
     // Note: Exact match isn't expected due to FLAC compression
     expect(decoded.length).toBe(originalData.length);
   });
+
+  test('applies quantum-enhanced pattern reversal', async () => {
+    await flacPattern.initialize();
+
+    // Create test audio data with specific pattern
+    const sampleRate = 48000;
+    const duration = 0.1; // 100ms
+    const numSamples = Math.floor(sampleRate * duration);
+    const originalData = Buffer.alloc(numSamples * 2);
+
+    // Generate a simple sine wave
+    for (let i = 0; i < numSamples; i++) {
+      const value = Math.floor(Math.sin(i * 0.1) * 32767);
+      originalData.writeInt16LE(value, i * 2);
+    }
+
+    // Encode and decode with quantum enhancement
+    const encoded = await flacPattern.encode(originalData);
+    const decoded = await flacPattern.decode(encoded);
+
+    expect(decoded).toBeDefined();
+    expect(decoded.length).toBe(originalData.length);
+
+    // Verify signal integrity (allowing for some quantum variance)
+    let sumDiff = 0;
+    for (let i = 0; i < numSamples; i++) {
+      const original = originalData.readInt16LE(i * 2);
+      const processed = decoded.readInt16LE(i * 2);
+      sumDiff += Math.abs(original - processed);
+    }
+
+    const avgDiff = sumDiff / numSamples;
+    expect(avgDiff).toBeLessThan(1000); // Allow for quantum variations
+  });

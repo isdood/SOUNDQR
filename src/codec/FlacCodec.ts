@@ -1,3 +1,4 @@
+import { GlimmerResonanceReversal } from '../patterns/GlimmerResonanceReversal';
 import { GLIMMERPattern } from '../core/GLIMMERPattern';
 import { createReadStream, createWriteStream } from 'fs';
 import { FlacEncoder, FlacDecoder } from 'node-flac';
@@ -16,6 +17,7 @@ export class FlacPattern extends GLIMMERPattern {
   private decoder: FlacDecoder | null = null;
   private resonanceCache: Map<string, GlimmerWaveform[]>;
   private patternGenerator: GlimmerPatternGenerator;
+  private resonanceReversal: GlimmerResonanceReversal;
 
   constructor(config: Partial<FlacPatternConfig>) {
     super(config);
@@ -28,6 +30,7 @@ export class FlacPattern extends GLIMMERPattern {
     } as FlacPatternConfig;
     this.resonanceCache = new Map();
     this.patternGenerator = new GlimmerPatternGenerator();
+    this.resonanceReversal = new GlimmerResonanceReversal();
   }
 
   async initialize(): Promise<void> {
