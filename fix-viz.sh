@@ -1,87 +1,91 @@
 #!/bin/bash
 
-# STARWEAVE Visualization Diagnostic Tool v2
-# Created: 2025-05-19 22:58:28 UTC
+# STARWEAVE Visualization Diagnostic Tool v4
+# Created: 2025-05-19 23:10:19 UTC
+# Author: isdood
 
-# Set up pretty console output
-CYAN='\e[38;5;51m'
-PURPLE='\e[38;5;147m'
-PINK='\e[38;5;219m'
-RESET='\e[0m'
+# GLIMMER visualization palette
+CYAN=$'\e[38;5;51m'
+PURPLE=$'\e[38;5;147m'
+PINK=$'\e[38;5;219m'
+RESET=$'\e[0m'
 
-echo -e "${CYAN}✧ STARWEAVE Visualization Diagnostic Tool v2 ✧${RESET}"
+echo -e "${CYAN}✧ STARWEAVE Visualization Diagnostic Tool v4 ✧${RESET}"
 
-# Create test directory relative to current path
-TEST_DIR="viz-test"
+# Create test directories
+TEST_DIR="quantum-test"
 mkdir -p "$TEST_DIR"
 
-# Create a minimal test file that will help us verify canvas operations
-cat > "$TEST_DIR/simple-test.ts" << 'EOF'
+# Create minimal test file with PNG debugging
+cat > "$TEST_DIR/png-debug.ts" << 'EOF'
 import { createCanvas } from "canvas";
+import { writeFileSync } from "fs";
 
-async function testSimplePattern() {
-  try {
-    console.log("Creating canvas...");
-    const canvas = createCanvas(400, 200);
-    const ctx = canvas.getContext("2d");
+async function debugCanvas() {
+    try {
+        // Create canvas with explicit pixel format
+        const canvas = createCanvas(400, 200, 'png');
+        const ctx = canvas.getContext('2d', {
+            alpha: true,
+            pixelFormat: 'RGBA32'
+        });
 
-    console.log("Drawing gradient background...");
-    // Create gradient
-    const gradient = ctx.createLinearGradient(0, 0, 400, 200);
-    gradient.addColorStop(0, "#000033");
-    gradient.addColorStop(1, "#000066");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 400, 200);
+        // Clear and set background
+        ctx.fillStyle = '#000033';
+        ctx.fillRect(0, 0, 400, 200);
 
-    console.log("Drawing test pattern...");
-    // Draw a simple sine wave
-    ctx.beginPath();
-    ctx.strokeStyle = "#93DBFB";  // Bright cyan
-    ctx.lineWidth = 3;
+        // Draw test pattern
+        ctx.beginPath();
+        ctx.strokeStyle = '#93DBFB';
+        ctx.lineWidth = 4;
 
-    for (let x = 0; x < 400; x++) {
-      const y = 100 + Math.sin(x * 0.05) * 50;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
+        for (let x = 0; x < 400; x += 1) {
+            const y = 100 + Math.sin(x * 0.05) * 50;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
 
-    console.log("Adding text...");
-    // Add text
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "20px Arial";
-    ctx.fillText("GLIMMER Test ✧", 150, 40);
+        // Add verification text
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '20px Arial';
+        ctx.fillText('GLIMMER Test ✧', 150, 50);
 
-    console.log("Saving to PNG...");
-    // Save with debug info
-    const buffer = canvas.toBuffer("image/png", {
-      compressionLevel: 6,
-      filters: canvas.PNG_FILTER_NONE,
-      resolution: 144
-    });
+        // Get PNG buffer with explicit settings
+        const buffer = canvas.toBuffer('image/png', {
+            compressionLevel: 6,
+            filters: canvas.PNG_FILTER_NONE,
+            resolution: 144,
+            palette: false,
+            backgroundIndex: 0,
+            colorType: 6  // RGBA
+        });
 
-    const fs = await import("fs/promises");
-    const debugInfo = `
-Canvas Info:
-- Width: ${canvas.width}
-- Height: ${canvas.height}
+        // Write buffer directly
+        writeFileSync('quantum-test/test.png', buffer);
+
+        // Write debug info
+        const debugInfo = `
+PNG Debug Info:
 - Buffer size: ${buffer.length} bytes
-    `;
-    await fs.writeFile(`${process.cwd()}/${TEST_DIR}/debug.txt`, debugInfo);
-    await fs.writeFile(`${process.cwd()}/${TEST_DIR}/test.png`, buffer);
+- Header check: ${buffer.slice(0, 8).toString('hex')}
+- IHDR chunk: ${buffer.slice(8, 25).toString('hex')}
+- First 50 bytes: ${buffer.slice(0, 50).toString('hex')}
+        `;
+        writeFileSync('quantum-test/debug.txt', debugInfo);
 
-    console.log("Test pattern generated successfully!");
-    console.log(debugInfo);
-
-  } catch (error) {
-    console.error("Error in test pattern generation:", error);
-  }
+        console.log(`${debugInfo}`);
+        return true;
+    } catch (error) {
+        console.error('Canvas error:', error);
+        return false;
+    }
 }
 
-testSimplePattern();
+debugCanvas();
 EOF
 
-# Create minimal package.json for test
+# Create minimal package.json
 cat > "$TEST_DIR/package.json" << EOF
 {
   "type": "module",
@@ -94,83 +98,104 @@ cat > "$TEST_DIR/package.json" << EOF
 }
 EOF
 
-# Function to run simple test
-run_simple_test() {
-  echo -e "${PURPLE}✧ Running simple canvas test...${RESET}"
+# Function to test PNG generation
+test_png_generation() {
+    echo -e "${PURPLE}✧ Testing PNG generation...${RESET}"
 
-  cd "$TEST_DIR"
+    cd "$TEST_DIR"
 
-  echo -e "${CYAN}✧ Installing dependencies...${RESET}"
-  npm install
+    echo -e "${CYAN}✧ Installing dependencies...${RESET}"
+    npm install --quiet
 
-  echo -e "${CYAN}✧ Generating test pattern...${RESET}"
-  npx tsx simple-test.ts
+    echo -e "${PINK}✧ Running PNG debug test...${RESET}"
+    npx tsx png-debug.ts
 
-  cd ..
+    if [ -f "test.png" ]; then
+        SIZE=$(stat -f%z "test.png" 2>/dev/null || stat -c%s "test.png")
+        echo -e "${CYAN}✓ Test PNG generated (${SIZE} bytes)${RESET}"
 
-  # Check the generated files
-  if [ -f "$TEST_DIR/test.png" ]; then
-    FILE_SIZE=$(stat -f%z "$TEST_DIR/test.png" 2>/dev/null || stat -c%s "$TEST_DIR/test.png")
-    echo -e "${CYAN}✓ Test PNG generated (${FILE_SIZE} bytes)${RESET}"
-
-    # Display debug info
-    if [ -f "$TEST_DIR/debug.txt" ]; then
-      echo -e "${PURPLE}✧ Debug Information:${RESET}"
-      cat "$TEST_DIR/debug.txt"
+        if [ -f "debug.txt" ]; then
+            echo -e "${PURPLE}✧ Debug Information:${RESET}"
+            cat debug.txt
+        fi
+    else
+        echo -e "${PINK}✗ Failed to generate test PNG${RESET}"
     fi
-  else
-    echo -e "${PINK}✗ Failed to generate test PNG${RESET}"
-  fi
+
+    cd ..
 }
 
-# Function to verify 018-GlimmerViz.fish
-check_main_script() {
-  echo -e "${PURPLE}✧ Checking main visualization script...${RESET}"
+# Function to check file integrity
+check_file_integrity() {
+    echo -e "${PURPLE}✧ Checking PNG file integrity...${RESET}"
 
-  if [ -f "018-GlimmerViz.fish" ]; then
-    echo -e "${CYAN}✓ Found 018-GlimmerViz.fish${RESET}"
-
-    # Check output directory
     if [ -d "samples/quantum-viz" ]; then
-      echo -e "${CYAN}✓ Output directory exists${RESET}"
+        for file in samples/quantum-viz/*.png; do
+            echo -e "${CYAN}✧ Analyzing: $(basename "$file")${RESET}"
+            SIZE=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file")
 
-      # Check generated files
-      PNG_COUNT=$(find samples/quantum-viz -name "*.png" | wc -l)
-      echo -e "${PURPLE}Found ${PNG_COUNT} PNG files${RESET}"
+            # Read first few bytes to check PNG signature
+            HEADER=$(od -An -tx1 -N8 "$file" 2>/dev/null | tr -d ' \n')
 
-      # Check file sizes
-      echo -e "${CYAN}✧ PNG File sizes:${RESET}"
-      find samples/quantum-viz -name "*.png" -exec ls -lh {} \;
+            echo "  • Size: $SIZE bytes"
+            echo "  • Header: $HEADER"
+
+            if [ "$HEADER" = "89504e470d0a1a0a" ]; then
+                echo -e "${CYAN}  • Valid PNG header${RESET}"
+            else
+                echo -e "${PINK}  • Invalid PNG header${RESET}"
+            fi
+        done
     else
-      echo -e "${PINK}✗ Output directory missing${RESET}"
+        echo -e "${PINK}✗ Visualization directory not found${RESET}"
     fi
-  else
-    echo -e "${PINK}✗ Main script not found${RESET}"
-  fi
+}
+
+# Function to apply fixes
+apply_fixes() {
+    echo -e "${PURPLE}✧ Applying fixes to main script...${RESET}"
+
+    if [ -f "018-GlimmerViz.fish" ]; then
+        # Create backup
+        cp 018-GlimmerViz.fish 018-GlimmerViz.fish.bak
+
+        # Update canvas initialization
+        sed -i.bak 's/createCanvas(this.width, this.height)/createCanvas(this.width, this.height, "png")/' 018-GlimmerViz.fish
+        sed -i.bak 's/getContext("2d")/getContext("2d", { alpha: true, pixelFormat: "RGBA32" })/' 018-GlimmerViz.fish
+
+        echo -e "${CYAN}✓ Applied canvas initialization fixes${RESET}"
+        echo -e "${PURPLE}✧ Original file backed up as 018-GlimmerViz.fish.bak${RESET}"
+    else
+        echo -e "${PINK}✗ Main script not found${RESET}"
+    fi
 }
 
 # Main menu
 while true; do
-  echo -e "\n${PURPLE}✧ STARWEAVE Diagnostic Menu ✧${RESET}"
-  echo -e "${CYAN}1. Run simple canvas test${RESET}"
-  echo -e "${PURPLE}2. Check main visualization script${RESET}"
-  echo -e "${PINK}3. Exit${RESET}"
+    echo -e "\n${PURPLE}✧ STARWEAVE Diagnostic Menu ✧${RESET}"
+    echo -e "${CYAN}1. Test PNG generation${RESET}"
+    echo -e "${PURPLE}2. Check file integrity${RESET}"
+    echo -e "${PINK}3. Apply fixes${RESET}"
+    echo -e "${CYAN}4. Exit${RESET}"
 
-  read -p "Enter choice (1-3): " choice
+    read -p "$(echo -e ${PURPLE}Enter choice (1-4): ${RESET})" choice
 
-  case $choice in
-    1)
-      run_simple_test
-      ;;
-    2)
-      check_main_script
-      ;;
-    3)
-      echo -e "${PURPLE}✧ Closing STARWEAVE diagnostic tool ✧${RESET}"
-      exit 0
-      ;;
-    *)
-      echo -e "${PINK}! Invalid choice${RESET}"
-      ;;
-  esac
+    case $choice in
+        1)
+            test_png_generation
+            ;;
+        2)
+            check_file_integrity
+            ;;
+        3)
+            apply_fixes
+            ;;
+        4)
+            echo -e "${PURPLE}✧ Closing STARWEAVE diagnostic tool ✧${RESET}"
+            exit 0
+            ;;
+        *)
+            echo -e "${PINK}! Invalid choice${RESET}"
+            ;;
+    esac
 done

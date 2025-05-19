@@ -1,4 +1,6 @@
 import { createCanvas } from "canvas";
+import { writeFile } from "fs/promises";
+import { join } from "path";
 
 async function testSimplePattern() {
   try {
@@ -41,15 +43,16 @@ async function testSimplePattern() {
       resolution: 144
     });
 
-    const fs = await import("fs/promises");
     const debugInfo = `
 Canvas Info:
 - Width: ${canvas.width}
 - Height: ${canvas.height}
 - Buffer size: ${buffer.length} bytes
     `;
-    await fs.writeFile(`${process.cwd()}/${TEST_DIR}/debug.txt`, debugInfo);
-    await fs.writeFile(`${process.cwd()}/${TEST_DIR}/test.png`, buffer);
+
+    // Write files using relative paths
+    await writeFile("./test.png", buffer);
+    await writeFile("./debug.txt", debugInfo);
 
     console.log("Test pattern generated successfully!");
     console.log(debugInfo);
