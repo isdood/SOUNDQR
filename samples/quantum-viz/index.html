@@ -72,12 +72,12 @@
         function loadVisualizations() {
             const frequencies = [432, 528, 639, 741];
             const intensities = [30, 60, 90];
-            const frequencyGrid = document.getElementById('frequency-viz');
+            const frequencyGrid = document.getElementById("frequency-viz");
 
             frequencies.forEach(freq => {
                 intensities.forEach(int => {
-                    const item = document.createElement('div');
-                    item.className = 'viz-item';
+                    const item = document.createElement("div");
+                    item.className = "viz-item";
                     item.innerHTML = `
                         <img src="quantum_${freq}hz_${int}pct.png" alt="Quantum field ${freq}Hz ${int}%">
                         <p>${freq}Hz at ${int}% intensity</p>
@@ -86,18 +86,18 @@
                 });
             });
 
-            const temporalGrid = document.getElementById('temporal-viz');
+            const temporalGrid = document.getElementById("temporal-viz");
             for (let t = 0; t < 10; t++) {
-                const item = document.createElement('div');
-                item.className = 'viz-item';
+                const item = document.createElement("div");
+                item.className = "viz-item";
                 item.innerHTML = `
-                    <img src="temporal_${t.toString().padStart(2, '0')}.png" alt="Temporal state ${t}">
+                    <img src="temporal_${t.toString().padStart(2, "0")}.png" alt="Temporal state ${t}">
                     <p>T+${t*100}ms</p>
                 `;
                 temporalGrid.appendChild(item);
             }
         }
-        document.addEventListener('DOMContentLoaded', loadVisualizations);
+        document.addEventListener("DOMContentLoaded", loadVisualizations);
     </script>
 </body>
 </html>
