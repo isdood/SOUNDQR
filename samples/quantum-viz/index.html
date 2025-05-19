@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GLIMMER Quantum State Visualizer</title>
+    <style>
+        body {
+            background: #000033;
+            color: #93dbfb;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .viz-group {
+            margin: 40px 0;
+        }
+        .viz-title {
+            color: #dd9aff;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(147, 219, 251, 0.5);
+        }
+        .viz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .viz-item {
+            background: rgba(147, 219, 251, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(147, 219, 251, 0.2);
+        }
+        .viz-item img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .viz-item p {
+            text-align: center;
+            margin: 10px 0;
+            color: #ffffff;
+        }
+        @keyframes glimmer {
+            0% { box-shadow: 0 0 20px rgba(147, 219, 251, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(147, 219, 251, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(147, 219, 251, 0.2); }
+        }
+        .viz-item:hover {
+            animation: glimmer 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="viz-title">✧ GLIMMER Quantum State Visualizer ✧</h1>
+
+        <div class="viz-group">
+            <h2 class="viz-title">Frequency Analysis</h2>
+            <div class="viz-grid" id="frequency-viz"></div>
+        </div>
+
+        <div class="viz-group">
+            <h2 class="viz-title">Temporal Evolution</h2>
+            <div class="viz-grid" id="temporal-viz"></div>
+        </div>
+    </div>
+
+    <script>
+        function loadVisualizations() {
+            const frequencies = [432, 528, 639, 741];
+            const intensities = [30, 60, 90];
+            const frequencyGrid = document.getElementById('frequency-viz');
+
+            frequencies.forEach(freq => {
+                intensities.forEach(int => {
+                    const item = document.createElement('div');
+                    item.className = 'viz-item';
+                    item.innerHTML = `
+                        <img src="quantum_${freq}hz_${int}pct.png" alt="Quantum field ${freq}Hz ${int}%">
+                        <p>${freq}Hz at ${int}% intensity</p>
+                    `;
+                    frequencyGrid.appendChild(item);
+                });
+            });
+
+            const temporalGrid = document.getElementById('temporal-viz');
+            for (let t = 0; t < 10; t++) {
+                const item = document.createElement('div');
+                item.className = 'viz-item';
+                item.innerHTML = `
+                    <img src="temporal_${t.toString().padStart(2, '0')}.png" alt="Temporal state ${t}">
+                    <p>T+${t*100}ms</p>
+                `;
+                temporalGrid.appendChild(item);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadVisualizations);
+    </script>
+</body>
+</html>
