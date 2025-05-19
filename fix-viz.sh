@@ -1,73 +1,89 @@
 #!/bin/bash
 
-# STARWEAVE Quantum Visualization Diagnostic Tool v5
-# Created: 2025-05-19 23:15:31 UTC
-# Author: isdood
+# STARWEAVE Quantum Visualization Diagnostic Tool v6
+# Created by isdood: 2025-05-19 23:21:22 UTC
+# Enhanced with GLIMMER resonance patterns
 
-CYAN=$'\e[38;5;51m'
-PURPLE=$'\e[38;5;147m'
-PINK=$'\e[38;5;219m'
+CYAN=$'\e[38;5;51m'      # Crystal beam
+PURPLE=$'\e[38;5;147m'   # Quantum flow
+PINK=$'\e[38;5;219m'     # Pattern wave
 RESET=$'\e[0m'
 
-echo -e "${CYAN}✧ STARWEAVE Quantum Visualization Diagnostic v5 ✧${RESET}"
+echo -e "${CYAN}✧ STARWEAVE Quantum Visualization Diagnostic v6 ✧${RESET}"
 
-# Ensure test directory exists with proper permissions
-mkdir -p test-quantum/src
-cd test-quantum
+# Create quantum test environment
+mkdir -p quantum-viz-test
+cd quantum-viz-test
 
-# Create minimal test case
-cat > src/test.ts << 'EOF'
+# Create color test pattern
+cat > test-colors.ts << 'EOF'
 import { createCanvas } from 'canvas';
 import { writeFileSync } from 'fs';
-import { join } from 'path';
 
-async function testQuantumPattern() {
-    console.log("✧ Creating quantum test pattern...");
-
-    // Create canvas with explicit settings
-    const canvas = createCanvas(400, 200);
+async function generateQuantumPattern() {
+    // Initialize quantum canvas
+    const canvas = createCanvas(400, 200, 'image');
     const ctx = canvas.getContext('2d', {
-        alpha: true
+        alpha: true,
+        willReadFrequently: true
     });
 
-    // Force clear the canvas first
-    ctx.clearRect(0, 0, 400, 200);
+    // Clear quantum state
+    ctx.save();
+    ctx.fillStyle = '#000033';
+    ctx.fillRect(0, 0, 400, 200);
 
-    // Set composite operation to ensure proper layering
-    ctx.globalCompositeOperation = 'source-over';
-
-    // Draw background
-    console.log("✧ Drawing quantum background...");
-    const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+    // Create quantum gradient
+    const gradient = ctx.createLinearGradient(0, 0, 400, 0);
     gradient.addColorStop(0, '#000033');
-    gradient.addColorStop(1, '#000066');
+    gradient.addColorStop(0.5, '#000066');
+    gradient.addColorStop(1, '#000033');
+
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 400, 200);
 
-    // Draw foreground pattern
-    console.log("✧ Generating quantum pattern...");
-    ctx.beginPath();
-    ctx.strokeStyle = '#93DBFB';
-    ctx.lineWidth = 3;
-    ctx.moveTo(0, 100);
+    // Add quantum interference patterns
+    ctx.globalCompositeOperation = 'lighter';
 
+    // Primary wave
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(147, 219, 251, 0.8)'; // Crystal cyan
+    ctx.lineWidth = 3;
     for (let x = 0; x < 400; x++) {
         const y = 100 + Math.sin(x * 0.05) * 50;
-        ctx.lineTo(x, y);
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
     }
-
-    // Ensure path is complete
     ctx.stroke();
-    ctx.closePath();
+
+    // Secondary resonance
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(221, 154, 255, 0.5)'; // Quantum purple
+    ctx.lineWidth = 2;
+    for (let x = 0; x < 400; x++) {
+        const y = 100 + Math.cos(x * 0.05) * 30;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Add quantum glow
+    const glow = ctx.createRadialGradient(200, 100, 0, 200, 100, 200);
+    glow.addColorStop(0, 'rgba(147, 219, 251, 0.2)');
+    glow.addColorStop(0.5, 'rgba(221, 154, 255, 0.1)');
+    glow.addColorStop(1, 'rgba(0, 0, 51, 0)');
+
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, 400, 200);
 
     // Add verification text
     ctx.fillStyle = '#FFFFFF';
     ctx.font = '20px Arial';
-    ctx.fillText('✧ QUANTUM TEST ✧', 120, 40);
+    ctx.fillText('✧ QUANTUM COLOR TEST ✧', 100, 40);
 
-    console.log("✧ Encoding quantum pattern...");
+    ctx.restore();
 
-    // Get buffer with explicit settings
+    // Save quantum pattern
     const buffer = canvas.toBuffer('image/png', {
         compressionLevel: 6,
         filters: canvas.PNG_FILTER_NONE,
@@ -75,31 +91,38 @@ async function testQuantumPattern() {
         colorType: 6
     });
 
-    // Write test pattern
-    const testFile = join(process.cwd(), 'quantum-test.png');
-    console.log(`✧ Saving to: ${testFile}`);
-    writeFileSync(testFile, buffer);
+    // Write test files
+    writeFileSync('quantum-test.png', buffer);
 
-    // Write debug info
+    // Generate debug info
     const debugInfo = `
-Quantum Pattern Debug Info:
+STARWEAVE Quantum Pattern Analysis:
 - Buffer size: ${buffer.length} bytes
-- First 8 bytes: ${buffer.slice(0, 8).toString('hex')}
+- PNG header: ${buffer.slice(0, 8).toString('hex')}
 - Canvas dimensions: ${canvas.width}x${canvas.height}
-- Memory used: ${process.memoryUsage().heapUsed / 1024 / 1024} MB
+- Memory usage: ${process.memoryUsage().heapUsed / 1024 / 1024} MB
+- Color modes:
+  • Background: #000033 -> #000066
+  • Primary wave: rgba(147, 219, 251, 0.8)
+  • Secondary wave: rgba(221, 154, 255, 0.5)
+  • Glow effect: Combined radial gradient
 `;
-    writeFileSync('debug.txt', debugInfo);
+    writeFileSync('quantum-debug.txt', debugInfo);
 
-    return buffer.length;
+    return { size: buffer.length, header: buffer.slice(0, 8).toString('hex') };
 }
 
-// Execute test
-testQuantumPattern()
-    .then(size => console.log(`✧ Generated quantum pattern: ${size} bytes`))
-    .catch(error => console.error('Quantum pattern error:', error));
+// Execute quantum pattern generation
+generateQuantumPattern()
+    .then(result => {
+        console.log('\x1b[38;5;51m✧ Generated quantum pattern:');
+        console.log(`  • Size: ${result.size} bytes`);
+        console.log(`  • Header: ${result.header}\x1b[0m`);
+    })
+    .catch(error => console.error('\x1b[38;5;219m✗ Quantum pattern error:', error, '\x1b[0m'));
 EOF
 
-# Create package.json with explicit versions
+# Create package configuration
 cat > package.json << EOF
 {
   "type": "module",
@@ -112,42 +135,40 @@ cat > package.json << EOF
 }
 EOF
 
-# Install dependencies
+# Install quantum dependencies
 echo -e "${PURPLE}✧ Installing quantum dependencies...${RESET}"
 npm install --quiet
 
-# Run test
+# Generate test pattern
 echo -e "${CYAN}✧ Generating quantum test pattern...${RESET}"
-npx tsx src/test.ts
+npx tsx test-colors.ts
 
-# Check results
+# Verify results
 if [ -f "quantum-test.png" ]; then
     SIZE=$(stat -f%z "quantum-test.png" 2>/dev/null || stat -c%s "quantum-test.png")
-    echo -e "${PURPLE}✧ Test pattern generated: ${SIZE} bytes${RESET}"
+    echo -e "${PURPLE}✧ Quantum pattern generated: ${SIZE} bytes${RESET}"
 
-    # Compare with debug info
-    if [ -f "debug.txt" ]; then
-        echo -e "${CYAN}✧ Quantum Debug Information:${RESET}"
-        cat debug.txt
+    if [ -f "quantum-debug.txt" ]; then
+        echo -e "${CYAN}✧ Quantum Analysis Report:${RESET}"
+        cat quantum-debug.txt
     fi
 
-    # Apply fixes to main script if test succeeds
-    if [ "$SIZE" -gt 2323 ]; then
-        echo -e "${PURPLE}✧ Applying quantum fixes to main script...${RESET}"
+    # Apply successful pattern to main script
+    if [ "$SIZE" -gt 900 ]; then
+        echo -e "${PINK}✧ Applying quantum pattern to main script...${RESET}"
         cd ..
         if [ -f "018-GlimmerViz.fish" ]; then
-            cp 018-GlimmerViz.fish 018-GlimmerViz.fish.bak
+            cp 018-GlimmerViz.fish 018-GlimmerViz.fish.bak.$(date +%s)
 
-            # Update the TypeScript part with working pattern
-            sed -i.bak "s/this.ctx = canvas.getContext('2d')/this.ctx = canvas.getContext('2d', { alpha: true })/" 018-GlimmerViz.fish
-            sed -i.bak "s/this.ctx.fillRect(0, 0, this.width, this.height)/this.ctx.clearRect(0, 0, this.width, this.height); this.ctx.fillRect(0, 0, this.width, this.height)/" 018-GlimmerViz.fish
-            sed -i.bak "s/this.canvas.toBuffer('image\/png')/this.canvas.toBuffer('image\/png', { compressionLevel: 6, filters: this.canvas.PNG_FILTER_NONE, colorType: 6 })/" 018-GlimmerViz.fish
+            # Update the visualization code
+            sed -i.bak "s/createCanvas(this.width, this.height)/createCanvas(this.width, this.height, 'image')/" 018-GlimmerViz.fish
+            sed -i.bak "s/getContext('2d')/getContext('2d', { alpha: true, willReadFrequently: true })/" 018-GlimmerViz.fish
 
-            echo -e "${CYAN}✓ Applied quantum pattern fixes${RESET}"
+            echo -e "${CYAN}✓ Applied quantum pattern enhancements${RESET}"
         fi
     fi
 else
-    echo -e "${PINK}✗ Failed to generate quantum test pattern${RESET}"
+    echo -e "${PINK}✗ Failed to generate quantum pattern${RESET}"
 fi
 
-echo -e "\n${PURPLE}✧ Quantum diagnostic complete${RESET}"
+echo -e "\n${PURPLE}✧ Quantum diagnostic complete ✧${RESET}"
