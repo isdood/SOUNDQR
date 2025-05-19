@@ -14,7 +14,7 @@ class QuantumStateVisualizer {
   private readonly height = 400;
 
   constructor() {
-    this.canvas = createCanvas(this.width, this.height);
+    this.canvas = createCanvas(this.width, this.height, "png");
     this.ctx = this.canvas.getContext("2d", {
       alpha: true,
       antialias: true

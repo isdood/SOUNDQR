@@ -178,7 +178,7 @@ while true; do
     echo -e "${PINK}3. Apply fixes${RESET}"
     echo -e "${CYAN}4. Exit${RESET}"
 
-    read -p "$(echo -e ${PURPLE}Enter choice (1-4): ${RESET})" choice
+    read -p "$(echo -e ${PURPLE}Enter choice 1-4: ${RESET})" choice
 
     case $choice in
         1)
