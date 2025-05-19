@@ -1,0 +1,6 @@
+
+Quantum Pattern Debug Info:
+- Buffer size: 924 bytes
+- First 8 bytes: 89504e470d0a1a0a
+- Canvas dimensions: 400x200
+- Memory used: 8.452117919921875 MB
