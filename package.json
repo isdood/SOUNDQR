@@ -1,29 +1,16 @@
 {
-  "name": "starweave",
-  "version": "0.1.0",
-  "description": "GLIMMER-enhanced audio-to-QR transformation system",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "name": "glimmer-viz",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "build": "tsc",
-    "test": "jest",
-    "lint": "eslint src/**/*.ts",
-    "format": "prettier --write \"src/**/*.ts\""
+    "generate": "tsx samples/generate_viz.ts"
   },
   "dependencies": {
-    "node-flac": "^0.4.0",
-    "buffer": "^6.0.3",
-    "events": "^3.3.0"
+    "canvas": "^2.11.2"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.0",
-    "@types/node": "^18.15.0",
-    "@typescript-eslint/eslint-plugin": "^5.54.0",
-    "@typescript-eslint/parser": "^5.54.0",
-    "eslint": "^8.35.0",
-    "jest": "^29.5.0",
-    "prettier": "^2.8.4",
-    "ts-jest": "^29.0.5",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0"
   }
 }

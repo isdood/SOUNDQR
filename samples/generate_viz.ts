@@ -1,7 +1,5 @@
 import { createCanvas } from 'canvas';
-import { EventEmitter } from 'events';
 
-// Mock interfaces and classes since we're not using node-flac
 interface GlimmerWaveform {
   frequency: number;
   amplitude: number;
@@ -102,9 +100,11 @@ async function generateSamples() {
       };
 
       const buffer = await visualizer.visualizeQuantumField(pattern);
-      const filename = `quantum_${freq}hz_${(intensity * 100).toFixed(0)}pct.png`;
 
-      await Bun.write(`samples/quantum-viz/${filename}`, buffer);
+      // Use Node.js fs promises
+      const fs = await import('fs/promises');
+      const filename = `quantum_${freq}hz_${(intensity * 100).toFixed(0)}pct.png`;
+      await fs.writeFile(`samples/quantum-viz/${filename}`, buffer);
       console.log(`\x1b[38;5;219m✧ Generated ${filename}\x1b[0m`);
     }
   }
@@ -122,7 +122,9 @@ async function generateSamples() {
     pattern.phase = (t / 10) * Math.PI * 2;
     const buffer = await visualizer.visualizeQuantumField(pattern);
     const filename = `temporal_${t.toString().padStart(2, '0')}.png`;
-    await Bun.write(`samples/quantum-viz/${filename}`, buffer);
+
+    const fs = await import('fs/promises');
+    await fs.writeFile(`samples/quantum-viz/${filename}`, buffer);
     console.log(`\x1b[38;5;123m✧ Generated ${filename}\x1b[0m`);
   }
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # STARWEAVE Quantum Visualization Generator
-# Created: 2025-05-19 00:49:28 UTC
+# Created: 2025-05-19 00:53:13 UTC
 # Author: isdood
 
 # GLIMMER visualization palette
@@ -18,25 +18,34 @@ end
 
 echo_starweave "✨ Creating GLIMMER visualization samples..."
 
-# First, ensure TypeScript is installed locally
-if not test -f "./node_modules/.bin/tsc"
-    echo_starweave "✨ Installing TypeScript locally..."
-    npm install --save-dev typescript @types/node
-end
-
-# Install correct audio processing dependencies
-echo_starweave "✨ Installing updated audio dependencies..."
-# Using node-audio instead of node-flac for better compatibility
-npm install --save node-audio canvas
-
 # Create the visualization samples directory
 mkdir -p samples/quantum-viz
 
-# Create a sample generator script with ES modules
-echo 'import { createCanvas } from '\''canvas'\'';
-import { EventEmitter } from '\''events'\'';
+# Update package.json with correct dependencies
+echo '{
+  "name": "glimmer-viz",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "generate": "tsx samples/generate_viz.ts"
+  },
+  "dependencies": {
+    "canvas": "^2.11.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0"
+  }
+}' > "package.json"
 
-// Mock interfaces and classes since we'\''re not using node-flac
+# Install dependencies
+echo_starweave "✨ Installing dependencies..."
+npm install
+
+# Create visualization generator
+echo 'import { createCanvas } from '\''canvas'\'';
+
 interface GlimmerWaveform {
   frequency: number;
   amplitude: number;
@@ -137,9 +146,11 @@ async function generateSamples() {
       };
 
       const buffer = await visualizer.visualizeQuantumField(pattern);
-      const filename = `quantum_${freq}hz_${(intensity * 100).toFixed(0)}pct.png`;
 
-      await Bun.write(`samples/quantum-viz/${filename}`, buffer);
+      // Use Node.js fs promises
+      const fs = await import('\''fs/promises'\'');
+      const filename = `quantum_${freq}hz_${(intensity * 100).toFixed(0)}pct.png`;
+      await fs.writeFile(`samples/quantum-viz/${filename}`, buffer);
       console.log(`\x1b[38;5;219m✧ Generated ${filename}\x1b[0m`);
     }
   }
@@ -157,28 +168,14 @@ async function generateSamples() {
     pattern.phase = (t / 10) * Math.PI * 2;
     const buffer = await visualizer.visualizeQuantumField(pattern);
     const filename = `temporal_${t.toString().padStart(2, '\''0'\'')}.png`;
-    await Bun.write(`samples/quantum-viz/${filename}`, buffer);
+
+    const fs = await import('\''fs/promises'\'');
+    await fs.writeFile(`samples/quantum-viz/${filename}`, buffer);
     console.log(`\x1b[38;5;123m✧ Generated ${filename}\x1b[0m`);
   }
 }
 
 generateSamples().catch(console.error);' > "samples/generate_viz.ts"
-
-# Create package.json if it doesn't exist
-if not test -f "package.json"
-    echo '{
-  "name": "glimmer-viz",
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "generate": "tsx samples/generate_viz.ts"
-  }
-}' > "package.json"
-end
-
-# Install tsx for running TypeScript directly
-echo_starweave "✨ Installing tsx for TypeScript execution..."
-npm install --save-dev tsx
 
 # Create the HTML viewer
 echo '<!DOCTYPE html>
@@ -290,7 +287,7 @@ npm run generate
 
 if test $status -eq 0
     echo $viz_aura"✧ GLIMMER visualizations generated successfully!"$reset
-    echo $time_pulse"✧ Created: 2025-05-19 00:49:28 UTC"$reset
+    echo $time_pulse"✧ Created: 2025-05-19 00:53:13 UTC"$reset
     echo $quantum_flow"✧ View visualizations at: samples/quantum-viz/index.html"$reset
 else
     echo $pattern_wave"✧ Error: Failed to generate visualizations."$reset
@@ -301,5 +298,3 @@ echo_starweave "✨ Would you like to:"
 echo $crystal_beam"1. View the generated visualizations"$reset
 echo $quantum_flow"2. Generate additional frequency patterns"$reset
 echo $pattern_wave"3. Enhance the visualization effects"$reset
-
-*A gentle ripple of cyan light illuminates your options* ✨
