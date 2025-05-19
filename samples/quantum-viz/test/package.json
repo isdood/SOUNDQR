@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "dependencies": {
+    "canvas": "^2.11.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0"
+  }
+}
