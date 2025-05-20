@@ -1,19 +1,19 @@
 #!/bin/bash
 
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v29
+# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v30
 CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
 QUANTUM=$'\e[38;5;147m'   # Quantum field purple
 GLIMMER=$'\e[38;5;219m'   # GLIMMER state pink
 RESET=$'\e[0m'
 
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v29 ✧${RESET}"
+echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v30 ✧${RESET}"
 
 echo -e "${GLIMMER}✧ Applying quantum fixes...${RESET}"
 
 # Create a temporary file
 TMP_FILE=$(mktemp)
 
-# Write the corrected file with precise quantum harmonics
+# Write a perfect quantum-aligned version
 cat > "$TMP_FILE" << 'EOF'
 import { createCanvas, CanvasRenderingContext2D, Canvas } from "canvas";
 
@@ -41,9 +41,7 @@ class QuantumStateVisualizer {
 
   private initializeCanvas(): void {
     this.ctx.save();
-    // Clear with transparency
     this.ctx.clearRect(0, 0, this.width, this.height);
-    // Set dark background with proper gradient initialization
     const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
     gradient.addColorStop(0, "#000033");
     gradient.addColorStop(1, "#000066");
@@ -53,11 +51,22 @@ class QuantumStateVisualizer {
   }
 EOF
 
-# Copy the middle section (visualizeQuantumField through drawInformation)
-sed -n '/async visualizeQuantumField/,/private clearCanvas(): void {/p' samples/generate_viz.ts >> "$TMP_FILE"
+# Copy the unchanged methods (visualizeQuantumField through drawQuantumInterference)
+sed -n '/async visualizeQuantumField/,/private drawInformation/p' samples/generate_viz.ts >> "$TMP_FILE"
 
-# Add the correct clearCanvas method
+# Add the rest of the file with the correct clearCanvas method
 cat >> "$TMP_FILE" << 'EOF'
+  private drawInformation(pattern: GlimmerWaveform): void {
+    this.ctx.save();
+    this.ctx.fillStyle = "#FFFFFF";
+    this.ctx.font = "bold 16px Arial";
+    this.ctx.fillText(
+      `⚡ ${pattern.frequency}Hz | ✧ ${(pattern.amplitude * 100).toFixed(0)}% | ⚛ ${(pattern.resonance * 100).toFixed(0)}%`,
+      10, 25
+    );
+    this.ctx.restore();
+  }
+
   private clearCanvas(): void {
     this.ctx.save();
     this.ctx.clearRect(0, 0, this.width, this.height);
@@ -69,16 +78,63 @@ cat >> "$TMP_FILE" << 'EOF'
     this.ctx.restore();
   }
 }
-EOF
 
-# Copy the generateSamples function and execution
-sed -n '/async function generateSamples/,$p' samples/generate_viz.ts >> "$TMP_FILE"
+async function generateSamples() {
+  const visualizer = new QuantumStateVisualizer();
+
+  // Generate samples for different frequencies and intensities
+  const frequencies = [432, 528, 639, 741];
+  const intensities = [0.3, 0.6, 0.9];
+
+  console.log("\x1b[36m✧ Generating quantum field visualizations...\x1b[0m");
+
+  for (const freq of frequencies) {
+    for (const intensity of intensities) {
+      const pattern = {
+        frequency: freq,
+        amplitude: intensity,
+        phase: Math.random() * Math.PI * 2,
+        resonance: 0.8
+      };
+
+      const buffer = await visualizer.visualizeQuantumField(pattern);
+
+      const fs = await import("fs/promises");
+      const filename = `quantum_${freq}hz_${(intensity * 100).toFixed(0)}pct.png`;
+      await fs.writeFile(`samples/quantum-viz/${filename}`, buffer);
+      console.log(`\x1b[38;5;219m✧ Generated ${filename}\x1b[0m`);
+    }
+  }
+
+  console.log("\x1b[35m✧ Generating temporal evolution sequence...\x1b[0m");
+
+  const pattern = {
+    frequency: 432,
+    amplitude: 0.8,
+    phase: 0,
+    resonance: 0.9
+  };
+
+  for (let t = 0; t < 10; t++) {
+    pattern.phase = (t / 10) * Math.PI * 2;
+    const buffer = await visualizer.visualizeQuantumField(pattern);
+    const filename = `temporal_${t.toString().padStart(2, "0")}.png`;
+
+    const fs = await import("fs/promises");
+    await fs.writeFile(`samples/quantum-viz/${filename}`, buffer);
+    console.log(`\x1b[38;5;123m✧ Generated ${filename}\x1b[0m`);
+  }
+}
+
+generateSamples().catch(console.error);
+EOF
 
 # Create backup
 cp samples/generate_viz.ts "samples/generate_viz.ts.bak.$(date +%s)"
 
-# Move the fixed file into place
+# Move the fixed file into place with explicit permissions
 mv "$TMP_FILE" samples/generate_viz.ts
+chmod 644 samples/generate_viz.ts
 
 echo -e "${QUANTUM}✧ Verifying quantum fixes...${RESET}"
 if grep -q "this.const" samples/generate_viz.ts || grep -q "ctx\." samples/generate_viz.ts; then
@@ -89,8 +145,9 @@ fi
 
 echo -e "\n${QUANTUM}✧ Testing visualization generation...${RESET}"
 
-# Ensure quantum-viz directory exists
+# Ensure quantum-viz directory exists with correct permissions
 mkdir -p samples/quantum-viz
+chmod 755 samples/quantum-viz
 
 # Run the visualization generator
 ./018-GlimmerViz.fish
