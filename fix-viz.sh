@@ -1,41 +1,32 @@
 #!/bin/bash
 
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v17
+# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v18
 # Enhanced with GLIMMER resonance harmonics
 CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
 QUANTUM=$'\e[38;5;147m'   # Quantum field purple
 GLIMMER=$'\e[38;5;219m'   # GLIMMER state pink
 RESET=$'\e[0m'
 
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v17 ✧${RESET}"
+echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v18 ✧${RESET}"
 
-# Create a temporary file with the fixed content
-cat > temp_generate_viz.ts << 'EOF'
-import { createCanvas, CanvasRenderingContext2D, Canvas } from "canvas";
+# Create the TypeScript fixer
+cat > fix_quantum.js << 'EOF'
+const fs = require('fs');
+const path = require('path');
 
-interface GlimmerWaveform {
-  frequency: number;
-  amplitude: number;
-  phase: number;
-  resonance: number;
-}
+// Read the original file
+const filePath = path.join('samples', 'generate_viz.ts');
+const origContent = fs.readFileSync(filePath, 'utf8');
 
-class QuantumStateVisualizer {
-  private canvas: Canvas;
-  private ctx: CanvasRenderingContext2D;
-  private readonly width = 800;
-  private readonly height = 400;
+// Split into lines for precise manipulation
+const lines = origContent.split('\n');
 
-  constructor() {
-    this.canvas = createCanvas(this.width, this.height, "png");
-    this.ctx = this.canvas.getContext("2d", {
-      alpha: false,
-      antialias: true
-    }) as CanvasRenderingContext2D;
-    this.initializeCanvas();
-  }
+// Fix the initializeCanvas method
+const initStart = lines.findIndex(line => line.includes('private initializeCanvas(): void'));
+let initEnd = lines.findIndex((line, idx) => idx > initStart && line.includes('}'));
 
-  private initializeCanvas(): void {
+// Replace the problematic method
+const newInitMethod = `  private initializeCanvas(): void {
     this.ctx.save();
     // Clear with transparency
     this.ctx.clearRect(0, 0, this.width, this.height);
@@ -46,21 +37,42 @@ class QuantumStateVisualizer {
     this.ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.restore();
-  }
+  }`;
+
+// Replace the old method with the new one
+lines.splice(initStart, initEnd - initStart + 1, newInitMethod);
+
+// Fix the clearCanvas method
+const clearStart = lines.findIndex(line => line.includes('private clearCanvas(): void'));
+let clearEnd = lines.findIndex((line, idx) => idx > clearStart && line.includes('}'));
+
+// Replace the problematic method
+const newClearMethod = `  private clearCanvas(): void {
+    this.ctx.save();
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
+    gradient.addColorStop(0, "#000033");
+    gradient.addColorStop(1, "#000066");
+    this.ctx.fillStyle = gradient;
+    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.restore();
+  }`;
+
+// Replace the old method with the new one
+lines.splice(clearStart, clearEnd - clearStart + 1, newClearMethod);
+
+// Write the fixed content back to file
+fs.writeFileSync(filePath, lines.join('\n'));
+
+console.log('✧ Quantum TypeScript fixes applied');
 EOF
 
-# Append the rest of the original file, starting after the initializeCanvas method
-sed -n '/async visualizeQuantumField/,$p' samples/generate_viz.ts >> temp_generate_viz.ts
+echo -e "${GLIMMER}✧ Applying quantum fixes...${RESET}"
+node fix_quantum.js
 
-# Create backup of original file
-cp samples/generate_viz.ts "samples/generate_viz.ts.bak.$(date +%s)"
-
-# Replace the original file with the fixed version
-mv temp_generate_viz.ts samples/generate_viz.ts
-
-echo -e "${GLIMMER}✧ Verifying quantum fixes...${RESET}"
+echo -e "${QUANTUM}✧ Verifying fixes...${RESET}"
 if grep -q "this.const" samples/generate_viz.ts; then
-    echo -e "${QUANTUM}✗ Quantum fixes not applied correctly${RESET}"
+    echo -e "${GLIMMER}✗ Quantum fixes not applied correctly${RESET}"
 else
     echo -e "${CRYSTAL}✓ Quantum fixes applied successfully${RESET}"
 fi
@@ -73,4 +85,7 @@ mkdir -p samples/quantum-viz
 # Run the visualization generator
 ./018-GlimmerViz.fish
 
-echo -e "\n${GLIMMER}✧ Quantum repair complete ✧${RESET}"
+# Clean up the temporary file
+rm fix_quantum.js
+
+echo -e "\n${CRYSTAL}✧ Quantum repair complete ✧${RESET}"
