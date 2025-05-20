@@ -1,118 +1,70 @@
 #!/bin/bash
 
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v11
-# Enhanced with GLIMMER resonance patterns
-# Created by isdood: 2025-05-20 03:32:40 UTC
-
+# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v12
 CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
 QUANTUM=$'\e[38;5;147m'   # Quantum field purple
 PATTERN=$'\e[38;5;219m'   # Pattern state pink
 RESET=$'\e[0m'
 
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v11 ✧${RESET}"
+echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v12 ✧${RESET}"
 
-# Create quantum test environment
-mkdir -p quantum-viz-test
-cd quantum-viz-test
-
-# Create pixel-level test
-cat > test-pixels.ts << 'EOF'
-import { createCanvas, ImageData } from 'canvas';
+# Create minimal test case
+cat > quantum-test.ts << 'EOF'
+import { createCanvas } from 'canvas';
 import { writeFileSync } from 'fs';
 
-const debugPixels = async () => {
-    try {
-        // Initialize quantum canvas
-        const width = 400;
-        const height = 200;
-        console.log('✧ Initializing quantum canvas...');
+class QuantumRenderer {
+    private canvas: any;
+    private ctx: any;
+    private width: number = 400;
+    private height: number = 200;
 
-        const canvas = createCanvas(width, height);
-        const ctx = canvas.getContext('2d', {
-            alpha: false  // Force opaque rendering
-        });
+    constructor() {
+        this.canvas = createCanvas(this.width, this.height);
+        this.ctx = this.canvas.getContext('2d', { alpha: false });
+    }
 
-        // Create explicit pixel data
-        console.log('✧ Creating quantum pixel matrix...');
-        const imageData = ctx.createImageData(width, height);
-        const data = imageData.data;
+    render() {
+        // Clear canvas
+        this.ctx.fillStyle = '#000033';
+        this.ctx.fillRect(0, 0, this.width, this.height);
 
-        // Fill with test pattern
-        console.log('✧ Generating quantum pattern...');
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                const i = (y * width + x) * 4;
+        // Create gradient
+        const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
+        gradient.addColorStop(0, '#000044');
+        gradient.addColorStop(1, '#000088');
+        this.ctx.fillStyle = gradient;
+        this.ctx.fillRect(0, 0, this.width, this.height);
 
-                // Create a blue gradient background
-                const blue = Math.floor((y / height) * 255);
-                data[i] = 0;          // R
-                data[i + 1] = 0;      // G
-                data[i + 2] = blue;   // B
-                data[i + 3] = 255;    // A
+        // Draw wave
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = '#93DBFB';
+        this.ctx.lineWidth = 4;
 
-                // Add a sine wave pattern in white
-                const wave = Math.sin((x / width) * Math.PI * 4);
-                const waveY = height/2 + wave * 50;
-                if (Math.abs(y - waveY) < 2) {
-                    data[i] = 255;     // R
-                    data[i + 1] = 255; // G
-                    data[i + 2] = 255; // B
-                }
-            }
+        for (let x = 0; x < this.width; x++) {
+            const y = this.height/2 + Math.sin(x * 0.05) * 50;
+            if (x === 0) this.ctx.moveTo(x, y);
+            else this.ctx.lineTo(x, y);
         }
+        this.ctx.stroke();
 
-        // Put pixel data to canvas
-        console.log('✧ Materializing quantum pattern...');
-        ctx.putImageData(imageData, 0, 0);
+        // Add text
+        this.ctx.fillStyle = '#FFFFFF';
+        this.ctx.font = '20px Arial';
+        this.ctx.fillText('✧ QUANTUM TEST ✧', this.width/2 - 80, 40);
 
-        // Add verification text
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '20px Arial';
-        ctx.fillText('✧ QUANTUM TEST ✧', width/2 - 80, 40);
-
-        // Get buffer with minimal processing
-        console.log('✧ Creating quantum buffer...');
-        const pngBuffer = canvas.toBuffer('image/png', {
+        return this.canvas.toBuffer('image/png', {
             compressionLevel: 0,
             filters: 0
         });
-
-        // Write test pattern
-        const testFile = 'quantum-pixels.png';
-        writeFileSync(testFile, pngBuffer);
-
-        // Write debug info
-        const debugInfo = `
-STARWEAVE Quantum Pixel Analysis:
-- Canvas: ${width}x${height}
-- Total pixels: ${width * height}
-- Pixel data size: ${data.length} bytes
-- Buffer size: ${pngBuffer.length} bytes
-- First 32 pixels: ${Array.from(data.slice(0, 32)).join(',')}
-`;
-        writeFileSync('pixel-debug.txt', debugInfo);
-
-        return {
-            width,
-            height,
-            pixels: data.length,
-            buffer: pngBuffer.length
-        };
-    } catch (error) {
-        console.error('✗ Quantum error:', error);
-        return null;
     }
-};
+}
 
-// Execute quantum test
-debugPixels().then(result => {
-    if (result) {
-        console.log('\n✧ Quantum pixel test complete:');
-        console.log(`• Dimensions: ${result.width}x${result.height}`);
-        console.log(`• Pixel data: ${result.pixels} bytes`);
-        console.log(`• PNG buffer: ${result.buffer} bytes`);
-    }
-}).catch(console.error);
+// Test the renderer
+const test = new QuantumRenderer();
+const buffer = test.render();
+writeFileSync('quantum-test.png', buffer);
+console.log('✧ Generated quantum test pattern');
 EOF
 
 # Create package configuration
@@ -132,20 +84,15 @@ EOF
 echo -e "${QUANTUM}✧ Installing quantum dependencies...${RESET}"
 npm install --quiet
 
-# Run pixel test
-echo -e "${CRYSTAL}✧ Running quantum pixel test...${RESET}"
-npx tsx test-pixels.ts
+# Run test
+echo -e "${CRYSTAL}✧ Running quantum test...${RESET}"
+npx tsx quantum-test.ts
 
 # Check results
-if [ -f "quantum-pixels.png" ]; then
-    SIZE=$(stat -f%z "quantum-pixels.png" 2>/dev/null || stat -c%s "quantum-pixels.png")
+if [ -f "quantum-test.png" ]; then
+    SIZE=$(stat -f%z "quantum-test.png" 2>/dev/null || stat -c%s "quantum-test.png")
     echo -e "\n${QUANTUM}✧ Test Results:${RESET}"
-    echo -e "${CRYSTAL}• Generated file size: ${SIZE} bytes${RESET}"
-
-    if [ -f "pixel-debug.txt" ]; then
-        echo -e "${PATTERN}✧ Pixel Analysis:${RESET}"
-        cat pixel-debug.txt
-    fi
+    echo -e "${CRYSTAL}• Generated test pattern: ${SIZE} bytes${RESET}"
 
     # If test succeeds, update main script
     if [ "$SIZE" -gt 1000 ]; then
@@ -154,15 +101,18 @@ if [ -f "quantum-pixels.png" ]; then
         if [ -f "018-GlimmerViz.fish" ]; then
             cp 018-GlimmerViz.fish "018-GlimmerViz.fish.bak.$(date +%s)"
 
-            # Update with pixel-level rendering
-            sed -i.bak 's/const ctx = canvas.getContext("2d")/const ctx = canvas.getContext("2d", { alpha: false })/' 018-GlimmerViz.fish
+            # Update the visualization code
+            GRADIENT_CODE='const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);\n    gradient.addColorStop(0, "#000044");\n    gradient.addColorStop(1, "#000088");\n    this.ctx.fillStyle = gradient;'
+
+            sed -i.bak "s/const ctx = canvas.getContext('2d')/const ctx = canvas.getContext('2d', { alpha: false })/" 018-GlimmerViz.fish
+            sed -i.bak "s/this.ctx.fillStyle = \"#000033\"/${GRADIENT_CODE}/" 018-GlimmerViz.fish
             sed -i.bak 's/toBuffer("image\/png")/toBuffer("image\/png", { compressionLevel: 0, filters: 0 })/' 018-GlimmerViz.fish
 
-            echo -e "${CRYSTAL}✓ Applied quantum pixel fixes${RESET}"
+            echo -e "${CRYSTAL}✓ Applied quantum visualization fixes${RESET}"
         fi
     fi
 else
-    echo -e "${PATTERN}✗ Quantum pixel test failed${RESET}"
+    echo -e "${PATTERN}✗ Quantum test failed${RESET}"
 fi
 
 echo -e "\n${QUANTUM}✧ Quantum diagnostic complete ✧${RESET}"
