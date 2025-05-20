@@ -27,7 +27,10 @@ class QuantumStateVisualizer {
     // Clear with transparency
     this.ctx.clearRect(0, 0, this.width, this.height);
     // Set dark background
-    this.const gradient = ctx.createLinearGradient(0, 0, this.width, this.height); gradient.addColorStop(0, "#000033"); gradient.addColorStop(1, "#000066"); ctx.fillStyle = gradient;
+    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
+    gradient.addColorStop(0, "#000033");
+    gradient.addColorStop(1, "#000066");
+    this.ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.restore();
   }
@@ -184,7 +187,10 @@ class QuantumStateVisualizer {
   private clearCanvas(): void {
     this.ctx.save();
     this.ctx.clearRect(0, 0, this.width, this.height);
-    this.const gradient = ctx.createLinearGradient(0, 0, this.width, this.height); gradient.addColorStop(0, "#000033"); gradient.addColorStop(1, "#000066"); ctx.fillStyle = gradient;
+    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
+    gradient.addColorStop(0, "#000033");
+    gradient.addColorStop(1, "#000066");
+    this.ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.restore();
   }
