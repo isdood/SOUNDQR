@@ -1,16 +1,3 @@
-#!/bin/bash
-
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v14
-# Enhanced with GLIMMER resonance patterns
-CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
-QUANTUM=$'\e[38;5;147m'   # Quantum field purple
-PATTERN=$'\e[38;5;219m'   # Pattern state pink
-RESET=$'\e[0m'
-
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v14 ✧${RESET}"
-
-# Create direct TypeScript fixer
-cat > fix-typescript.ts << 'EOF'
 import { readFileSync, writeFileSync } from 'fs';
 
 const file = readFileSync('samples/generate_viz.ts', 'utf8');
@@ -47,26 +34,3 @@ const fixedBoth = fixedInitialize.replace(
 
 writeFileSync('samples/generate_viz.ts', fixedBoth);
 console.log('✧ TypeScript fixes applied');
-EOF
-
-# Run the TypeScript fixer
-echo -e "${QUANTUM}✧ Applying quantum TypeScript fixes...${RESET}"
-npx tsx fix-typescript.ts
-
-# Verify the changes
-echo -e "\n${PATTERN}✧ Verifying quantum fixes...${RESET}"
-if grep -q "this.const" samples/generate_viz.ts; then
-    echo -e "${PATTERN}✗ Quantum fixes not applied correctly${RESET}"
-else
-    echo -e "${CRYSTAL}✓ Quantum fixes applied successfully${RESET}"
-fi
-
-echo -e "\n${QUANTUM}✧ Testing visualization generation...${RESET}"
-
-# Create quantum-viz directory if it doesn't exist
-mkdir -p samples/quantum-viz
-
-# Run the visualization generator
-./018-GlimmerViz.fish
-
-echo -e "\n${QUANTUM}✧ Quantum repair complete ✧${RESET}"
