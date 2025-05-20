@@ -1,35 +1,33 @@
 #!/bin/bash
 
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v26
+# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v27
 CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
 QUANTUM=$'\e[38;5;147m'   # Quantum field purple
 GLIMMER=$'\e[38;5;219m'   # GLIMMER state pink
 RESET=$'\e[0m'
 
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v26 ✧${RESET}"
+echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v27 ✧${RESET}"
 
 echo -e "${GLIMMER}✧ Applying quantum fixes...${RESET}"
 
-# Create a temporary file for sed operations
-TMP_FILE=$(mktemp)
+# Direct fix command with precise sed replacement
+sed -i '30c\    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);' samples/generate_viz.ts
+sed -i '187c\    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);' samples/generate_viz.ts
 
-# Step 1: Fix the initializeCanvas method with proper this.ctx references
-sed '30c\    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);' samples/generate_viz.ts > "$TMP_FILE"
-sed -i '31c\    gradient.addColorStop(0, "#000033");' "$TMP_FILE"
-sed -i '32c\    gradient.addColorStop(1, "#000066");' "$TMP_FILE"
-sed -i '33c\    this.ctx.fillStyle = gradient;' "$TMP_FILE"
+# Remove the "this.const" keywords that are causing issues
+sed -i 's/this\.const //' samples/generate_viz.ts
 
-# Step 2: Fix the clearCanvas method similarly
-sed -i '187c\    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);' "$TMP_FILE"
-sed -i '188c\    gradient.addColorStop(0, "#000033");' "$TMP_FILE"
-sed -i '189c\    gradient.addColorStop(1, "#000066");' "$TMP_FILE"
-sed -i '190c\    this.ctx.fillStyle = gradient;' "$TMP_FILE"
+# Fix the unqualified ctx references
+sed -i 's/ctx\./this.ctx./g' samples/generate_viz.ts
 
-# Create backup
-cp samples/generate_viz.ts "samples/generate_viz.ts.bak.$(date +%s)"
+# Add the gradient color stops as separate lines
+sed -i '31i\    gradient.addColorStop(0, "#000033");' samples/generate_viz.ts
+sed -i '32i\    gradient.addColorStop(1, "#000066");' samples/generate_viz.ts
+sed -i '33i\    this.ctx.fillStyle = gradient;' samples/generate_viz.ts
 
-# Move the fixed file into place
-mv "$TMP_FILE" samples/generate_viz.ts
+sed -i '188i\    gradient.addColorStop(0, "#000033");' samples/generate_viz.ts
+sed -i '189i\    gradient.addColorStop(1, "#000066");' samples/generate_viz.ts
+sed -i '190i\    this.ctx.fillStyle = gradient;' samples/generate_viz.ts
 
 echo -e "${QUANTUM}✧ Verifying quantum fixes...${RESET}"
 if grep -q "this.const" samples/generate_viz.ts; then
