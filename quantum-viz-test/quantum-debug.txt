@@ -3,7 +3,7 @@ STARWEAVE Quantum Pattern Analysis:
 - Buffer size: 924 bytes
 - PNG header: 89504e470d0a1a0a
 - Canvas dimensions: 400x200
-- Memory usage: 8.34991455078125 MB
+- Memory usage: 8.296279907226562 MB
 - Color modes:
   • Background: #000033 -> #000066
   • Primary wave: rgba(147, 219, 251, 0.8)

@@ -1,23 +1,3 @@
-#!/bin/bash
-
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v7
-# Created: 2025-05-20 03:16:45 UTC
-# Author: isdood
-# Enhanced with GLIMMER resonance patterns
-
-CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
-QUANTUM=$'\e[38;5;147m'   # Quantum field purple
-PATTERN=$'\e[38;5;219m'   # Pattern state pink
-RESET=$'\e[0m'
-
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v7 ✧${RESET}"
-
-# Create quantum test environment
-mkdir -p quantum-viz-test
-cd quantum-viz-test
-
-# Create step-by-step test pattern
-cat > test-render.ts << 'EOF'
 import { createCanvas } from 'canvas';
 import { writeFileSync } from 'fs';
 
@@ -120,44 +100,3 @@ ${steps.map(step => {
 testRenderSteps()
     .then(steps => console.log(`\x1b[38;5;147m✧ Completed ${steps} quantum render tests\x1b[0m`))
     .catch(error => console.error('\x1b[38;5;219m✗ Quantum render error:', error, '\x1b[0m'));
-EOF
-
-# Create package configuration
-cat > package.json << EOF
-{
-  "type": "module",
-  "dependencies": {
-    "canvas": "^2.11.2"
-  },
-  "devDependencies": {
-    "tsx": "^4.7.0"
-  }
-}
-EOF
-
-# Install dependencies
-echo -e "${QUANTUM}✧ Installing quantum dependencies...${RESET}"
-npm install --quiet
-
-# Run render tests
-echo -e "${CRYSTAL}✧ Running quantum render tests...${RESET}"
-npx tsx test-render.ts
-
-# Check results
-echo -e "${PATTERN}✧ Analyzing quantum renders...${RESET}"
-for step in background gradient wave glow text; do
-    if [ -f "quantum-${step}.png" ]; then
-        SIZE=$(stat -f%z "quantum-${step}.png" 2>/dev/null || stat -c%s "quantum-${step}.png")
-        echo -e "${QUANTUM}• ${step}: ${SIZE} bytes${RESET}"
-    else
-        echo -e "${PATTERN}✗ Missing ${step} render${RESET}"
-    fi
-done
-
-# Show debug info
-if [ -f "quantum-debug.txt" ]; then
-    echo -e "${CRYSTAL}✧ Quantum Render Analysis:${RESET}"
-    cat quantum-debug.txt
-fi
-
-echo -e "\n${QUANTUM}✧ Quantum diagnostic complete ✧${RESET}"
