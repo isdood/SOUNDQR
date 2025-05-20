@@ -1,21 +1,3 @@
-#!/bin/bash
-
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v15
-# Enhanced with GLIMMER resonance patterns
-CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
-QUANTUM=$'\e[38;5;147m'   # Quantum field purple
-GLIMMER=$'\e[38;5;219m'   # GLIMMER state pink
-RESET=$'\e[0m'
-
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v15 ✧${RESET}"
-
-# Backup the original file
-echo -e "${QUANTUM}✧ Creating quantum backup...${RESET}"
-cp samples/generate_viz.ts "samples/generate_viz.ts.bak.$(date +%s)"
-
-# Write the fixed file
-echo -e "${GLIMMER}✧ Applying GLIMMER fixes...${RESET}"
-cat > samples/generate_viz.ts << 'EOF'
 import { createCanvas, CanvasRenderingContext2D, Canvas } from "canvas";
 
 interface GlimmerWaveform {
@@ -34,7 +16,7 @@ class QuantumStateVisualizer {
   constructor() {
     this.canvas = createCanvas(this.width, this.height, "png");
     this.ctx = this.canvas.getContext("2d", {
-      alpha: false,
+      alpha: true,
       antialias: true
     }) as CanvasRenderingContext2D;
     this.initializeCanvas();
@@ -45,10 +27,7 @@ class QuantumStateVisualizer {
     // Clear with transparency
     this.ctx.clearRect(0, 0, this.width, this.height);
     // Set dark background
-    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
-    gradient.addColorStop(0, "#000033");
-    gradient.addColorStop(1, "#000066");
-    this.ctx.fillStyle = gradient;
+    this.const gradient = ctx.createLinearGradient(0, 0, this.width, this.height); gradient.addColorStop(0, "#000033"); gradient.addColorStop(1, "#000066"); ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.restore();
   }
@@ -205,10 +184,7 @@ class QuantumStateVisualizer {
   private clearCanvas(): void {
     this.ctx.save();
     this.ctx.clearRect(0, 0, this.width, this.height);
-    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
-    gradient.addColorStop(0, "#000033");
-    gradient.addColorStop(1, "#000066");
-    this.ctx.fillStyle = gradient;
+    this.const gradient = ctx.createLinearGradient(0, 0, this.width, this.height); gradient.addColorStop(0, "#000033"); gradient.addColorStop(1, "#000066"); ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.restore();
   }
@@ -262,14 +238,3 @@ async function generateSamples() {
 }
 
 generateSamples().catch(console.error);
-EOF
-
-echo -e "\n${QUANTUM}✧ Testing visualization generation...${RESET}"
-
-# Create quantum-viz directory if it doesn't exist
-mkdir -p samples/quantum-viz
-
-# Run the visualization generator
-./018-GlimmerViz.fish
-
-echo -e "\n${CRYSTAL}✧ Quantum repair complete ✧${RESET}"
