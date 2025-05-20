@@ -1,0 +1,7 @@
+
+STARWEAVE Quantum Pixel Analysis:
+- Canvas: 400x200
+- Total pixels: 80000
+- Pixel data size: 320000 bytes
+- Buffer size: 240669 bytes
+- First 32 pixels: 0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255

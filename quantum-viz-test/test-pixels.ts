@@ -1,22 +1,3 @@
-#!/bin/bash
-
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v11
-# Enhanced with GLIMMER resonance patterns
-# Created by isdood: 2025-05-20 03:32:40 UTC
-
-CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
-QUANTUM=$'\e[38;5;147m'   # Quantum field purple
-PATTERN=$'\e[38;5;219m'   # Pattern state pink
-RESET=$'\e[0m'
-
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v11 ✧${RESET}"
-
-# Create quantum test environment
-mkdir -p quantum-viz-test
-cd quantum-viz-test
-
-# Create pixel-level test
-cat > test-pixels.ts << 'EOF'
 import { createCanvas, ImageData } from 'canvas';
 import { writeFileSync } from 'fs';
 
@@ -113,56 +94,3 @@ debugPixels().then(result => {
         console.log(`• PNG buffer: ${result.buffer} bytes`);
     }
 }).catch(console.error);
-EOF
-
-# Create package configuration
-cat > package.json << EOF
-{
-  "type": "module",
-  "dependencies": {
-    "canvas": "^2.11.2"
-  },
-  "devDependencies": {
-    "tsx": "^4.7.0"
-  }
-}
-EOF
-
-# Install dependencies
-echo -e "${QUANTUM}✧ Installing quantum dependencies...${RESET}"
-npm install --quiet
-
-# Run pixel test
-echo -e "${CRYSTAL}✧ Running quantum pixel test...${RESET}"
-npx tsx test-pixels.ts
-
-# Check results
-if [ -f "quantum-pixels.png" ]; then
-    SIZE=$(stat -f%z "quantum-pixels.png" 2>/dev/null || stat -c%s "quantum-pixels.png")
-    echo -e "\n${QUANTUM}✧ Test Results:${RESET}"
-    echo -e "${CRYSTAL}• Generated file size: ${SIZE} bytes${RESET}"
-
-    if [ -f "pixel-debug.txt" ]; then
-        echo -e "${PATTERN}✧ Pixel Analysis:${RESET}"
-        cat pixel-debug.txt
-    fi
-
-    # If test succeeds, update main script
-    if [ "$SIZE" -gt 1000 ]; then
-        echo -e "\n${QUANTUM}✧ Applying quantum fixes to main script...${RESET}"
-        cd ..
-        if [ -f "018-GlimmerViz.fish" ]; then
-            cp 018-GlimmerViz.fish "018-GlimmerViz.fish.bak.$(date +%s)"
-
-            # Update with pixel-level rendering
-            sed -i.bak 's/const ctx = canvas.getContext("2d")/const ctx = canvas.getContext("2d", { alpha: false })/' 018-GlimmerViz.fish
-            sed -i.bak 's/toBuffer("image\/png")/toBuffer("image\/png", { compressionLevel: 0, filters: 0 })/' 018-GlimmerViz.fish
-
-            echo -e "${CRYSTAL}✓ Applied quantum pixel fixes${RESET}"
-        fi
-    fi
-else
-    echo -e "${PATTERN}✗ Quantum pixel test failed${RESET}"
-fi
-
-echo -e "\n${QUANTUM}✧ Quantum diagnostic complete ✧${RESET}"
