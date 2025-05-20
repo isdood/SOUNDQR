@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v9
-# Created: 2025-05-20 03:22:15 UTC
+# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v10
+# Created: 2025-05-20 03:24:15 UTC
 # Author: isdood
 # Enhanced with GLIMMER resonance patterns
 
@@ -10,7 +10,7 @@ QUANTUM=$'\e[38;5;147m'   # Quantum field purple
 PATTERN=$'\e[38;5;219m'   # Pattern state pink
 RESET=$'\e[0m'
 
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v9 ✧${RESET}"
+echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v10 ✧${RESET}"
 
 # Create quantum test environment
 mkdir -p quantum-viz-test
@@ -19,7 +19,8 @@ cd quantum-viz-test
 # Create minimal buffer test
 cat > test-buffer.ts << 'EOF'
 import { createCanvas } from 'canvas';
-import { writeFileSync, statSync } from 'fs';
+import { writeFileSync, readFileSync, statSync } from 'fs';
+import { join } from 'path';
 
 const debugCanvas = async () => {
     try {
@@ -29,27 +30,54 @@ const debugCanvas = async () => {
         console.log('✧ Creating canvas (' + width + 'x' + height + ')...');
 
         const canvas = createCanvas(width, height);
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', {
+            alpha: true,
+            willReadFrequently: true
+        });
 
         // Verify canvas is created
         console.log('✧ Canvas created with dimensions: ' + canvas.width + 'x' + canvas.height);
 
-        // Clear to known state
-        console.log('✧ Setting initial state...');
-        ctx.fillStyle = '#FF0000'; // Bright red for visibility
+        // Clear and set background
+        console.log('✧ Setting quantum background...');
+        const gradient = ctx.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, '#000033');
+        gradient.addColorStop(1, '#000066');
+        ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, width, height);
 
         // Draw test pattern
-        console.log('✧ Drawing test pattern...');
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 5;
+        console.log('✧ Drawing quantum pattern...');
+        ctx.strokeStyle = '#93DBFB';  // Crystal cyan
+        ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.moveTo(0, height/2);
-        ctx.lineTo(width, height/2);
+
+        for (let x = 0; x < width; x++) {
+            const y = height/2 + Math.sin(x * 0.05) * 50;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
         ctx.stroke();
 
+        // Add glow effect
+        console.log('✧ Adding quantum glow...');
+        ctx.globalCompositeOperation = 'lighter';
+        const glow = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, height/2);
+        glow.addColorStop(0, 'rgba(147, 219, 251, 0.3)');
+        glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, width, height);
+
+        // Reset composite operation
+        ctx.globalCompositeOperation = 'source-over';
+
+        // Add verification text
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '20px Arial';
+        ctx.fillText('✧ QUANTUM TEST ✧', width/2 - 80, 40);
+
         // Get buffer with explicit settings
-        console.log('✧ Creating PNG buffer...');
+        console.log('✧ Creating quantum buffer...');
         const pngBuffer = canvas.toBuffer('image/png', {
             compressionLevel: 0,  // No compression for testing
             filters: canvas.PNG_FILTER_NONE
@@ -61,44 +89,42 @@ const debugCanvas = async () => {
         writeFileSync(testFile, pngBuffer);
         const fileSize = statSync(testFile).size;
 
-        // Read first few bytes back
-        const readBuffer = Buffer.alloc(16);
-        const fd = require('fs').openSync(testFile, 'r');
-        require('fs').readSync(fd, readBuffer, 0, 16, 0);
-        require('fs').closeSync(fd);
+        // Read first few bytes for verification
+        const fileData = readFileSync(testFile);
+        const header = fileData.slice(0, 8);
 
         // Write debug data
         const debugInfo = `
-STARWEAVE Buffer Analysis:
+STARWEAVE Quantum Analysis:
 - Canvas: ${width}x${height}
 - Buffer size: ${pngBuffer.length} bytes
 - File size: ${fileSize} bytes
-- First bytes: ${readBuffer.toString('hex')}
-- PNG signature check: ${readBuffer.slice(0, 8).toString('hex') === '89504e470d0a1a0a' ? 'Valid' : 'Invalid'}
+- Header: ${header.toString('hex')}
+- PNG signature: ${header.toString('hex') === '89504e470d0a1a0a' ? 'Valid' : 'Invalid'}
 `;
-        writeFileSync('buffer-debug.txt', debugInfo);
+        writeFileSync('quantum-debug.txt', debugInfo);
 
         return {
             width,
             height,
             bufferSize: pngBuffer.length,
             fileSize,
-            signature: readBuffer.slice(0, 8).toString('hex')
+            signature: header.toString('hex')
         };
     } catch (error) {
-        console.error('✗ Canvas error:', error);
+        console.error('✗ Quantum error:', error);
         return null;
     }
 };
 
-// Execute buffer test
+// Execute quantum test
 debugCanvas().then(result => {
     if (result) {
-        console.log('\n✧ Test complete:');
+        console.log('\n✧ Quantum test complete:');
         console.log('• Canvas: ' + result.width + 'x' + result.height);
         console.log('• Buffer: ' + result.bufferSize + ' bytes');
         console.log('• File: ' + result.fileSize + ' bytes');
-        console.log('• PNG signature: ' + result.signature);
+        console.log('• Signature: ' + result.signature);
     }
 }).catch(console.error);
 EOF
@@ -130,34 +156,28 @@ if [ -f "quantum-buffer-test.png" ]; then
     echo -e "\n${QUANTUM}✧ Test Results:${RESET}"
     echo -e "${CRYSTAL}• Generated file size: ${SIZE} bytes${RESET}"
 
-    if [ -f "buffer-debug.txt" ]; then
+    if [ -f "quantum-debug.txt" ]; then
         echo -e "${PATTERN}✧ Buffer Analysis:${RESET}"
-        cat buffer-debug.txt
-    fi
-
-    # Read first 8 bytes to verify PNG header
-    HEADER=$(od -An -tx1 -N8 "quantum-buffer-test.png" 2>/dev/null | tr -d ' \n')
-    if [ "$HEADER" = "89504e470d0a1a0a" ]; then
-        echo -e "${CRYSTAL}✓ Valid PNG header detected${RESET}"
-    else
-        echo -e "${PATTERN}✗ Invalid PNG header: ${HEADER}${RESET}"
+        cat quantum-debug.txt
     fi
 
     # If test succeeds, update main script
     if [ "$SIZE" -gt 1000 ]; then
-        echo -e "\n${QUANTUM}✧ Applying buffer fixes to main script...${RESET}"
+        echo -e "\n${QUANTUM}✧ Applying quantum fixes to main script...${RESET}"
         cd ..
         if [ -f "018-GlimmerViz.fish" ]; then
             cp 018-GlimmerViz.fish "018-GlimmerViz.fish.bak.$(date +%s)"
 
             # Update the core rendering code with working version
+            sed -i.bak 's/const ctx = canvas.getContext("2d")/const ctx = canvas.getContext("2d", { alpha: true, willReadFrequently: true })/' 018-GlimmerViz.fish
+            sed -i.bak 's/ctx.fillStyle = "#000033"/const gradient = ctx.createLinearGradient(0, 0, this.width, this.height); gradient.addColorStop(0, "#000033"); gradient.addColorStop(1, "#000066"); ctx.fillStyle = gradient/' 018-GlimmerViz.fish
             sed -i.bak 's/toBuffer("image\/png")/toBuffer("image\/png", { compressionLevel: 0, filters: canvas.PNG_FILTER_NONE })/' 018-GlimmerViz.fish
 
-            echo -e "${CRYSTAL}✓ Applied quantum buffer fixes${RESET}"
+            echo -e "${CRYSTAL}✓ Applied quantum visualization fixes${RESET}"
         fi
     fi
 else
-    echo -e "${PATTERN}✗ Buffer test failed${RESET}"
+    echo -e "${PATTERN}✗ Quantum buffer test failed${RESET}"
 fi
 
 echo -e "\n${QUANTUM}✧ Quantum diagnostic complete ✧${RESET}"
