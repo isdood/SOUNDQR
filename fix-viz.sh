@@ -1,33 +1,50 @@
 #!/bin/bash
 
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v27
+# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v28
 CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
 QUANTUM=$'\e[38;5;147m'   # Quantum field purple
 GLIMMER=$'\e[38;5;219m'   # GLIMMER state pink
 RESET=$'\e[0m'
 
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v27 ✧${RESET}"
+echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v28 ✧${RESET}"
 
 echo -e "${GLIMMER}✧ Applying quantum fixes...${RESET}"
 
-# Direct fix command with precise sed replacement
-sed -i '30c\    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);' samples/generate_viz.ts
-sed -i '187c\    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);' samples/generate_viz.ts
+# Create a temporary file
+TMP_FILE=$(mktemp)
 
-# Remove the "this.const" keywords that are causing issues
-sed -i 's/this\.const //' samples/generate_viz.ts
+# Process the file line by line to ensure we capture everything correctly
+line_number=0
+while IFS= read -r line; do
+    line_number=$((line_number + 1))
 
-# Fix the unqualified ctx references
-sed -i 's/ctx\./this.ctx./g' samples/generate_viz.ts
+    if [ $line_number -eq 30 ]; then
+        # Replace line 30 with correct gradient initialization
+        echo '    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);' >> "$TMP_FILE"
+        echo '    gradient.addColorStop(0, "#000033");' >> "$TMP_FILE"
+        echo '    gradient.addColorStop(1, "#000066");' >> "$TMP_FILE"
+        echo '    this.ctx.fillStyle = gradient;' >> "$TMP_FILE"
+    elif [ $line_number -eq 187 ]; then
+        # Replace line 187 with correct gradient initialization
+        echo '    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);' >> "$TMP_FILE"
+        echo '    gradient.addColorStop(0, "#000033");' >> "$TMP_FILE"
+        echo '    gradient.addColorStop(1, "#000066");' >> "$TMP_FILE"
+        echo '    this.ctx.fillStyle = gradient;' >> "$TMP_FILE"
+    elif [ $line_number -eq 31 ] || [ $line_number -eq 32 ] || [ $line_number -eq 33 ] || \
+         [ $line_number -eq 188 ] || [ $line_number -eq 189 ] || [ $line_number -eq 190 ]; then
+        # Skip the original gradient lines that we're replacing
+        continue
+    else
+        # Keep all other lines as they are
+        echo "$line" >> "$TMP_FILE"
+    fi
+done < samples/generate_viz.ts
 
-# Add the gradient color stops as separate lines
-sed -i '31i\    gradient.addColorStop(0, "#000033");' samples/generate_viz.ts
-sed -i '32i\    gradient.addColorStop(1, "#000066");' samples/generate_viz.ts
-sed -i '33i\    this.ctx.fillStyle = gradient;' samples/generate_viz.ts
+# Create backup
+cp samples/generate_viz.ts "samples/generate_viz.ts.bak.$(date +%s)"
 
-sed -i '188i\    gradient.addColorStop(0, "#000033");' samples/generate_viz.ts
-sed -i '189i\    gradient.addColorStop(1, "#000066");' samples/generate_viz.ts
-sed -i '190i\    this.ctx.fillStyle = gradient;' samples/generate_viz.ts
+# Move the fixed file into place
+mv "$TMP_FILE" samples/generate_viz.ts
 
 echo -e "${QUANTUM}✧ Verifying quantum fixes...${RESET}"
 if grep -q "this.const" samples/generate_viz.ts; then
