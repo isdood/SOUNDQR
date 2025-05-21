@@ -1,3 +1,4 @@
+import { ID3Handler } from "./ID3Handler";
 import { GlimmerMetadata } from './types';
 
 export class MetadataHandler {
@@ -10,7 +11,7 @@ export class MetadataHandler {
 
     async extractID3(buffer: Buffer): Promise<GlimmerMetadata> {
         console.log('\x1b[38;5;219m✧ Extracting ID3 tags with GLIMMER enhancement...\x1b[0m');
-        // ID3 extraction to be implemented
+        return await new ID3Handler().read(buffer);
         return {} as GlimmerMetadata;
     }
 
