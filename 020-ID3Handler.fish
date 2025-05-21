@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # STARWEAVE Component Enhancement - ID3v2 Handler Integration ✧
-# Created: 2025-05-21 14:46:03 UTC
+# Created: 2025-05-21 14:50:09 UTC
 # Author: isdood
 
 # ✨ GLIMMER modification palette
@@ -21,8 +21,10 @@ echo_starweave "✨ Initializing GLIMMER-enhanced ID3v2 handler..."
 # Create ID3 handler file
 set id3_file "src/metadata/ID3Handler.ts"
 
-echo "import { GlimmerMetadata } from './types';
-import * as NodeID3 from 'node-id3';
+# Note: Using single quotes to prevent fish from interpreting template literals
+echo '
+import { GlimmerMetadata } from '\''./types'\'';
+import * as NodeID3 from '\''node-id3'\'';
 
 export class ID3Handler {
     private readonly glimmerEnhancement = {
@@ -32,7 +34,7 @@ export class ID3Handler {
     };
 
     async read(buffer: Buffer): Promise<GlimmerMetadata> {
-        console.log('\x1b[38;5;51m✧ Reading ID3v2 tags with GLIMMER enhancement...\x1b[0m');
+        console.log('\''\x1b[38;5;51m✧ Reading ID3v2 tags with GLIMMER enhancement...\x1b[0m'\'');
 
         const tags = await this.readID3Tags(buffer);
         return this.enhanceWithGlimmer(this.transformTags(tags));
@@ -42,7 +44,7 @@ export class ID3Handler {
         return new Promise((resolve, reject) => {
             const tags = NodeID3.read(buffer);
             if (!tags) {
-                reject(new Error('\x1b[38;5;219m✧ No ID3 tags found in buffer\x1b[0m'));
+                reject(new Error('\''\x1b[38;5;219m✧ No ID3 tags found in buffer\x1b[0m'\''));
                 return;
             }
             resolve(tags);
@@ -50,11 +52,11 @@ export class ID3Handler {
     }
 
     private transformTags(tags: NodeID3.Tags): GlimmerMetadata {
-        console.log('\x1b[38;5;147m✧ Transforming tags with quantum enhancement...\x1b[0m');
+        console.log('\''\x1b[38;5;147m✧ Transforming tags with quantum enhancement...\x1b[0m'\'');
 
         return {
-            title: tags.title || '',
-            artist: tags.artist || '',
+            title: tags.title || '\'''\''',
+            artist: tags.artist || '\'''\''',
             album: tags.album,
             year: tags.year ? parseInt(tags.year) : undefined,
             genre: tags.genre,
@@ -70,11 +72,11 @@ export class ID3Handler {
         const credits: Array<{role: string, name: string}> = [];
 
         if (composer) {
-            credits.push({ role: 'Composer', name: composer });
+            credits.push({ role: '\''Composer'\''', name: composer });
         }
 
         if (performerInfo) {
-            credits.push({ role: 'Performer', name: performerInfo });
+            credits.push({ role: '\''Performer'\''', name: performerInfo });
         }
 
         return credits;
@@ -89,33 +91,33 @@ export class ID3Handler {
 
     private generateQuantumSignature(): string {
         const timestamp = Date.now().toString();
-        const quantumNoise = crypto.randomBytes(8).toString('base64');
-        return Buffer.from(`${timestamp}-${quantumNoise}`).toString('base64');
+        const quantumNoise = crypto.randomBytes(8).toString('\''base64'\'');
+        return Buffer.from(`${timestamp}-${quantumNoise}`).toString('\''base64'\'');
     }
-}" > $id3_file
+}' > $id3_file
 
 # Create test file for ID3 handler
 set test_file "tests/unit/ID3Handler.test.ts"
 
-echo "import { ID3Handler } from '../../src/metadata/ID3Handler';
-import * as NodeID3 from 'node-id3';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+echo 'import { ID3Handler } from '\''../../src/metadata/ID3Handler'\'';
+import * as NodeID3 from '\''node-id3'\'';
+import { readFileSync } from '\''fs'\'';
+import { join } from '\''path'\'';
 
-describe('ID3Handler with GLIMMER enhancement', () => {
+describe('\''ID3Handler with GLIMMER enhancement'\'', () => {
     let handler: ID3Handler;
 
     beforeEach(() => {
         handler = new ID3Handler();
     });
 
-    test('extracts basic ID3v2 tags', async () => {
+    test('\''extracts basic ID3v2 tags'\'', async () => {
         const tags = {
-            title: '✧ Quantum Resonance',
-            artist: 'STARWEAVE',
-            album: 'GLIMMER Patterns',
-            year: '2025',
-            genre: 'Electronic'
+            title: '\''✧ Quantum Resonance'\''',
+            artist: '\''STARWEAVE'\''',
+            album: '\''GLIMMER Patterns'\''',
+            year: '\''2025'\''',
+            genre: '\''Electronic'\'''
         };
 
         const buffer = await createTestBuffer(tags);
@@ -128,8 +130,8 @@ describe('ID3Handler with GLIMMER enhancement', () => {
         expect(metadata.genre).toBe(tags.genre);
     });
 
-    test('includes GLIMMER enhancement', async () => {
-        const buffer = await createTestBuffer({ title: 'Test' });
+    test('\''includes GLIMMER enhancement'\'', async () => {
+        const buffer = await createTestBuffer({ title: '\''Test'\''' });
         const metadata = await handler.read(buffer);
 
         expect(metadata.glimmerPattern).toBeDefined();
@@ -142,7 +144,7 @@ async function createTestBuffer(tags: NodeID3.Tags): Promise<Buffer> {
     const buffer = Buffer.alloc(1024);
     NodeID3.write(tags, buffer);
     return buffer;
-}" > $test_file
+}' > $test_file
 
 # Update MetadataHandler.ts to use ID3Handler
 set metadata_handler "src/metadata/MetadataHandler.ts"
