@@ -5,7 +5,7 @@ export class FLACEncoder {
         // Add FLAC stream markers with mathematically perfect bit depth ✧
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(384, 8);           // 24-bit depth (384 >> 4 = 24)
+        metadataBlock.writeUInt8(24, 8);            // 24-bit depth (direct value)
 
         // Define quantum markers with precise UTF-8 encoding ✧
         const markers = [

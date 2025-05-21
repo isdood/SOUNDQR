@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747858248616" clover="3.2.0">
-  <project timestamp="1747858248616" name="All files">
-    <metrics statements="92" coveredstatements="65" conditionals="31" coveredconditionals="22" methods="26" coveredmethods="21" elements="149" coveredelements="108" complexity="0" loc="92" ncloc="92" packages="3" files="6" classes="6"/>
+<coverage generated="1747858383333" clover="3.2.0">
+  <project timestamp="1747858383333" name="All files">
+    <metrics statements="92" coveredstatements="87" conditionals="31" coveredconditionals="22" methods="26" coveredmethods="23" elements="149" coveredelements="132" complexity="0" loc="92" ncloc="92" packages="3" files="6" classes="6"/>
     <package name="codec">
-      <metrics statements="33" coveredstatements="10" conditionals="1" coveredconditionals="0" methods="7" coveredmethods="5"/>
+      <metrics statements="33" coveredstatements="32" conditionals="1" coveredconditionals="0" methods="7" coveredmethods="7"/>
       <file name="FLACCodec.ts" path="/home/shimmer/SOUNDQR/src/codec/FLACCodec.ts">
-        <metrics statements="33" coveredstatements="10" conditionals="1" coveredconditionals="0" methods="7" coveredmethods="5"/>
+        <metrics statements="33" coveredstatements="32" conditionals="1" coveredconditionals="0" methods="7" coveredmethods="7"/>
         <line num="1" count="4" type="stmt"/>
         <line num="3" count="5" type="stmt"/>
         <line num="6" count="5" type="stmt"/>
         <line num="7" count="5" type="stmt"/>
         <line num="8" count="5" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="19" count="15" type="stmt"/>
+        <line num="20" count="15" type="stmt"/>
+        <line num="21" count="15" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="5" type="stmt"/>
+        <line num="27" count="5" type="stmt"/>
+        <line num="30" count="5" type="stmt"/>
+        <line num="31" count="5" type="stmt"/>
+        <line num="32" count="5" type="stmt"/>
         <line num="36" count="4" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
+        <line num="39" count="4" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="43" count="4" type="stmt"/>
+        <line num="44" count="4" type="stmt"/>
+        <line num="46" count="4" type="stmt"/>
+        <line num="48" count="4" type="stmt"/>
+        <line num="49" count="4" type="stmt"/>
         <line num="50" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="57" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
+        <line num="53" count="4" type="stmt"/>
+        <line num="56" count="4" type="stmt"/>
+        <line num="57" count="4" type="stmt"/>
+        <line num="59" count="4" type="stmt"/>
         <line num="67" count="4" type="stmt"/>
         <line num="68" count="3" type="cond" truecount="0" falsecount="1"/>
         <line num="75" count="1" type="stmt"/>
