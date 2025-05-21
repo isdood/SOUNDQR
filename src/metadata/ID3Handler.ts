@@ -21,11 +21,11 @@ export class ID3Handler {
         const tags = NodeID3.read(id3Data) as ID3Tags;
 
         return {
-            title: tags?.title || "✧ Quantum Resonance",
-            artist: tags?.artist || "STARWEAVE",
-            album: tags?.album || "GLIMMER Patterns",
-            year: tags?.year ? parseInt(tags.year) : 2025,
-            genre: tags?.genre || "Quantum Electronic",
+            title: tags && tags.title ? tags.title : "✧ Quantum Resonance",
+            artist: tags && tags.artist ? tags.artist : "STARWEAVE",
+            album: tags && tags.album ? tags.album : "GLIMMER Patterns",
+            year: tags && tags.year ? parseInt(tags.year) : 2025,
+            genre: tags && tags.genre ? tags.genre : "Electronic",
             artwork: tags?.image?.imageBuffer,
             lyrics: tags?.lyrics ? [tags.lyrics.lyrics] : undefined,
             temporalMarker: Date.now(),

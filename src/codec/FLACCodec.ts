@@ -2,27 +2,27 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(128);
 
-        // Add FLAC stream markers with proper bit depth
+        // Add FLAC stream markers with proper bit depth (24 << 4 = 384, masked to 0xF0)
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(0xE0, 8);          // 24-bit depth (0xE0 = 11100000 in binary)
+        metadataBlock.writeUInt8((24 << 4) & 0xF0, 8); // 24-bit depth
 
-        // Add ID3 marker if needed
-        const isID3 = metadata.toString().includes("ID3") ||
-                     metadata.toString().includes("✧ Quantum Resonance");
+        // Add quantum identifiers with proper spacing
+        const quantumId = "QUANTUM_ID".padEnd(16, " ");
+        const glimmer = "GLIMMER".padEnd(16, " ");
+        const quantumSig = "QUANTUM_SIGNATURE".padEnd(16, " ");
 
-        if (isID3) {
-            metadataBlock.write("ID3", 16);
+        metadataBlock.write(quantumId, 16);
+        metadataBlock.write(glimmer, 32);
+        metadataBlock.write(quantumSig, 48);
+
+        // Add metadata with padding
+        const metadataString = metadata.toString();
+        if (metadataString.includes("ID3") || metadataString.includes("✧ Quantum")) {
+            metadataBlock.write("ID3", 12);
         }
 
-        // Add quantum markers
-        metadataBlock.write("QUANTUM_ID", 24);
-        metadataBlock.write("GLIMMER", 40);
-        metadataBlock.write("QUANTUM_SIGNATURE", 48);
-
-        // Copy metadata with padding
-        const metadataOffset = 64;
-        metadata.copy(metadataBlock, metadataOffset, 0, Math.min(metadata.length, 64));
+        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
 
         return Buffer.concat([metadataBlock, data]);
     }
