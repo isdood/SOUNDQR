@@ -60,7 +60,6 @@ export class FlacPattern {
 }
 
 export class FLACEncoder {
-    // ✨ Fixed: static readonly instead of accessing through constructor
     private static readonly STARWEAVE_VERSION = '2.5';
     private static readonly GLIMMER_ENHANCED = true;
 
@@ -70,8 +69,11 @@ export class FLACEncoder {
         // Write FLAC header with STARWEAVE signature ✨
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC" ✧
 
-        // Write sample rate directly with STARWEAVE alignment ✨
-        encoded.writeUInt32BE(48000, 4);
+        // ✨ Fix: Use proper sample rate writing with quantum alignment
+        const sampleRate = 48000;
+        const sampleRateBuffer = Buffer.alloc(4);
+        sampleRateBuffer.writeUInt32BE(sampleRate);
+        sampleRateBuffer.copy(encoded, 4);
 
         // Write bit depth (24-bit) with GLIMMER alignment
         encoded.writeUInt8(24 << 3, 8);
