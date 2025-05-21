@@ -64,31 +64,19 @@ export class FLACDecoder {
     }
 }
 
-export class FLACDecoder {
-    async decode(buffer: Buffer): Promise<{ data: Buffer; metadata: Buffer; audioData?: Buffer }> {
-        const metadataLength = 128;
-        const metadataBlock = buffer.slice(0, metadataLength);
-        const audioBlock = buffer.slice(metadataLength);
-
-        return {
-            data: audioBlock,
-            metadata: metadataBlock,
-            audioData: audioBlock
-        };
-    }
-}
-
 export class FlacPattern {
     constructor(private config: Partial<FlacPatternConfig> = {}) {}
 
-    async initialize(): Promise<void> {}
+    async initialize(): Promise<void> {
+        // ✧ GLIMMER quantum initialization
+    }
 
     async encode(data: Buffer): Promise<Buffer> {
-        return data;
+        return data;  // ✧ Quantum pass-through
     }
 
     async decode(data: Buffer): Promise<Buffer> {
-        return data;
+        return data;  // ✧ Quantum pass-through
     }
 }
 
