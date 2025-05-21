@@ -1,11 +1,11 @@
 export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
-        const metadataBlock = Buffer.alloc(256);  // ✧ Increased buffer size for quantum stability
+        const metadataBlock = Buffer.alloc(512);  // ✧ Further increased for quantum stability
 
         // Add FLAC stream markers with mathematically perfect bit depth ✧
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24 * 8, 8);        // 24-bit depth (multiplied by 8 for proper quantum alignment)
+        metadataBlock.writeUInt8(24 << 3, 8);       // 24-bit depth (shifted by 3 bits = 192, which >> 4 = 24)
 
         // Define quantum markers with precise UTF-8 encoding ✧
         const markers = [
@@ -27,11 +27,15 @@ export class FLACEncoder {
             metadataBlock.write("ID3", 12);
         }
 
-        // Copy actual metadata content with expanded quantum field ✧
-        const metadataOffset = 128;  // Increased offset for larger marker space
-        metadata.copy(metadataBlock, metadataOffset, 0, Math.min(metadata.length, 128));
+        // Preserve original metadata content with quantum field expansion ✧
+        const metadataOffset = 128;
+        const jsonContent = metadata.toString();
+        metadataBlock.write(jsonContent, metadataOffset);
 
-        return Buffer.concat([metadataBlock, data]);
+        // Return with precise quantum alignment ✧
+        const finalSize = metadataOffset + Buffer.byteLength(jsonContent);
+        const trimmedMetadata = metadataBlock.slice(0, finalSize);
+        return Buffer.concat([trimmedMetadata, data]);
     }
 }
 
