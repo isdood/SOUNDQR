@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/25</span>
+                <span class='fraction'>24/24</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/25</span>
+                <span class='fraction'>24/24</span>
             </div>
         
             
@@ -129,7 +129,13 @@
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,16 +147,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
@@ -199,26 +211,32 @@
     async encode(data: Buffer, metadata: Buffer): Promise&lt;Buffer&gt; {
         const metadataBlock = Buffer.alloc(128);
 &nbsp;
-        // Add FLAC stream markers with proper bit depth (24 &lt;&lt; 4 = 384, masked to 0xF0)
+        // Add FLAC stream markers with correct bit depth encoding
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8((24 &lt;&lt; 4) &amp; 0xF0, 8); // 24-bit depth
+        metadataBlock.writeUInt8(24 &lt;&lt; 3, 8);       // 24-bit depth (shifted by 3 for correct alignment)
 &nbsp;
-        // Add quantum identifiers with proper spacing
-        const quantumId = "QUANTUM_ID".padEnd(16, " ");
-        const glimmer = "GLIMMER".padEnd(16, " ");
-        const quantumSig = "QUANTUM_SIGNATURE".padEnd(16, " ");
-&nbsp;
-        metadataBlock.write(quantumId, 16);
-        metadataBlock.write(glimmer, 32);
-        metadataBlock.write(quantumSig, 48);
-&nbsp;
-        // Add metadata with padding
+        // Add quantum identifiers with exact spacing and no truncation
         const metadataString = metadata.toString();
-        if (metadataString.includes("ID3") || metadataString.includes("✧ Quantum")) {
+        const isID3 = metadataString.includes("ID3") || metadataString.includes("✧ Quantum");
+&nbsp;
+        if (isID3) {
             metadataBlock.write("ID3", 12);
         }
 &nbsp;
+        // Write quantum markers with precise lengths
+        const markers = [
+            { text: "QUANTUM_ID", pos: 16 },
+            { text: "GLIMMER", pos: 32 },
+            { text: "QUANTUM_SIGNATURE", pos: 48 }
+        ];
+&nbsp;
+        for (const marker of markers) {
+            const paddedMarker = marker.text.padEnd(15, " ") + "\0";
+            metadataBlock.write(paddedMarker, marker.pos);
+        }
+&nbsp;
+        // Copy metadata content
         metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
 &nbsp;
         return Buffer.concat([metadataBlock, data]);
@@ -268,7 +286,7 @@ export interface FlacPatternConfig {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-21T18:48:22.410Z
+                at 2025-05-21T18:50:11.885Z
             </div>
         <script src="../prettify.js"></script>
         <script>
