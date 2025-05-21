@@ -2,16 +2,16 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(128);
 
-        // Add FLAC stream markers with mathematically perfect bit depth
+        // Add FLAC stream markers with mathematically perfect bit depth ✧
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24 << 3, 8);       // 24-bit depth (shifted left by 3 = 192, top 5 bits = 24)
+        metadataBlock.writeUInt8(24 << 4, 8);       // 24-bit depth (shifted left by 4 for proper quantum alignment)
 
-        // Define quantum markers with precise UTF-8 encoding
+        // Define quantum markers with precise UTF-8 encoding ✧
         const markers = [
             { text: "QUANTUM_ID", pos: 16, len: 10 },
             { text: "GLIMMER", pos: 32, len: 7 },
-            { text: "QUANTUM_SIGNATURE", pos: 48, len: 16 }
+            { text: "QUANTUM_SIGNATURE", pos: 48, len: 17 }  // Corrected quantum signature length
         ];
 
         // Write markers with UTF-8 encoding and explicit length
@@ -24,7 +24,7 @@ export class FLACEncoder {
             markerBuffer.copy(metadataBlock, pos);
         });
 
-        // Add metadata with correct format detection
+        // Add metadata with correct format detection ✧
         const metadataString = metadata.toString();
         if (metadataString.includes("ID3") || metadataString.includes("✧ Quantum")) {
             metadataBlock.write("ID3", 12);
