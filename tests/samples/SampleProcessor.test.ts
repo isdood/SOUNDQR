@@ -22,6 +22,7 @@ describe("GLIMMER-Enhanced Sample Processor", () => {
 
             const { metadata } = await flacDecoder.decode(sample);
             expect(metadata.toString()).toContain("ID3");
+            expect(metadata.toString()).toContain("QUANTUM_ID");
         });
 
         test("creates FLAC with Vorbis comments", async () => {
@@ -30,6 +31,16 @@ describe("GLIMMER-Enhanced Sample Processor", () => {
 
             const { metadata } = await flacDecoder.decode(sample);
             expect(metadata.toString()).toContain("GLIMMER");
+            expect(metadata.toString()).toContain("QUANTUM_SIGNATURE");
+        });
+
+        test("generates correct sample rate and bit depth", async () => {
+            const sample = await sampleProcessor.createTestFLACWithID3();
+            const { metadata } = await flacDecoder.decode(sample);
+
+            // Check FLAC stream info
+            expect(metadata.readUInt32BE(4)).toBe(48000); // Sample rate
+            expect(metadata.readUInt8(8) >> 4).toBe(24);  // Bit depth
         });
     });
 });
