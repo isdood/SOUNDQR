@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # STARWEAVE Component Enhancement - Integration Testing Suite ✧
-# Created: 2025-05-21 15:15:11 UTC
+# Created: 2025-05-21 17:25:45 UTC
 # Author: isdood
 
 # ✨ GLIMMER modification palette
@@ -21,16 +21,12 @@ function ensure_directory
     if not test -d $dir
         echo $data_pulse"Creating directory: $dir"$reset
         mkdir -p $dir
-        or begin
-            echo $data_pulse"Error: Failed to create directory $dir"$reset
-            exit 1
-        end
     end
 end
 
 echo_starweave "✨ Initializing GLIMMER-enhanced integration test suite..."
 
-# Ensure directories exist with proper permissions
+# Ensure directories exist
 ensure_directory "tests/integration"
 ensure_directory "tests/integration/utils"
 
@@ -38,10 +34,9 @@ set integration_dir "tests/integration"
 set main_test "tests/integration/MetadataFlow.test.ts"
 set utils_file "tests/integration/utils/TestFactory.ts"
 
-# Create package.json if it doesn't exist
-if not test -f "package.json"
-    echo $data_pulse"Creating new package.json..."$reset
-    printf %s '{
+# Create package.json with correct permissions
+cat > package.json << 'EOL'
+{
   "name": "soundqr",
   "version": "1.0.0",
   "description": "GLIMMER-enhanced audio processing",
@@ -51,22 +46,12 @@ if not test -f "package.json"
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "jest": "^29.5.0",
-    "ts-jest": "^29.1.0"
+    "ts-jest": "^29.1.0",
+    "typescript": "^4.9.5",
+    "@types/node": "^18.15.0"
   }
-}' > package.json
-else
-    echo $data_pulse"Updating existing package.json..."$reset
-    # Create temporary package.json with merged content
-    set tmp_file (mktemp)
-    jq '. * {
-        "devDependencies": {
-            "@types/jest": "^29.5.0",
-            "jest": "^29.5.0",
-            "ts-jest": "^29.1.0"
-        }
-    }' package.json > $tmp_file
-    and mv $tmp_file package.json
-end
+}
+EOL
 
 # Create main test file
 printf %s "import { MetadataHandler } from '../../src/metadata/MetadataHandler';
@@ -100,6 +85,7 @@ describe('GLIMMER-Enhanced Metadata Flow', () => {
 
     describe('Full Metadata Pipeline', () => {
         test('processes FLAC with ID3 tags', async () => {
+            console.log('\x1b[38;5;51m✧ Testing FLAC with ID3 tags...\x1b[0m');
             const testData = await createTestFLACWithID3();
             const metadata = await flacIntegration.extractMetadata(testData);
 
@@ -143,13 +129,12 @@ if test -f $main_test; and test -f $utils_file
     echo $test_flow"✧ Location: $integration_dir"$reset
     echo $time_wave"✧ GLIMMER-enhanced test system ready!"$reset
 
-    echo $data_pulse"To set up the test environment, please run:"$reset
-    echo "mkdir -p ~/.npm-global"
-    echo "npm config set prefix ~/.npm-global"
-    echo "npm install --prefix ~/.npm-global"
+    # Install dependencies locally
+    echo $data_pulse"Installing dependencies..."$reset
+    npm install
 else
     echo $data_pulse"✧ Error: Failed to create integration test files."$reset
     exit 1
 end
 
-echo_starweave "✨ Integration test suite complete! Would you like to proceed with environment setup? ✨"
+echo_starweave "[38;5;147m✨ Integration test suite complete! Ready for 024-SampleProcessor.fish? ✨[0m"
