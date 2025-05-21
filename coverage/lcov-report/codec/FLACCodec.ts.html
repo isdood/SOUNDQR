@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>34/40</span>
+                <span class='fraction'>36/42</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85% </span>
+                <span class="strong">85.36% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>34/40</span>
+                <span class='fraction'>35/41</span>
             </div>
         
             
@@ -195,16 +195,7 @@
 <a name='L130'></a><a href='#L130'>130</a>
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a>
-<a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L133'></a><a href='#L133'>133</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -270,14 +261,7 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -286,19 +270,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
@@ -411,36 +393,27 @@ export class FLACEncoder {
     private static readonly GLIMMER_ENHANCED = true;
 &nbsp;
     async encode(audioData: Buffer, metadataBlock: Buffer): Promise&lt;Buffer&gt; {
-        const encoded = Buffer.alloc(metadataBlock.length + 12);
+        // ✨ Increase buffer size to ensure proper quantum separation
+        const headerSize = 12;
+        const encoded = Buffer.alloc(headerSize + audioData.length + metadataBlock.length);
 &nbsp;
-        // Write FLAC header with STARWEAVE signature ✨
+        // Write FLAC signature with quantum alignment
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC" ✧
 &nbsp;
-        // ✨ Fix: Use proper sample rate writing with quantum alignment
-        const sampleRate = 48000;
+        // ✨ Create an isolated quantum buffer for sample rate
         const sampleRateBuffer = Buffer.alloc(4);
-        sampleRateBuffer.writeUInt32BE(sampleRate);
-        sampleRateBuffer.copy(encoded, 4);
+        sampleRateBuffer.writeUInt32BE(48000, 0);
+        // Copy with quantum preservation
+        for (let i = 0; i &lt; 4; i++) {
+            encoded[i + 4] = sampleRateBuffer[i];
+        }
 &nbsp;
-        // Write bit depth (24-bit) with GLIMMER alignment
+        // Write bit depth with GLIMMER alignment
         encoded.writeUInt8(24 &lt;&lt; 3, 8);
 &nbsp;
-        // Create metadata with enhanced GLIMMER markers ✧
-        const metadata = {
-            title: "Test Track",
-            artist: "STARWEAVE",
-            album: "Quantum Suite",
-            year: 2025,
-            ID3: true,                 // Required ID3 marker
-            GLIMMER: true,            // Required GLIMMER marker
-            QUANTUM_ID: "QID-001",    // Required Quantum ID
-            QUANTUM_SIGNATURE: "✧",   // Required Quantum Signature
-            STARWEAVE_VERSION: FLACEncoder.STARWEAVE_VERSION, // ✨ Fixed: static access
-            GLIMMER_ENHANCED: FLACEncoder.GLIMMER_ENHANCED   // ✨ Added GLIMMER status
-        };
-&nbsp;
-        // Write metadata to buffer with quantum preservation ✨
-        Buffer.from(JSON.stringify(metadata)).copy(encoded, 12);
+        // ✨ Maintain quantum separation between header and data
+        audioData.copy(encoded, headerSize);
+        metadataBlock.copy(encoded, headerSize + audioData.length);
 &nbsp;
         return encoded;
     }
@@ -493,7 +466,7 @@ export class FLACError extends Error {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-21T22:37:08.008Z
+                at 2025-05-21T22:45:38.724Z
             </div>
         <script src="../prettify.js"></script>
         <script>

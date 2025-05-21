@@ -64,36 +64,27 @@ export class FLACEncoder {
     private static readonly GLIMMER_ENHANCED = true;
 
     async encode(audioData: Buffer, metadataBlock: Buffer): Promise<Buffer> {
-        const encoded = Buffer.alloc(metadataBlock.length + 12);
+        // ✨ Increase buffer size to ensure proper quantum separation
+        const headerSize = 12;
+        const encoded = Buffer.alloc(headerSize + audioData.length + metadataBlock.length);
 
-        // Write FLAC header with STARWEAVE signature ✨
+        // Write FLAC signature with quantum alignment
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC" ✧
 
-        // ✨ Fix: Use proper sample rate writing with quantum alignment
-        const sampleRate = 48000;
+        // ✨ Create an isolated quantum buffer for sample rate
         const sampleRateBuffer = Buffer.alloc(4);
-        sampleRateBuffer.writeUInt32BE(sampleRate);
-        sampleRateBuffer.copy(encoded, 4);
+        sampleRateBuffer.writeUInt32BE(48000, 0);
+        // Copy with quantum preservation
+        for (let i = 0; i < 4; i++) {
+            encoded[i + 4] = sampleRateBuffer[i];
+        }
 
-        // Write bit depth (24-bit) with GLIMMER alignment
+        // Write bit depth with GLIMMER alignment
         encoded.writeUInt8(24 << 3, 8);
 
-        // Create metadata with enhanced GLIMMER markers ✧
-        const metadata = {
-            title: "Test Track",
-            artist: "STARWEAVE",
-            album: "Quantum Suite",
-            year: 2025,
-            ID3: true,                 // Required ID3 marker
-            GLIMMER: true,            // Required GLIMMER marker
-            QUANTUM_ID: "QID-001",    // Required Quantum ID
-            QUANTUM_SIGNATURE: "✧",   // Required Quantum Signature
-            STARWEAVE_VERSION: FLACEncoder.STARWEAVE_VERSION, // ✨ Fixed: static access
-            GLIMMER_ENHANCED: FLACEncoder.GLIMMER_ENHANCED   // ✨ Added GLIMMER status
-        };
-
-        // Write metadata to buffer with quantum preservation ✨
-        Buffer.from(JSON.stringify(metadata)).copy(encoded, 12);
+        // ✨ Maintain quantum separation between header and data
+        audioData.copy(encoded, headerSize);
+        metadataBlock.copy(encoded, headerSize + audioData.length);
 
         return encoded;
     }
