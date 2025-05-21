@@ -179,7 +179,8 @@ describe("GLIMMER-Enhanced Sample Processor", () => {
 # Update package.json without the problematic dependency
 if test -f "package.json"
     set tmp_file (mktemp)
-    jq '.devDependencies["@types/node"] = "^18.15.0"' package.json > $tmp_file
+    # Explicitly remove node-waves and ensure only needed dependencies
+    jq 'del(.devDependencies["@types/node-waves"])' package.json > $tmp_file
     and mv $tmp_file package.json
 end
 
