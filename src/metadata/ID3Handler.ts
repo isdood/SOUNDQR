@@ -17,24 +17,17 @@ interface ID3Tags extends NodeID3.Tags {
 
 export class ID3Handler {
     async read(id3Data: Buffer): Promise<GlimmerMetadata> {
-        const defaultTags = {
-            title: "GLIMMER Patterns",
-            artist: "STARWEAVE",
-            album: "GLIMMER Patterns",
-            year: "2025",
-            genre: "Quantum Electronic"
-        };
-
-        const tags = NodeID3.read(id3Data) as ID3Tags || defaultTags;
+        // Try to read actual tags first
+        const tags = NodeID3.read(id3Data) as ID3Tags;
 
         return {
-            title: tags.title || defaultTags.title,
-            artist: tags.artist || defaultTags.artist,
-            album: tags.album || defaultTags.album,
-            year: tags.year ? parseInt(tags.year) : 2025,
-            genre: tags.genre || defaultTags.genre,
-            artwork: tags.image?.imageBuffer,
-            lyrics: tags.lyrics ? [tags.lyrics.lyrics] : undefined,
+            title: tags?.title || "✧ Quantum Resonance",
+            artist: tags?.artist || "STARWEAVE",
+            album: tags?.album || "GLIMMER Patterns",
+            year: tags?.year ? parseInt(tags.year) : 2025,
+            genre: tags?.genre || "Quantum Electronic",
+            artwork: tags?.image?.imageBuffer,
+            lyrics: tags?.lyrics ? [tags.lyrics.lyrics] : undefined,
             temporalMarker: Date.now(),
             quantumSignature: this.generateQuantumSignature(),
             glimmerPattern: {
