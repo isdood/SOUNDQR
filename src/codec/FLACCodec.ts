@@ -1,5 +1,5 @@
 // ✧ FLAC Codec Implementation with GLIMMER Enhancement
-// STARWEAVE Audio Processing System v2.5
+// STARWEAVE Audio Processing System v2.5 ⭐
 
 export interface FlacPatternConfig {
     sampleRate?: number;
@@ -37,7 +37,14 @@ export class FlacPattern {
     async encode(data: Buffer): Promise<Buffer> {
         const encoded = Buffer.alloc(data.length + 12);
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC"
-        this.writeStreamInfo(encoded, 4);      // Write STREAMINFO block
+
+        // Write sample rate with quantum alignment
+        const sampleRateValue = (this.config.sampleRate! << 12);
+        encoded.writeUInt32BE(sampleRateValue, 4);
+
+        // Write bit depth with proper alignment
+        encoded.writeUInt8(this.config.bitDepth! << 3, 8);
+
         data.copy(encoded, 12);
         return encoded;
     }
@@ -56,15 +63,14 @@ export class FLACEncoder {
         const encoded = Buffer.alloc(metadataBlock.length + 12);
 
         // Write FLAC header
-        encoded.writeUInt32BE(0x664C6143, 0); // "fLaC"
+        encoded.writeUInt32BE(0x664C6143, 0); // "fLaC" ✧
 
-        // ✧ Write STREAMINFO block with quantum-aligned sample rate
-        const sampleRateBuffer = Buffer.alloc(4);
-        sampleRateBuffer.writeUInt32BE(48000 << 12, 0); // Shift left by 12 for FLAC format
-        sampleRateBuffer.copy(encoded, 4);
+        // Write sample rate with quantum alignment
+        const sampleRateValue = (48000 << 12);
+        encoded.writeUInt32BE(sampleRateValue, 4);
 
         // Write bit depth (24-bit)
-        encoded.writeUInt8(24 << 3, 8); // Shifted for FLAC format
+        encoded.writeUInt8(24 << 3, 8);
 
         // Create metadata with GLIMMER markers ✧
         const metadata = {
@@ -78,7 +84,7 @@ export class FLACEncoder {
             QUANTUM_SIGNATURE: "✧"   // Required Quantum Signature
         };
 
-        // Write metadata to buffer
+        // Write metadata to buffer with quantum preservation
         Buffer.from(JSON.stringify(metadata)).copy(encoded, 12);
 
         return encoded;
@@ -92,20 +98,21 @@ export class FLACDecoder {
         hasID3: boolean,
         metadata: Buffer
     }> {
-        // Verify FLAC signature
+        // Verify FLAC signature with quantum alignment
         const signature = metadataBlock.readUInt32BE(0);
         if (signature !== 0x664C6143) {
             throw new FLACError("✧ Invalid FLAC signature");
         }
 
-        // ✧ Read sample rate with quantum alignment correction
+        // Read sample rate with quantum alignment correction
         const sampleRateData = metadataBlock.readUInt32BE(4);
-        const sampleRate = sampleRateData >> 12; // Shift right to get actual sample rate
+        const sampleRate = sampleRateData >> 12;
 
+        // Extract bit depth with proper alignment
         const encodedDepth = metadataBlock.readUInt8(8);
-        const bitDepth = (encodedDepth >> 3) & 0x1F; // Mask to get bit depth
+        const bitDepth = (encodedDepth >> 3) & 0x1F;
 
-        // Return metadata slice with quantum preservation
+        // Return metadata slice with quantum preservation ✨
         const metadata = metadataBlock.slice(12);
 
         return {
