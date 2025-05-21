@@ -37,8 +37,7 @@ export class FlacPattern {
     async encode(data: Buffer): Promise<Buffer> {
         const encoded = Buffer.alloc(data.length + 12);
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC"
-        encoded.writeUInt32BE(48000, 4);      // Sample rate
-        encoded.writeUInt8((24 / 8) << 4, 8); // 24-bit depth
+        this.writeStreamInfo(encoded, 4);      // Write STREAMINFO block
         data.copy(encoded, 12);
         return encoded;
     }
@@ -56,12 +55,18 @@ export class FLACEncoder {
     async encode(audioData: Buffer, metadataBlock: Buffer): Promise<Buffer> {
         const encoded = Buffer.alloc(metadataBlock.length + 12);
 
-        // Write FLAC header with correct sample rate
+        // Write FLAC header
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC"
-        encoded.writeUInt32BE(48000, 4);      // Sample rate (fixed at 48kHz)
-        encoded.writeUInt8((24 / 8) << 4, 8); // 24-bit depth
 
-        // Create metadata with required markers
+        // ✧ Write STREAMINFO block with quantum-aligned sample rate
+        const sampleRateBuffer = Buffer.alloc(4);
+        sampleRateBuffer.writeUInt32BE(48000 << 12, 0); // Shift left by 12 for FLAC format
+        sampleRateBuffer.copy(encoded, 4);
+
+        // Write bit depth (24-bit)
+        encoded.writeUInt8(24 << 3, 8); // Shifted for FLAC format
+
+        // Create metadata with GLIMMER markers ✧
         const metadata = {
             title: "Test Track",
             artist: "STARWEAVE",
@@ -93,9 +98,12 @@ export class FLACDecoder {
             throw new FLACError("✧ Invalid FLAC signature");
         }
 
-        const sampleRate = metadataBlock.readUInt32BE(4);
+        // ✧ Read sample rate with quantum alignment correction
+        const sampleRateData = metadataBlock.readUInt32BE(4);
+        const sampleRate = sampleRateData >> 12; // Shift right to get actual sample rate
+
         const encodedDepth = metadataBlock.readUInt8(8);
-        const bitDepth = (encodedDepth >> 4) * 8;
+        const bitDepth = (encodedDepth >> 3) & 0x1F; // Mask to get bit depth
 
         // Return metadata slice with quantum preservation
         const metadata = metadataBlock.slice(12);
@@ -111,7 +119,7 @@ export class FLACDecoder {
 
 export class FLACError extends Error {
     constructor(message: string) {
-        super(`✧ FLAC Error: ${message}`);
+        super(`✧ GLIMMER Error: ${message}`);
         this.name = "FLACError";
     }
 }
