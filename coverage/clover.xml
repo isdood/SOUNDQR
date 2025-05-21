@@ -1,56 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747867538729" clover="3.2.0">
-  <project timestamp="1747867538729" name="All files">
-    <metrics statements="102" coveredstatements="92" conditionals="48" coveredconditionals="33" methods="29" coveredmethods="22" elements="179" coveredelements="147" complexity="0" loc="102" ncloc="102" packages="3" files="6" classes="6"/>
+<coverage generated="1747868971689" clover="3.2.0">
+  <project timestamp="1747868971689" name="All files">
+    <metrics statements="78" coveredstatements="61" conditionals="31" coveredconditionals="22" methods="23" coveredmethods="16" elements="132" coveredelements="99" complexity="0" loc="78" ncloc="78" packages="3" files="5" classes="5"/>
     <package name="codec">
-      <metrics statements="41" coveredstatements="35" conditionals="18" coveredconditionals="11" methods="10" coveredmethods="6"/>
+      <metrics statements="20" coveredstatements="7" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="1"/>
       <file name="FLACCodec.ts" path="/home/shimmer/SOUNDQR/src/codec/FLACCodec.ts">
-        <metrics statements="41" coveredstatements="35" conditionals="18" coveredconditionals="11" methods="10" coveredmethods="6"/>
-        <line num="15" count="4" type="stmt"/>
-        <line num="17" count="3" type="stmt"/>
-        <line num="18" count="4" type="stmt"/>
-        <line num="21" count="3" type="stmt"/>
-        <line num="35" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="43" count="1" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="48" count="1" type="stmt"/>
-        <line num="49" count="1" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="57" count="0" type="stmt"/>
-        <line num="58" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="62" count="4" type="stmt"/>
-        <line num="63" count="4" type="stmt"/>
-        <line num="64" count="4" type="stmt"/>
-        <line num="68" count="5" type="stmt"/>
-        <line num="69" count="5" type="stmt"/>
-        <line num="72" count="5" type="stmt"/>
-        <line num="75" count="5" type="stmt"/>
-        <line num="76" count="5" type="stmt"/>
-        <line num="78" count="5" type="stmt"/>
-        <line num="79" count="20" type="stmt"/>
-        <line num="83" count="5" type="stmt"/>
-        <line num="86" count="5" type="stmt"/>
-        <line num="87" count="5" type="stmt"/>
-        <line num="89" count="5" type="stmt"/>
-        <line num="93" count="4" type="stmt"/>
-        <line num="102" count="4" type="stmt"/>
-        <line num="103" count="4" type="cond" truecount="0" falsecount="1"/>
-        <line num="104" count="0" type="stmt"/>
-        <line num="108" count="4" type="stmt"/>
-        <line num="111" count="4" type="stmt"/>
-        <line num="112" count="4" type="stmt"/>
-        <line num="115" count="4" type="stmt"/>
-        <line num="117" count="4" type="stmt"/>
-        <line num="127" count="4" type="stmt"/>
-        <line num="129" count="0" type="stmt"/>
-        <line num="130" count="0" type="stmt"/>
+        <metrics statements="20" coveredstatements="7" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="1"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="15" count="5" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="39" count="3" type="stmt"/>
+        <line num="40" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
       </file>
     </package>
     <package name="metadata">
-      <metrics statements="33" coveredstatements="29" conditionals="30" coveredconditionals="22" methods="13" coveredmethods="10"/>
+      <metrics statements="30" coveredstatements="26" conditionals="30" coveredconditionals="22" methods="11" coveredmethods="9"/>
       <file name="ID3Handler.ts" path="/home/shimmer/SOUNDQR/src/metadata/ID3Handler.ts">
         <metrics statements="8" coveredstatements="8" conditionals="22" coveredconditionals="16" methods="2" coveredmethods="2"/>
         <line num="2" count="2" type="stmt"/>
@@ -89,12 +68,6 @@
         <line num="35" count="3" type="stmt"/>
         <line num="36" count="3" type="stmt"/>
         <line num="37" count="3" type="stmt"/>
-      </file>
-      <file name="types.ts" path="/home/shimmer/SOUNDQR/src/metadata/types.ts">
-        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
-        <line num="33" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
       </file>
     </package>
     <package name="processor">
