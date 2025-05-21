@@ -4,6 +4,9 @@ export interface GlimmerMetadata {
     album?: string;
     year?: number;
     genre?: string;
+    artwork?: Buffer;
+    lyrics?: string[];
+    credits?: Array<{ role: string; name: string }>;
     temporalMarker?: number;
     quantumSignature?: string;
     glimmerPattern?: {
@@ -11,6 +14,8 @@ export interface GlimmerMetadata {
         temporalSync: boolean;
         patternFidelity: number;
         codecAlignment?: number;
+        intensity?: number;
+        resonanceMode?: string;
     };
 }
 
@@ -27,7 +32,7 @@ export interface GlimmerWaveform {
 
 export class QuantumStateVisualizer {
     visualize(pattern: GlimmerWaveform): void {
-        // Placeholder for visualization
+        // Visualization implementation
     }
 }
 

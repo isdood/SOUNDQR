@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747851827149" clover="3.2.0">
-  <project timestamp="1747851827150" name="All files">
-    <metrics statements="38" coveredstatements="35" conditionals="1" coveredconditionals="0" methods="12" coveredmethods="8" elements="51" coveredelements="43" complexity="0" loc="38" ncloc="38" packages="2" files="2" classes="2"/>
+<coverage generated="1747852019694" clover="3.2.0">
+  <project timestamp="1747852019694" name="All files">
+    <metrics statements="47" coveredstatements="44" conditionals="1" coveredconditionals="0" methods="14" coveredmethods="12" elements="62" coveredelements="56" complexity="0" loc="47" ncloc="47" packages="3" files="3" classes="3"/>
     <package name="codec">
-      <metrics statements="8" coveredstatements="5" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="2"/>
+      <metrics statements="14" coveredstatements="11" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="5"/>
       <file name="FLACCodec.ts" path="/home/shimmer/SOUNDQR/src/codec/FLACCodec.ts">
-        <metrics statements="8" coveredstatements="5" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="2"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="11" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="28" count="3" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="38" count="3" type="stmt"/>
+        <metrics statements="14" coveredstatements="11" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="5"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="3" type="cond" truecount="0" falsecount="1"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="26" count="2" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="44" count="3" type="stmt"/>
+        <line num="45" count="3" type="stmt"/>
+        <line num="46" count="3" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="metadata">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <file name="types.ts" path="/home/shimmer/SOUNDQR/src/metadata/types.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
       </file>
     </package>
     <package name="processor">

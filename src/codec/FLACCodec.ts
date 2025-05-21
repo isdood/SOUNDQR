@@ -1,3 +1,5 @@
+import { GlimmerWaveform } from "../metadata/types";
+
 export interface FlacPatternConfig {
     resonance: number;
     temporalSync: boolean;
@@ -10,9 +12,7 @@ export interface FlacPatternConfig {
 export class FlacPattern {
     constructor(private config: Partial<FlacPatternConfig> = {}) {}
 
-    async initialize(): Promise<void> {
-        // Initialization logic
-    }
+    async initialize(): Promise<void> {}
 
     async encode(data: Buffer): Promise<Buffer> {
         return data;
@@ -25,16 +25,26 @@ export class FlacPattern {
 
 export class FLACDecoder {
     async decode(buffer: Buffer): Promise<{ data: Buffer; metadata: Buffer; audioData?: Buffer }> {
+        const metadataLength = 128;
         return {
-            data: buffer.slice(128),
-            metadata: buffer.slice(0, 128),
-            audioData: buffer.slice(128)
+            data: buffer.slice(metadataLength),
+            metadata: buffer.slice(0, metadataLength),
+            audioData: buffer.slice(metadataLength)
         };
     }
 }
 
 export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
-        return Buffer.concat([metadata, data]);
+        // Ensure metadata block is exactly 128 bytes
+        const metadataBlock = Buffer.alloc(128);
+        metadata.copy(metadataBlock, 0, 0, Math.min(metadata.length, 128));
+
+        // Add FLAC stream markers
+        metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
+        metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
+        metadataBlock.writeUInt8(24 << 4, 8);       // Bit depth
+
+        return Buffer.concat([metadataBlock, data]);
     }
 }
