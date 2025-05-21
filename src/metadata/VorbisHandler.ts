@@ -2,7 +2,11 @@ import { GlimmerMetadata } from "./types";
 import { randomBytes } from "crypto";
 
 export class VorbisHandler {
-    async extractMetadata(vorbisData: Buffer): Promise<GlimmerMetadata> {
+    async read(vorbisData: Buffer): Promise<GlimmerMetadata> {
+        return this.extractMetadata(vorbisData);
+    }
+
+    private async extractMetadata(vorbisData: Buffer): Promise<GlimmerMetadata> {
         const common = await this.parseVorbisComments(vorbisData);
 
         return {

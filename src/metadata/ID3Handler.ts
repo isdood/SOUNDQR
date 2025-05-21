@@ -15,7 +15,11 @@ interface ID3Tags extends NodeID3.Tags {
 }
 
 export class ID3Handler {
-    async extractMetadata(id3Data: Buffer): Promise<GlimmerMetadata> {
+    async read(id3Data: Buffer): Promise<GlimmerMetadata> {
+        return this.extractMetadata(id3Data);
+    }
+
+    private async extractMetadata(id3Data: Buffer): Promise<GlimmerMetadata> {
         const tags = NodeID3.read(id3Data) as ID3Tags;
 
         return {
