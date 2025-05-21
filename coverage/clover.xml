@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747850904829" clover="3.2.0">
-  <project timestamp="1747850904829" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
+<coverage generated="1747851048903" clover="3.2.0">
+  <project timestamp="1747851048903" name="All files">
+    <metrics statements="38" coveredstatements="22" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="4" elements="47" coveredelements="26" complexity="0" loc="38" ncloc="38" packages="2" files="2" classes="2"/>
+    <package name="codec">
+      <metrics statements="4" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+      <file name="FLACCodec.ts" path="/home/shimmer/SOUNDQR/src/codec/FLACCodec.ts">
+        <metrics statements="4" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="processor">
+      <metrics statements="34" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="4"/>
+      <file name="SampleProcessor.ts" path="/home/shimmer/SOUNDQR/src/processor/SampleProcessor.ts">
+        <metrics statements="34" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="4"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="35" count="3" type="stmt"/>
+        <line num="36" count="3" type="stmt"/>
+        <line num="38" count="3" type="stmt"/>
+        <line num="39" count="27" type="stmt"/>
+        <line num="42" count="27" type="stmt"/>
+        <line num="43" count="27" type="stmt"/>
+        <line num="46" count="27" type="stmt"/>
+        <line num="47" count="27" type="stmt"/>
+        <line num="50" count="27" type="stmt"/>
+        <line num="53" count="27" type="stmt"/>
+        <line num="54" count="27" type="stmt"/>
+        <line num="55" count="24" type="stmt"/>
+        <line num="56" count="24" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>

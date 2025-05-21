@@ -1,25 +1,24 @@
-// ✧ STARWEAVE Metadata Types with GLIMMER Enhancement
 export interface GlimmerMetadata {
-    // Basic audio metadata
     title: string;
     artist: string;
     album?: string;
     year?: number;
-    genre?: string;
-
-    // GLIMMER-specific fields
+    temporalMarker?: number;
+    quantumSignature?: string;
     glimmerPattern?: {
         resonance: number;
         temporalSync: boolean;
         patternFidelity: number;
     };
+}
 
-    // Extended metadata
-    artwork?: Buffer;
-    lyrics?: string;
-    credits?: Array<{role: string, name: string}>;
-
-    // Quantum metadata markers
-    quantumSignature?: string;
-    temporalMarker?: number;
+export interface GlimmerWaveform {
+    frequency: number;
+    amplitude: number;
+    phase: number;
+    harmonics: Array<{
+        frequency: number;
+        amplitude: number;
+        phase: number;
+    }>;
 }
