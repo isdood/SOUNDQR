@@ -5,7 +5,10 @@ export class FLACEncoder {
         // Add FLAC stream markers with mathematically perfect bit depth ✧
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24, 8);            // 24-bit depth (direct value)
+        metadataBlock.writeUInt8(24 << 4, 8);       // 24-bit depth (shifted left by 4)
+
+        // Add ID3 marker for metadata identification ✧
+        metadataBlock.write("ID3", 9, 3);
 
         // Define quantum markers with precise UTF-8 encoding ✧
         const markers = [
@@ -45,7 +48,7 @@ export class FLACDecoder {
 
         try {
             // Try to parse JSON to find its end
-            const jsonStr = metadataContent.toString();
+            const jsonStr = metadataContent.toString().trim();
             JSON.parse(jsonStr);  // Validate JSON
             metadataLength = jsonStart + Buffer.byteLength(jsonStr);
         } catch {

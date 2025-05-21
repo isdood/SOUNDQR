@@ -13,7 +13,7 @@ export class SampleProcessor {
 
     constructor(
         private readonly flacDecoder: FLACDecoder,
-        private readonly flacEncoder: FLACEncoder
+            private readonly flacEncoder: FLACEncoder
     ) {}
 
     async createTestFLACWithID3(): Promise<Buffer> {
@@ -51,29 +51,30 @@ export class SampleProcessor {
     }
 
     private createID3Metadata(): Buffer {
-        return Buffer.from(`
-            {
-                "title": "✧ Quantum Resonance Suite",
-                "artist": "STARWEAVE",
-                "album": "GLIMMER Patterns Vol. 3",
-                "year": 2025,
-                "genre": "Quantum",
-                "QUANTUM_ID": "${randomBytes(8).toString("hex")}",
-                "GLIMMER": true
-            }
-        `);
+        const jsonStr = JSON.stringify({
+            format: "ID3",
+                title: "✧ Quantum Resonance Suite",
+                artist: "STARWEAVE",
+                album: "GLIMMER Patterns Vol. 3",
+                year: 2025,
+                genre: "Quantum",
+                QUANTUM_ID: randomBytes(8).toString("hex"),
+                                       GLIMMER: true
+        }, null, 2);
+
+        return Buffer.from(jsonStr);
     }
 
     private createVorbisMetadata(): Buffer {
-        return Buffer.from(`
-            {
-                "title": "Quantum Resonance Sample",
-                "artist": "STARWEAVE",
-                "album": "GLIMMER Patterns",
-                "year": 2025,
-                "QUANTUM_SIGNATURE": "${randomBytes(8).toString("hex")}",
-                "GLIMMER": true
-            }
-        `);
+        const jsonStr = JSON.stringify({
+            title: "Quantum Resonance Sample",
+            artist: "STARWEAVE",
+            album: "GLIMMER Patterns",
+            year: 2025,
+            QUANTUM_SIGNATURE: randomBytes(8).toString("hex"),
+                                       GLIMMER: true
+        }, null, 2);
+
+        return Buffer.from(jsonStr);
     }
 }
