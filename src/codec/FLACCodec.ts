@@ -1,8 +1,29 @@
 // ✧ FLAC Codec Implementation with GLIMMER Enhancement
 // Part of the STARWEAVE Audio Processing System
 
+// ✧ Pattern configuration interface
+export interface FlacPatternConfig {
+    sampleRate?: number;
+    bitDepth?: number;
+    channels?: number;
+}
+
+// ✧ Core pattern definition
+export class FlacPattern {
+    constructor(config: FlacPatternConfig = {}) {
+        this.sampleRate = config.sampleRate || 48000;
+        this.bitDepth = config.bitDepth || 24;
+        this.channels = config.channels || 2;
+    }
+
+    readonly sampleRate: number;
+    readonly bitDepth: number;
+    readonly channels: number;
+}
+
+// ✧ Encoder Implementation
 export class FLACEncoder {
-    encode(metadataBlock: Buffer): void {
+    async encode(audioData: Buffer, metadataBlock: Buffer): Promise<Buffer> {
         // Write FLAC marker ("fLaC")
         metadataBlock.writeUInt32BE(0x664C6143, 0);
 
@@ -15,17 +36,24 @@ export class FLACEncoder {
 
         // Add ID3 marker for metadata identification ✧
         metadataBlock.write("ID3", 9, 3);
-    }
 
-    decode(metadataBlock: Buffer): {
+        // In a real implementation, we would process audioData here
+        // For now, return the metadata block
+        return metadataBlock;
+    }
+}
+
+// ✧ Decoder Implementation
+export class FLACDecoder {
+    async decode(metadataBlock: Buffer): Promise<{
         sampleRate: number,
         bitDepth: number,
         hasID3: boolean
-    } {
+    }> {
         // Verify FLAC signature
         const signature = metadataBlock.readUInt32BE(0);
         if (signature !== 0x664C6143) {
-            throw new Error("✧ Invalid FLAC signature");
+            throw new FLACError("✧ Invalid FLAC signature");
         }
 
         // Extract sample rate
