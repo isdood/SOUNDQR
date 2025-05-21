@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747851217584" clover="3.2.0">
-  <project timestamp="1747851217584" name="All files">
-    <metrics statements="34" coveredstatements="34" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8" elements="42" coveredelements="42" complexity="0" loc="34" ncloc="34" packages="2" files="2" classes="2"/>
+<coverage generated="1747851827149" clover="3.2.0">
+  <project timestamp="1747851827150" name="All files">
+    <metrics statements="38" coveredstatements="35" conditionals="1" coveredconditionals="0" methods="12" coveredmethods="8" elements="51" coveredelements="43" complexity="0" loc="38" ncloc="38" packages="2" files="2" classes="2"/>
     <package name="codec">
-      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <metrics statements="8" coveredstatements="5" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="2"/>
       <file name="FLACCodec.ts" path="/home/shimmer/SOUNDQR/src/codec/FLACCodec.ts">
-        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="14" count="3" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="24" count="3" type="stmt"/>
+        <metrics statements="8" coveredstatements="5" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="2"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="28" count="3" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="38" count="3" type="stmt"/>
       </file>
     </package>
     <package name="processor">
