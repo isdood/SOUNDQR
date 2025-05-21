@@ -1,82 +1,105 @@
 // ✧ FLAC Codec Implementation with GLIMMER Enhancement
 // Part of the STARWEAVE Audio Processing System
 
-// ✧ Pattern configuration interface
 export interface FlacPatternConfig {
+    // Standard audio configuration
     sampleRate?: number;
     bitDepth?: number;
     channels?: number;
+
+    // ✧ GLIMMER resonance parameters
+    resonance?: number;
+    temporalSync?: boolean;
+    patternFidelity?: number;
+    intensity?: number;
+    resonanceMode?: string;
 }
 
-// ✧ Core pattern definition
 export class FlacPattern {
+    private readonly config: FlacPatternConfig;
+    private isInitialized: boolean = false;
+
     constructor(config: FlacPatternConfig = {}) {
-        this.sampleRate = config.sampleRate || 48000;
-        this.bitDepth = config.bitDepth || 24;
-        this.channels = config.channels || 2;
+        this.config = {
+            sampleRate: config.sampleRate || 48000,
+            bitDepth: config.bitDepth || 24,
+            channels: config.channels || 2,
+            resonance: config.resonance || 0.5,
+            temporalSync: config.temporalSync ?? true,
+            patternFidelity: config.patternFidelity || 1.0,
+            intensity: config.intensity || 1.0,
+            resonanceMode: config.resonanceMode || 'standard'
+        };
     }
 
-    readonly sampleRate: number;
-    readonly bitDepth: number;
-    readonly channels: number;
+    async initialize(): Promise<void> {
+        // ✧ Initialize GLIMMER pattern matrix
+        this.isInitialized = true;
+    }
+
+    async encode(data: Buffer): Promise<Buffer> {
+        if (!this.isInitialized) {
+            throw new FLACError("Pattern must be initialized before encoding");
+        }
+        // Implement encoding logic here
+        return data;
+    }
+
+    async decode(data: Buffer): Promise<Buffer> {
+        if (!this.isInitialized) {
+            throw new FLACError("Pattern must be initialized before decoding");
+        }
+        // Implement decoding logic here
+        return data;
+    }
+
+    get sampleRate(): number { return this.config.sampleRate!; }
+    get bitDepth(): number { return this.config.bitDepth!; }
+    get channels(): number { return this.config.channels!; }
 }
 
-// ✧ Encoder Implementation
 export class FLACEncoder {
     async encode(audioData: Buffer, metadataBlock: Buffer): Promise<Buffer> {
-        // Write FLAC marker ("fLaC")
-        metadataBlock.writeUInt32BE(0x664C6143, 0);
-
-        // Sample rate (48kHz standard)
-        metadataBlock.writeUInt32BE(48000, 4);
-
-        // ✧ Enhanced bit depth encoding
-        // For 24-bit depth, we encode it as (24/8) << 4 to stay within UInt8
-        metadataBlock.writeUInt8((24 / 8) << 4, 8);
-
-        // Add ID3 marker for metadata identification ✧
-        metadataBlock.write("ID3", 9, 3);
-
-        // In a real implementation, we would process audioData here
-        // For now, return the metadata block
+        metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
+        metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
+        metadataBlock.writeUInt8((24 / 8) << 4, 8); // 24-bit depth properly encoded
+        metadataBlock.write("ID3", 9, 3);           // ID3 marker
         return metadataBlock;
     }
 }
 
-// ✧ Decoder Implementation
 export class FLACDecoder {
     async decode(metadataBlock: Buffer): Promise<{
         sampleRate: number,
         bitDepth: number,
-        hasID3: boolean
+        hasID3: boolean,
+        metadata: Buffer  // Added metadata field
     }> {
-        // Verify FLAC signature
         const signature = metadataBlock.readUInt32BE(0);
         if (signature !== 0x664C6143) {
             throw new FLACError("✧ Invalid FLAC signature");
         }
 
-        // Extract sample rate
         const sampleRate = metadataBlock.readUInt32BE(4);
-
-        // ✧ Decode bit depth (reverse the encoding process)
         const encodedDepth = metadataBlock.readUInt8(8);
         const bitDepth = (encodedDepth >> 4) * 8;
 
-        // Check for ID3 marker
         const id3Buffer = Buffer.alloc(3);
         metadataBlock.copy(id3Buffer, 0, 9, 12);
         const hasID3 = id3Buffer.toString() === "ID3";
 
+        // Return metadata buffer along with other properties
+        const metadata = Buffer.from(metadataBlock.slice(12));
+
         return {
             sampleRate,
             bitDepth,
-            hasID3
+            hasID3,
+            metadata
         };
     }
 }
 
-// ✧ Standardized error types for GLIMMER integration
 export class FLACError extends Error {
     constructor(message: string) {
         super(`✧ FLAC Error: ${message}`);
