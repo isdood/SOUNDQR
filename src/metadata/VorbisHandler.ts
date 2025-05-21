@@ -10,14 +10,19 @@ export class VorbisHandler {
         const common = await this.parseVorbisComments(vorbisData);
 
         return {
-            title: common.title || "Unknown",
-            artist: common.artist || "Unknown",
+            title: common.title || "",
+            artist: common.artist || "",
             album: common.album,
             year: common.year ? parseInt(common.year) : undefined,
             genre: common.genre?.[0],
             lyrics: common.lyrics ? [common.lyrics] : undefined,
             temporalMarker: Date.now(),
-            quantumSignature: this.generateQuantumSignature()
+            quantumSignature: this.generateQuantumSignature(),
+            glimmerPattern: {
+                resonance: 0.97,
+                temporalSync: true,
+                patternFidelity: 0.98
+            }
         };
     }
 

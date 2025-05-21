@@ -12,6 +12,7 @@ interface ID3Tags extends NodeID3.Tags {
         description: string;
         imageBuffer: Buffer;
     };
+    lyrics?: { lyrics: string };
 }
 
 export class ID3Handler {
@@ -28,7 +29,7 @@ export class ID3Handler {
             album: tags.album,
             year: tags.year ? parseInt(tags.year) : undefined,
             artwork: tags.image?.imageBuffer,
-            lyrics: tags.lyrics ? [tags.lyrics] : undefined,
+            lyrics: tags.lyrics ? [tags.lyrics.lyrics] : undefined,
             temporalMarker: Date.now(),
             quantumSignature: this.generateQuantumSignature()
         };
