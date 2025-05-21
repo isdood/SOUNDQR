@@ -1,3 +1,4 @@
+import { VorbisHandler } from "./VorbisHandler";
 import { ID3Handler } from "./ID3Handler";
 import { GlimmerMetadata } from './types';
 
@@ -17,7 +18,7 @@ export class MetadataHandler {
 
     async extractVorbis(buffer: Buffer): Promise<GlimmerMetadata> {
         console.log('\x1b[38;5;147m✧ Processing Vorbis comments...\x1b[0m');
-        // Vorbis comment extraction to be implemented
+        return await new VorbisHandler().read(buffer);
         return {} as GlimmerMetadata;
     }
 
