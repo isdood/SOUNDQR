@@ -1,47 +1,29 @@
-import { FLACIntegration } from '../../src/metadata/FLACIntegration';
-import { MetadataHandler } from '../../src/metadata/MetadataHandler';
-import { FLACDecoder, FLACEncoder } from '../../src/codec/FLACCodec';
+import { FLACDecoder, FLACEncoder } from "../../src/codec/FLACCodec";
+import { GlimmerMetadata } from "../../src/metadata/types";
+import { randomBytes } from "crypto";
 
-describe('FLACIntegration with GLIMMER enhancement', () => {
-    let integration: FLACIntegration;
-    let metadataHandler: MetadataHandler;
-    let flacDecoder: FLACDecoder;
-    let flacEncoder: FLACEncoder;
+describe("FLAC Integration", () => {
+    let decoder: FLACDecoder;
+    let encoder: FLACEncoder;
 
     beforeEach(() => {
-        metadataHandler = new MetadataHandler({
-            enhancePatterns: true,
-            temporalSync: true
-        });
-
-        flacDecoder = new FLACDecoder();
-        flacEncoder = new FLACEncoder();
-
-        integration = new FLACIntegration(
-            metadataHandler,
-            flacDecoder,
-            flacEncoder
-        );
+        decoder = new FLACDecoder();
+        encoder = new FLACEncoder();
     });
 
-    test('extracts metadata with GLIMMER enhancement', async () => {
-        const testBuffer = Buffer.from('FLAC test data');
-        const metadata = await integration.extractMetadata(testBuffer);
-
-        expect(metadata.glimmerPattern).toBeDefined();
-        expect(metadata.glimmerPattern?.resonance).toBeCloseTo(0.98);
-        expect(metadata.glimmerPattern?.codecAlignment).toBeCloseTo(0.95);
-    });
-
-    test('updates metadata with quantum signature', async () => {
-        const originalBuffer = Buffer.from('Original FLAC');
-        const newMetadata = {
-            title: '✧ Quantum Resonance Suite',
-            artist: 'STARWEAVE',
-            album: 'GLIMMER Patterns Vol. 3'
+    test("processes metadata correctly", async () => {
+        const testMetadata: GlimmerMetadata = {
+            title: "Test Track",
+            artist: "STARWEAVE",
+            album: "Quantum Suite",
+            year: 2025
         };
 
-        const updatedBuffer = await integration.updateMetadata(originalBuffer, newMetadata);
-        expect(updatedBuffer).toBeDefined();
+        const metadataBuffer = Buffer.from(JSON.stringify(testMetadata));
+        const audioData = randomBytes(1024);
+        const encoded = await encoder.encode(audioData, metadataBuffer);
+        const decoded = await decoder.decode(encoded);
+
+        expect(decoded.metadata.toString()).toContain("Test Track");
     });
 });
