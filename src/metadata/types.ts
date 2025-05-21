@@ -29,15 +29,3 @@ export interface GlimmerWaveform {
         phase: number;
     }>;
 }
-
-export class QuantumStateVisualizer {
-    visualize(pattern: GlimmerWaveform): void {
-        // Visualization implementation
-    }
-}
-
-export class AdaptiveResonanceCorrector {
-    correct(pattern: GlimmerWaveform): GlimmerWaveform {
-        return pattern;
-    }
-}

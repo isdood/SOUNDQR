@@ -37,9 +37,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/6</span>
+                <span class='fraction'>2/6</span>
             </div>
         
             
@@ -110,10 +110,7 @@
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,50 +119,45 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { GlimmerWaveform } from "../metadata/types";
-&nbsp;
-export interface FlacPatternConfig {
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export interface FlacPatternConfig {
     resonance: number;
     temporalSync: boolean;
     patternFidelity: number;
@@ -175,23 +167,23 @@ export interface FlacPatternConfig {
 }
 &nbsp;
 export class FlacPattern {
-    constructor(private config: Partial&lt;FlacPatternConfig&gt; = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {}
+<span class="fstat-no" title="function not covered" >    constructor(private <span class="cstat-no" title="statement not covered" >c</span>onfig: Partial&lt;FlacPatternConfig&gt; = <span class="branch-0 cbranch-no" title="branch not covered" >{</span>})</span> {}
 &nbsp;
-    async initialize(): Promise&lt;void&gt; {}
+<span class="fstat-no" title="function not covered" >    async </span>initialize(): Promise&lt;void&gt; {}
 &nbsp;
-    async encode(data: Buffer): Promise&lt;Buffer&gt; {
-        return data;
+<span class="fstat-no" title="function not covered" >    async </span>encode(data: Buffer): Promise&lt;Buffer&gt; {
+<span class="cstat-no" title="statement not covered" >        return data;</span>
     }
 &nbsp;
-    async decode(data: Buffer): Promise&lt;Buffer&gt; {
-        return data;
+<span class="fstat-no" title="function not covered" >    async </span>decode(data: Buffer): Promise&lt;Buffer&gt; {
+<span class="cstat-no" title="statement not covered" >        return data;</span>
     }
 }
 &nbsp;
 export class FLACDecoder {
-<span class="fstat-no" title="function not covered" >    async </span>decode(buffer: Buffer): Promise&lt;{ data: Buffer; metadata: Buffer; audioData?: Buffer }&gt; {
-        const metadataLength = <span class="cstat-no" title="statement not covered" >128;</span>
-<span class="cstat-no" title="statement not covered" >        return {</span>
+    async decode(buffer: Buffer): Promise&lt;{ data: Buffer; metadata: Buffer; audioData?: Buffer }&gt; {
+        const metadataLength = 128;
+        return {
             data: buffer.slice(metadataLength),
             metadata: buffer.slice(0, metadataLength),
             audioData: buffer.slice(metadataLength)
@@ -201,16 +193,15 @@ export class FLACDecoder {
 &nbsp;
 export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise&lt;Buffer&gt; {
-        // Ensure metadata block is exactly 128 bytes
         const metadataBlock = Buffer.alloc(128);
         metadata.copy(metadataBlock, 0, 0, Math.min(metadata.length, 128));
 &nbsp;
-        // Add FLAC stream markers
+        // Add FLAC stream markers with proper bit masking
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24 &lt;&lt; 4, 8);       // Bit depth
+        metadataBlock.writeUInt8(24 &amp; 0xFF, 8);     // Bit depth (masked to 8 bits)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return Buffer.concat([metadataBlock, data]);</span>
+        return Buffer.concat([metadataBlock, data]);
     }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -220,7 +211,7 @@ export class FLACEncoder {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-21T18:26:59.690Z
+                at 2025-05-21T18:33:22.490Z
             </div>
         <script src="../prettify.js"></script>
         <script>
