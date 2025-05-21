@@ -6,7 +6,9 @@
     "generate": "tsx samples/generate_viz.ts"
   },
   "dependencies": {
-    "canvas": "^2.11.2"
+    "canvas": "^2.11.2",
+    "music-metadata": "^7.12.3",
+    "node-id3": "^0.2.3"
   },
   "devDependencies": {
     "typescript": "^5.0.0",

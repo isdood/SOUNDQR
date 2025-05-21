@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # STARWEAVE Component Enhancement - Metadata Handler Integration ✧
-# Created: 2025-05-21 14:01:53 UTC
+# Created: 2025-05-21 14:40:49 UTC
 # Author: isdood
 
 # ✨ GLIMMER modification palette
@@ -14,6 +14,19 @@ set -l reset (tput sgr0)
 
 function echo_starweave
     echo $sonic_beam"[✧ STARWEAVE ✧] "$tag_pulse$argv$reset
+end
+
+echo_starweave "✨ Checking system dependencies..."
+
+# Check for jq and install if missing
+if not command -v jq >/dev/null
+    echo $meta_flow"✧ Installing jq package..."$reset
+    if command -v pacman >/dev/null
+        sudo pacman -S --noconfirm jq
+    else
+        echo $tag_pulse"✧ Error: Please install jq manually for your distribution"$reset
+        exit 1
+    end
 end
 
 echo_starweave "✨ Initializing GLIMMER-enhanced metadata handler..."
@@ -124,12 +137,27 @@ describe('MetadataHandler with GLIMMER enhancement', () => {
     });
 });" > $test_file
 
-# Update package.json with new dependencies
-set tmp_file (mktemp)
-jq '.dependencies += {
-    "music-metadata": "^7.12.3",
-    "node-id3": "^0.2.3"
-}' package.json > $tmp_file && mv $tmp_file package.json
+# Update package.json with new dependencies using a temporary file
+set package_temp (mktemp)
+if test -f package.json
+    # Read existing package.json
+    set current_content (cat package.json)
+    # Create new content with added dependencies
+    echo $current_content | jq '.dependencies = (.dependencies // {}) + {
+        "music-metadata": "^7.12.3",
+        "node-id3": "^0.2.3"
+    }' > $package_temp
+    # Only update if jq succeeded
+    if test $status -eq 0
+        mv $package_temp package.json
+    else
+        echo $tag_pulse"✧ Error: Failed to update package.json. Please add dependencies manually:"$reset
+        echo "npm install music-metadata node-id3"
+        rm $package_temp
+    end
+else
+    echo $tag_pulse"✧ Error: package.json not found"$reset
+end
 
 if test -f $handler_file
     echo $meta_flow"✧ Metadata handler files created successfully!"$reset
