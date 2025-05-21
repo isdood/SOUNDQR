@@ -5,6 +5,5 @@ module.exports = {
         '**/tests/**/*.test.ts'
     ],
     collectCoverage: true,
-    coverageDirectory: 'coverage',
-    coverageReporters: ['text', 'lcov'],
+    coverageDirectory: 'coverage'
 };
