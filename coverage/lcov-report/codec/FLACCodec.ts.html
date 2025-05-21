@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>24/24</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>24/24</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -135,7 +135,8 @@
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -146,22 +147,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -214,29 +216,30 @@
         // Add FLAC stream markers with correct bit depth encoding
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24 &lt;&lt; 3, 8);       // 24-bit depth (shifted by 3 for correct alignment)
+        metadataBlock.writeUInt8(0xF0, 8);          // 24-bit depth (0xF0 = 11110000 in binary)
 &nbsp;
-        // Add quantum identifiers with exact spacing and no truncation
+        // Add quantum identifiers with exact spacing
+        const markers = [
+            "QUANTUM_ID",
+            "GLIMMER",
+            "QUANTUM_SIGNATURE"
+        ];
+&nbsp;
+        // Write markers with precise byte-aligned spacing
+        markers.forEach((marker, index) =&gt; {
+            const pos = 16 + (index * 16);
+            const paddedMarker = Buffer.alloc(16);
+            paddedMarker.write(marker);
+            paddedMarker.copy(metadataBlock, pos);
+        });
+&nbsp;
+        // Add metadata content with ID3 detection
         const metadataString = metadata.toString();
-        const isID3 = metadataString.includes("ID3") || metadataString.includes("✧ Quantum");
-&nbsp;
-        if (isID3) {
+        if (metadataString.includes("ID3") || metadataString.includes("✧ Quantum")) {
             metadataBlock.write("ID3", 12);
         }
 &nbsp;
-        // Write quantum markers with precise lengths
-        const markers = [
-            { text: "QUANTUM_ID", pos: 16 },
-            { text: "GLIMMER", pos: 32 },
-            { text: "QUANTUM_SIGNATURE", pos: 48 }
-        ];
-&nbsp;
-        for (const marker of markers) {
-            const paddedMarker = marker.text.padEnd(15, " ") + "\0";
-            metadataBlock.write(paddedMarker, marker.pos);
-        }
-&nbsp;
-        // Copy metadata content
+        // Copy actual metadata with padding
         metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
 &nbsp;
         return Buffer.concat([metadataBlock, data]);
@@ -286,7 +289,7 @@ export interface FlacPatternConfig {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-21T18:50:11.885Z
+                at 2025-05-21T18:51:18.470Z
             </div>
         <script src="../prettify.js"></script>
         <script>
