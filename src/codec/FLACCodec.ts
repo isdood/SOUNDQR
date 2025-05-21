@@ -39,10 +39,8 @@ export class FlacPattern {
         const encoded = Buffer.alloc(data.length + 12);
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC" ✧
 
-        // Write sample rate with proper endianness for GLIMMER ✨
-        const buffer = Buffer.alloc(4);
-        buffer.writeUInt32LE(this.config.sampleRate!, 0);
-        buffer.copy(encoded, 4);
+        // Write sample rate directly with STARWEAVE alignment ✨
+        encoded.writeUInt32BE(this.config.sampleRate!, 4);
 
         // Write bit depth with proper alignment
         encoded.writeUInt8(this.config.bitDepth! << 3, 8);
@@ -72,10 +70,8 @@ export class FLACEncoder {
         // Write FLAC header with STARWEAVE signature ✨
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC" ✧
 
-        // Write sample rate with proper endianness for GLIMMER ✨
-        const buffer = Buffer.alloc(4);
-        buffer.writeUInt32LE(48000, 0);
-        buffer.copy(encoded, 4);
+        // Write sample rate directly with STARWEAVE alignment ✨
+        encoded.writeUInt32BE(48000, 4);
 
         // Write bit depth (24-bit) with GLIMMER alignment
         encoded.writeUInt8(24 << 3, 8);
@@ -115,10 +111,8 @@ export class FLACDecoder {
             throw new FLACError("✧ Invalid FLAC signature");
         }
 
-        // Read sample rate with proper endianness for GLIMMER ✨
-        const sampleRateBuffer = Buffer.alloc(4);
-        metadataBlock.copy(sampleRateBuffer, 0, 4, 8);
-        const sampleRate = sampleRateBuffer.readUInt32LE(0);
+        // Read sample rate directly with STARWEAVE alignment ✨
+        const sampleRate = metadataBlock.readUInt32BE(4);
 
         // Extract bit depth with proper alignment
         const encodedDepth = metadataBlock.readUInt8(8);
