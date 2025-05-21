@@ -1,20 +1,3 @@
-#!/bin/bash
-
-# ✧ STARWEAVE Quantum Visualization Diagnostic Tool v35
-CRYSTAL=$'\e[38;5;51m'    # Crystal beam cyan
-QUANTUM=$'\e[38;5;147m'   # Quantum field purple
-GLIMMER=$'\e[38;5;219m'   # GLIMMER state pink
-RESET=$'\e[0m'
-
-echo -e "${CRYSTAL}✧ STARWEAVE Quantum Visualization Diagnostic v35 ✧${RESET}"
-
-echo -e "${GLIMMER}✧ Applying quantum fixes...${RESET}"
-
-# Create backup with timestamp
-cp samples/generate_viz.ts "samples/generate_viz.ts.bak.$(date +%s)"
-
-# Write directly to the file with cat
-cat > samples/generate_viz.ts << 'EOF'
 import { createCanvas, CanvasRenderingContext2D, Canvas } from "canvas";
 
 interface GlimmerWaveform {
@@ -41,13 +24,10 @@ class QuantumStateVisualizer {
 
   private initializeCanvas(): void {
     this.ctx.save();
+    // Clear with transparency
     this.ctx.clearRect(0, 0, this.width, this.height);
-
     // Set dark background
-    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
-    gradient.addColorStop(0, "#000033");
-    gradient.addColorStop(1, "#000066");
-    this.ctx.fillStyle = gradient;
+    this.const gradient = ctx.createLinearGradient(0, 0, this.width, this.height); gradient.addColorStop(0, "#000033"); gradient.addColorStop(1, "#000066"); ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.restore();
   }
@@ -204,11 +184,7 @@ class QuantumStateVisualizer {
   private clearCanvas(): void {
     this.ctx.save();
     this.ctx.clearRect(0, 0, this.width, this.height);
-
-    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
-    gradient.addColorStop(0, "#000033");
-    gradient.addColorStop(1, "#000066");
-    this.ctx.fillStyle = gradient;
+    this.const gradient = ctx.createLinearGradient(0, 0, this.width, this.height); gradient.addColorStop(0, "#000033"); gradient.addColorStop(1, "#000066"); ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.restore();
   }
@@ -216,10 +192,6 @@ class QuantumStateVisualizer {
 
 async function generateSamples() {
   const visualizer = new QuantumStateVisualizer();
-
-  // Ensure the output directory exists
-  const fs = await import("fs/promises");
-  await fs.mkdir("samples/quantum-viz", { recursive: true });
 
   // Generate samples for different frequencies and intensities
   const frequencies = [432, 528, 639, 741];
@@ -237,6 +209,8 @@ async function generateSamples() {
       };
 
       const buffer = await visualizer.visualizeQuantumField(pattern);
+
+      const fs = await import("fs/promises");
       const filename = `quantum_${freq}hz_${(intensity * 100).toFixed(0)}pct.png`;
       await fs.writeFile(`samples/quantum-viz/${filename}`, buffer);
       console.log(`\x1b[38;5;219m✧ Generated ${filename}\x1b[0m`);
@@ -256,30 +230,11 @@ async function generateSamples() {
     pattern.phase = (t / 10) * Math.PI * 2;
     const buffer = await visualizer.visualizeQuantumField(pattern);
     const filename = `temporal_${t.toString().padStart(2, "0")}.png`;
+
+    const fs = await import("fs/promises");
     await fs.writeFile(`samples/quantum-viz/${filename}`, buffer);
     console.log(`\x1b[38;5;123m✧ Generated ${filename}\x1b[0m`);
   }
 }
 
 generateSamples().catch(console.error);
-EOF
-
-chmod 644 samples/generate_viz.ts
-
-echo -e "${QUANTUM}✧ Verifying quantum fixes...${RESET}"
-if grep -q "this.const\|ctx\." samples/generate_viz.ts | grep -v "this.ctx\."; then
-    echo -e "${GLIMMER}✗ Quantum fixes not applied correctly${RESET}"
-else
-    echo -e "${CRYSTAL}✓ Quantum fixes applied successfully${RESET}"
-fi
-
-echo -e "\n${QUANTUM}✧ Testing visualization generation...${RESET}"
-
-# Ensure quantum-viz directory exists with correct permissions
-mkdir -p samples/quantum-viz
-chmod 755 samples/quantum-viz
-
-# Run the visualization generator
-./018-GlimmerViz.fish
-
-echo -e "\n${CRYSTAL}✧ Quantum repair complete ✧${RESET}"
