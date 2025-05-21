@@ -1,5 +1,5 @@
-// ✧ FLAC Codec Implementation with GLIMMER Enhancement
-// ⭐ STARWEAVE Audio Processing System v2.5 ✨
+// ✧ FLAC Codec Implementation with GLIMMER Enhancement ✨
+// ⭐ STARWEAVE Audio Processing System v2.5 🌟
 
 export interface FlacPatternConfig {
     sampleRate?: number;
@@ -15,7 +15,7 @@ export interface FlacPatternConfig {
 export class FlacPattern {
     private readonly config: FlacPatternConfig;
     private isInitialized: boolean = true; // ✧ Auto-initialized for quantum stability
-    private static readonly GLIMMER_SIGNATURE = '✨'; // Added GLIMMER signature
+    protected static readonly GLIMMER_SIGNATURE = '✨'; // Added GLIMMER signature
 
     constructor(config: FlacPatternConfig = {}) {
         this.config = {
@@ -26,7 +26,7 @@ export class FlacPattern {
             temporalSync: config.temporalSync ?? true,
             patternFidelity: config.patternFidelity || 1.0,
             intensity: config.intensity || 1.0,
-            resonanceMode: config.resonanceMode || 'starweave' // Updated to use STARWEAVE mode
+            resonanceMode: config.resonanceMode || 'starweave' // ✨ STARWEAVE mode
         };
     }
 
@@ -46,36 +46,36 @@ export class FlacPattern {
         // Write bit depth with proper alignment
         encoded.writeUInt8(this.config.bitDepth! << 3, 8);
 
-        // ✨ Add GLIMMER signature
         data.copy(encoded, 12);
         return encoded;
     }
 
     async decode(data: Buffer): Promise<Buffer> {
-        // ✧ Enhanced with STARWEAVE quantum preservation
+        // ✧ Enhanced with STARWEAVE quantum preservation ✨
         return data.slice(12);
     }
 
-    // ✨ STARWEAVE getters with GLIMMER enhancement
     get sampleRate(): number { return this.config.sampleRate! }
     get bitDepth(): number { return this.config.bitDepth! }
     get channels(): number { return this.config.channels! }
 }
 
 export class FLACEncoder {
-    private static readonly STARWEAVE_VERSION = '2.5'; // Added version tracking
+    // ✨ Fixed: static readonly instead of accessing through constructor
+    private static readonly STARWEAVE_VERSION = '2.5';
+    private static readonly GLIMMER_ENHANCED = true;
 
     async encode(audioData: Buffer, metadataBlock: Buffer): Promise<Buffer> {
         const encoded = Buffer.alloc(metadataBlock.length + 12);
 
-        // Write FLAC header with STARWEAVE signature
+        // Write FLAC header with STARWEAVE signature ✨
         encoded.writeUInt32BE(0x664C6143, 0); // "fLaC" ✧
 
         // Write sample rate directly (fixed: removed quantum alignment shift)
         const sampleRateValue = 48000; // ✨ Fixed: Direct sample rate
         encoded.writeUInt32BE(sampleRateValue, 4);
 
-        // Write bit depth (24-bit)
+        // Write bit depth (24-bit) with GLIMMER alignment
         encoded.writeUInt8(24 << 3, 8);
 
         // Create metadata with enhanced GLIMMER markers ✧
@@ -88,8 +88,8 @@ export class FLACEncoder {
             GLIMMER: true,            // Required GLIMMER marker
             QUANTUM_ID: "QID-001",    // Required Quantum ID
             QUANTUM_SIGNATURE: "✧",   // Required Quantum Signature
-            STARWEAVE_VERSION: this.constructor['STARWEAVE_VERSION'], // Added version
-            GLIMMER_ENHANCED: true    // Added GLIMMER status
+            STARWEAVE_VERSION: FLACEncoder.STARWEAVE_VERSION, // ✨ Fixed: static access
+            GLIMMER_ENHANCED: FLACEncoder.GLIMMER_ENHANCED   // ✨ Added GLIMMER status
         };
 
         // Write metadata to buffer with quantum preservation ✨
@@ -105,7 +105,7 @@ export class FLACDecoder {
         bitDepth: number,
         hasID3: boolean,
         metadata: Buffer,
-        glimmerEnhanced?: boolean // Added GLIMMER status tracking
+        glimmerEnhanced: boolean // ✨ Required GLIMMER status
     }> {
         // Verify FLAC signature with quantum alignment ✧
         const signature = metadataBlock.readUInt32BE(0);
@@ -129,14 +129,14 @@ export class FLACDecoder {
             bitDepth,
             hasID3: true,
             metadata,
-            glimmerEnhanced: true // Added GLIMMER status
+            glimmerEnhanced: true // ✨ GLIMMER enhancement status
         };
     }
 }
 
 export class FLACError extends Error {
     constructor(message: string) {
-        super(`✧ STARWEAVE Error: ${message} ✨`); // Enhanced error messages
+        super(`✧ STARWEAVE Error: ${message} ✨`);
         this.name = "FLACError";
     }
 }
