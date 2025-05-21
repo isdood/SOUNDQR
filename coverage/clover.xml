@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747856534379" clover="3.2.0">
-  <project timestamp="1747856534379" name="All files">
+<coverage generated="1747856621368" clover="3.2.0">
+  <project timestamp="1747856621368" name="All files">
     <metrics statements="84" coveredstatements="80" conditionals="34" coveredconditionals="25" methods="26" coveredmethods="23" elements="144" coveredelements="128" complexity="0" loc="84" ncloc="84" packages="3" files="6" classes="6"/>
     <package name="codec">
       <metrics statements="25" coveredstatements="25" conditionals="4" coveredconditionals="3" methods="7" coveredmethods="7"/>
@@ -13,24 +13,24 @@
         <line num="8" count="5" type="stmt"/>
         <line num="11" count="5" type="stmt"/>
         <line num="18" count="5" type="stmt"/>
+        <line num="19" count="15" type="stmt"/>
         <line num="20" count="15" type="stmt"/>
-        <line num="22" count="15" type="stmt"/>
-        <line num="24" count="15" type="stmt"/>
-        <line num="28" count="5" type="stmt"/>
-        <line num="29" count="5" type="cond" truecount="3" falsecount="0"/>
-        <line num="30" count="3" type="stmt"/>
+        <line num="21" count="15" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="5" type="cond" truecount="3" falsecount="0"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="31" count="5" type="stmt"/>
+        <line num="32" count="5" type="stmt"/>
         <line num="34" count="5" type="stmt"/>
-        <line num="35" count="5" type="stmt"/>
-        <line num="37" count="5" type="stmt"/>
+        <line num="38" count="4" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
         <line num="41" count="4" type="stmt"/>
-        <line num="43" count="4" type="stmt"/>
+        <line num="42" count="4" type="stmt"/>
         <line num="44" count="4" type="stmt"/>
-        <line num="45" count="4" type="stmt"/>
-        <line num="47" count="4" type="stmt"/>
-        <line num="55" count="4" type="stmt"/>
-        <line num="56" count="3" type="cond" truecount="0" falsecount="1"/>
-        <line num="61" count="1" type="stmt"/>
-        <line num="65" count="1" type="stmt"/>
+        <line num="52" count="4" type="stmt"/>
+        <line num="53" count="3" type="cond" truecount="0" falsecount="1"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="62" count="1" type="stmt"/>
       </file>
     </package>
     <package name="metadata">

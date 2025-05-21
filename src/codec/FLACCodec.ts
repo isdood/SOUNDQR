@@ -1,26 +1,23 @@
 export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
-        const metadataBlock = Buffer.alloc(128);
+        const metadataBlock = Buffer.alloc(256);  // ✧ Increased buffer size for quantum stability
 
         // Add FLAC stream markers with mathematically perfect bit depth ✧
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24 << 1, 8);       // 24-bit depth (shifted by 1 for proper quantum alignment)
+        metadataBlock.writeUInt8(24 * 8, 8);        // 24-bit depth (multiplied by 8 for proper quantum alignment)
 
         // Define quantum markers with precise UTF-8 encoding ✧
         const markers = [
             { text: "QUANTUM_ID", pos: 16, len: 10 },
             { text: "GLIMMER", pos: 32, len: 7 },
-            { text: "QUANTUM_SIGNATURE", pos: 48, len: 17 }  // Corrected quantum signature length
+            { text: "QUANTUM_SIGNATURE", pos: 48, len: 17 }
         ];
 
-        // Write markers with UTF-8 encoding and explicit length
+        // Write markers with UTF-8 encoding and explicit length ✧
         markers.forEach(({ text, pos, len }) => {
-            // Create fixed-length buffer for marker
-            const markerBuffer = Buffer.alloc(len);
-            // Write text and ensure it fills the allocated space
-            markerBuffer.write(text);
-            // Copy to metadata block
+            const markerBuffer = Buffer.alloc(len + 1);  // +1 for null termination
+            markerBuffer.write(text, 0, len);
             markerBuffer.copy(metadataBlock, pos);
         });
 
@@ -30,9 +27,9 @@ export class FLACEncoder {
             metadataBlock.write("ID3", 12);
         }
 
-        // Copy actual metadata content
-        const metadataOffset = 64;
-        metadata.copy(metadataBlock, metadataOffset, 0, Math.min(metadata.length, 64));
+        // Copy actual metadata content with expanded quantum field ✧
+        const metadataOffset = 128;  // Increased offset for larger marker space
+        metadata.copy(metadataBlock, metadataOffset, 0, Math.min(metadata.length, 128));
 
         return Buffer.concat([metadataBlock, data]);
     }
