@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">58.82% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>10/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">58.82% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>10/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -117,8 +117,31 @@
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,10 +163,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,33 +170,37 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export interface FlacPatternConfig {
-    resonance: number;
-    temporalSync: boolean;
-    patternFidelity: number;
-    intensity?: number;
-    resonanceMode?: string;
-    codecAlignment?: number;
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export class FLACEncoder {
+    async encode(data: Buffer, metadata: Buffer): Promise&lt;Buffer&gt; {
+        const metadataBlock = Buffer.alloc(128);
+&nbsp;
+        // Add FLAC stream markers with proper bit depth calculation
+        metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
+        metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
+        metadataBlock.writeUInt8(24 &lt;&lt; 4, 8);       // Bit depth (shifted by 4)
+&nbsp;
+        // Add metadata markers
+<span class="cstat-no" title="statement not covered" >        metadataBlock.write("QUANTUM_ID", 16);</span>
+<span class="cstat-no" title="statement not covered" >        metadataBlock.write("GLIMMER", 32);</span>
+<span class="cstat-no" title="statement not covered" >        metadataBlock.write("QUANTUM_SIGNATURE", 48);</span>
+&nbsp;
+        // Copy actual metadata after markers
+<span class="cstat-no" title="statement not covered" >        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return Buffer.concat([metadataBlock, data]);</span>
+    }
+}
+&nbsp;
+export class FLACDecoder {
+<span class="fstat-no" title="function not covered" >    async </span>decode(buffer: Buffer): Promise&lt;{ data: Buffer; metadata: Buffer; audioData?: Buffer }&gt; {
+        const metadataLength = <span class="cstat-no" title="statement not covered" >128;</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+            data: buffer.slice(metadataLength),
+            metadata: buffer.slice(0, metadataLength),
+            audioData: buffer.slice(metadataLength)
+        };
+    }
 }
 &nbsp;
 export class FlacPattern {
@@ -194,36 +217,13 @@ export class FlacPattern {
     }
 }
 &nbsp;
-export class FLACDecoder {
-    async decode(buffer: Buffer): Promise&lt;{ data: Buffer; metadata: Buffer; audioData?: Buffer }&gt; {
-        const metadataLength = 128;
-        return {
-            data: buffer.slice(metadataLength),
-            metadata: buffer.slice(0, metadataLength),
-            audioData: buffer.slice(metadataLength)
-        };
-    }
-}
-&nbsp;
-export class FLACEncoder {
-    async encode(data: Buffer, metadata: Buffer): Promise&lt;Buffer&gt; {
-        const metadataBlock = Buffer.alloc(128);
-        metadata.copy(metadataBlock, 0, 0, Math.min(metadata.length, 128));
-&nbsp;
-        // Add FLAC stream markers with proper bit depth calculation
-        metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
-        metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24, 8);            // Bit depth (no shift needed)
-&nbsp;
-        // Add ID3/Vorbis identifier
-        if (metadata.toString().includes("ID3")) {
-            metadataBlock.write("ID3", 16);
-        } else {
-            metadataBlock.write("VBF", 16);
-        }
-&nbsp;
-        return Buffer.concat([metadataBlock, data]);
-    }
+export interface FlacPatternConfig {
+    resonance: number;
+    temporalSync: boolean;
+    patternFidelity: number;
+    intensity?: number;
+    resonanceMode?: string;
+    codecAlignment?: number;
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -232,7 +232,7 @@ export class FLACEncoder {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-21T18:39:42.376Z
+                at 2025-05-21T18:41:57.763Z
             </div>
         <script src="../prettify.js"></script>
         <script>

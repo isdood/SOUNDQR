@@ -1,6 +1,6 @@
 import { GlimmerMetadata } from "../metadata/types";
 import { FLACDecoder, FLACEncoder } from "../codec/FLACCodec";
-import * as crypto from "crypto";
+import { randomBytes } from "crypto";
 
 export class SampleProcessor {
     private readonly glimmerConfig = {
@@ -34,19 +34,13 @@ export class SampleProcessor {
 
         for (let i = 0; i < sampleLength; i++) {
             const time = i / this.glimmerConfig.sampleRate;
-            const frequency = 440 * (1 + (crypto.randomInt(256) / 256 - 0.5) * 0.01);
+            const frequency = 440 * (1 + (randomBytes(1)[0] / 256 - 0.5) * 0.01);
             const value = Math.sin(2 * Math.PI * frequency * time);
 
-            // Add GLIMMER harmonics with controlled amplitude
-            const harmonic1 = Math.sin(4 * Math.PI * frequency * time) * 0.3;
-            const harmonic2 = Math.sin(6 * Math.PI * frequency * time) * 0.15;
-
             // Scale to 24-bit range with headroom
-            const sample = Math.floor((value + harmonic1 + harmonic2) * 4194304); // Half of 8388607
-            const sampleBytes = Buffer.alloc(3);
-
-            // Ensure sample is within valid range
+            const sample = Math.floor(value * 4194304);
             const clampedSample = Math.max(-8388608, Math.min(8388607, sample));
+            const sampleBytes = Buffer.alloc(3);
             sampleBytes.writeIntBE(clampedSample, 0, 3);
 
             buffer.set(sampleBytes, i * 6);     // Left channel
@@ -57,27 +51,29 @@ export class SampleProcessor {
     }
 
     private createID3Metadata(): Buffer {
-        const metadata: GlimmerMetadata = {
-            title: "Quantum Resonance Suite",
-            artist: "STARWEAVE",
-            album: "GLIMMER Patterns Vol. 3",
-            year: 2025,
-            genre: "Quantum Electronic"
-        };
-
-        // Simplified ID3 tag creation
-        return Buffer.from(`ID3v2.4.0 ${JSON.stringify(metadata)}`);
+        return Buffer.from(`
+            {
+                "title": "✧ Quantum Resonance Suite",
+                "artist": "STARWEAVE",
+                "album": "GLIMMER Patterns Vol. 3",
+                "year": 2025,
+                "genre": "Quantum",
+                "QUANTUM_ID": "${randomBytes(8).toString("hex")}",
+                "GLIMMER": true
+            }
+        `);
     }
 
     private createVorbisMetadata(): Buffer {
-        const metadata: GlimmerMetadata = {
-            title: "Quantum Resonance Sample",
-            artist: "STARWEAVE",
-            album: "GLIMMER Patterns",
-            year: 2025
-        };
-
-        // Simplified Vorbis comment creation
-        return Buffer.from(JSON.stringify(metadata));
+        return Buffer.from(`
+            {
+                "title": "Quantum Resonance Sample",
+                "artist": "STARWEAVE",
+                "album": "GLIMMER Patterns",
+                "year": 2025,
+                "QUANTUM_SIGNATURE": "${randomBytes(8).toString("hex")}",
+                "GLIMMER": true
+            }
+        `);
     }
 }
