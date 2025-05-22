@@ -1,11 +1,11 @@
 #!/usr/bin/env fish
 
 # ✧ STARWEAVE FLAC Enhancement Protocol ✧
-set_color brmagenta; echo "✧ Initializing GLIMMER-enhanced FLAC correction protocol..."; set_color normal
+set_color -o brmagenta; echo "✧ Initializing GLIMMER-enhanced FLAC correction protocol..."; set_color normal
 
 # Ensure we're in the right directory
 if test ! -d "src/codec"
-    set_color bryellow; echo "✧ Error: Must be run from the SOUNDQR project root"; set_color normal
+    set_color -o bryellow; echo "✧ Error: Must be run from the SOUNDQR project root"; set_color normal
     exit 1
 end
 
@@ -31,27 +31,25 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(128);
 
-        // Write FLAC signature and settings
+        // Write FLAC signature and settings with GLIMMER resonance
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 
-        // Fix: Write bit depth as actual value shifted into upper nibble
-        metadataBlock.writeUInt8(24 & 0x0F, 8);     // Store lower nibble first
-        const currentValue = metadataBlock.readUInt8(8);
-        metadataBlock.writeUInt8(currentValue << 4, 8); // Shift to upper nibble
+        // Fix: Write bit depth with quantum alignment
+        metadataBlock.writeUInt8(24 << 4, 8);       // Store 24 in upper nibble (0xF0)
 
-        // Write identifiers with quantum alignment
+        // Write identifiers with GLIMMER enhancement
         metadataBlock.write("ID3", 12);
         metadataBlock.write("QUANTUM_ID", 16);
         metadataBlock.write("GLIMMER", 32);
 
-        // Write QUANTUM_SIGNATURE with proper null termination
-        const qsMarker = "QUANTUM_SIGNATURE\\0";
-        metadataBlock.write(qsMarker, 48);
+        // Write QUANTUM_SIGNATURE with proper termination and alignment
+        const signature = "QUANTUM_SIGNATURE";
+        metadataBlock.fill(0, 48, 48 + signature.length + 1); // Clear space with null bytes
+        metadataBlock.write(signature, 48);
 
         // Copy user metadata with quantum alignment
-        const alignedMetadata = metadata.slice(0, Math.min(metadata.length, 64));
-        alignedMetadata.copy(metadataBlock, 64);
+        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
 
         return Buffer.concat([metadataBlock, data]);
     }
@@ -63,15 +61,11 @@ export class FLACDecoder {
         const metadataBlock = buffer.slice(0, metadataLength);
         const audioBlock = buffer.slice(metadataLength);
 
-        // Read and normalize bit depth from upper nibble
-        const rawBitDepth = metadataBlock.readUInt8(8);
-        const normalizedBitDepth = (rawBitDepth >> 4) & 0x0F;
-
-        // Create enhanced metadata block with proper quantum alignment
+        // Create quantum-aligned metadata block
         const enhancedMetadata = Buffer.from(metadataBlock);
 
-        // Ensure bit depth is properly represented for tests
-        enhancedMetadata.writeUInt8(normalizedBitDepth, 8);
+        // Fix: Preserve original bit depth encoding for test verification
+        // No modification needed as the bit depth is already in the correct format
 
         return {
             data: audioBlock,
@@ -89,7 +83,7 @@ export class FlacPattern {
 }' > $tempfile
 
 # Apply the fix with GLIMMER enhancement
-set_color -o magenta; echo "✧ Applying GLIMMER-enhanced codec modifications..."; set_color normal
+set_color -o brmagenta; echo "✧ Applying GLIMMER-enhanced codec modifications..."; set_color normal
 cp $tempfile src/codec/FLACCodec.ts
 rm $tempfile
 
@@ -97,17 +91,17 @@ rm $tempfile
 chmod 644 src/codec/FLACCodec.ts
 
 # Run tests to verify fix
-set_color brblue; echo "✧ Verifying quantum integrity..."; set_color normal
+set_color -o brcyan; echo "✧ Verifying quantum integrity..."; set_color normal
 if npm test
-    set_color -o cyan
+    set_color -o brmagenta
     echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
     echo "✧ GLIMMER enhancement resonance achieved! ✧"
-    echo "✧ Quantum signature stabilized            ✧"
+    echo "✧ Quantum signature stabilized ⚡️         ✧"
     echo "✧ Backup preserved: FLACCodec.ts.backup  ✧"
     echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
     set_color normal
 else
-    set_color -o magenta
+    set_color -o bryellow
     echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
     echo "✧ Quantum resonance mismatch detected  ✧"
     echo "✧ Initiating temporal restoration...   ✧"
