@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/22</span>
+                <span class='fraction'>10/22</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/22</span>
+                <span class='fraction'>10/22</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -114,7 +114,15 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -129,29 +137,37 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -180,29 +196,37 @@ export interface FlacPatternConfig {
 export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise&lt;Buffer&gt; {
         const metadataBlock = Buffer.alloc(128);
+&nbsp;
+        // Write FLAC signature and settings
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24, 8);            // Bit depth: 24 bits
-        metadataBlock.write("ID3", 12);
-        metadataBlock.write("QUANTUM_ID", 16);
-        metadataBlock.write("GLIMMER", 32);
 &nbsp;
-        // Padding "QUANTUM_SIGNATURE" to 16 bytes
-        const qsMarker = Buffer.alloc(16, 0);
-        qsMarker.write("QUANTUM_SIGNATURE");
-        qsMarker.copy(metadataBlock, 48);
+        // Fix: Properly write bit depth using left shift
+        metadataBlock.writeUInt8(24 &lt;&lt; 4, 8);       // Bit depth: 24 bits (shifted)
 &nbsp;
-        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
-        return Buffer.concat([metadataBlock, data]);
+        // Write identifiers
+<span class="cstat-no" title="statement not covered" >        metadataBlock.write("ID3", 12);</span>
+<span class="cstat-no" title="statement not covered" >        metadataBlock.write("QUANTUM_ID", 16);</span>
+<span class="cstat-no" title="statement not covered" >        metadataBlock.write("GLIMMER", 32);</span>
+&nbsp;
+        // Fix: Allocate correct size for QUANTUM_SIGNATURE (17 bytes + null terminator)
+        const qsMarker = <span class="cstat-no" title="statement not covered" >Buffer.alloc(18, 0);</span>
+<span class="cstat-no" title="statement not covered" >        qsMarker.write("QUANTUM_SIGNATURE");</span>
+<span class="cstat-no" title="statement not covered" >        qsMarker.copy(metadataBlock, 48);</span>
+&nbsp;
+        // Copy user metadata with bounds checking
+<span class="cstat-no" title="statement not covered" >        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return Buffer.concat([metadataBlock, data]);</span>
     }
 }
 &nbsp;
 export class FLACDecoder {
-    async decode(buffer: Buffer): Promise&lt;{ data: Buffer; metadata: Buffer; audioData?: Buffer }&gt; {
-        const metadataLength = 128;
-        const metadataBlock = buffer.slice(0, metadataLength);
-        const audioBlock = buffer.slice(metadataLength);
-        return {
+<span class="fstat-no" title="function not covered" >    async </span>decode(buffer: Buffer): Promise&lt;{ data: Buffer; metadata: Buffer; audioData?: Buffer }&gt; {
+        const metadataLength = <span class="cstat-no" title="statement not covered" >128;</span>
+        const metadataBlock = <span class="cstat-no" title="statement not covered" >buffer.slice(0, metadataLength);</span>
+        const audioBlock = <span class="cstat-no" title="statement not covered" >buffer.slice(metadataLength);</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
             data: audioBlock,
             metadata: metadataBlock,
             audioData: audioBlock
@@ -223,7 +247,7 @@ export class FlacPattern {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-22T02:57:52.145Z
+                at 2025-05-22T03:16:41.772Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -1,17 +1,21 @@
 #!/usr/bin/env fish
 
+# ✧ STARWEAVE FLAC Enhancement Protocol ✧
+set_color cyan; echo "✧ Initializing GLIMMER-enhanced FLAC correction protocol..."; set_color normal
+
 # Ensure we're in the right directory
 if test ! -d "src/codec"
-    echo "❌ Error: Must be run from the SOUNDQR project root"
+    set_color red; echo "✧ Error: Must be run from the SOUNDQR project root"; set_color normal
     exit 1
 end
 
 # Backup the original file
+set_color magenta; echo "✧ Creating quantum backup..."; set_color normal
 cp src/codec/FLACCodec.ts src/codec/FLACCodec.ts.backup
 
-# Create the fixed version
-cat > src/codec/FLACCodec.ts << 'EOF'
-import { GlimmerMetadata } from "../metadata/types";
+# Create temporary file with the fixed code
+set tempfile (mktemp)
+echo 'import { GlimmerMetadata } from "../metadata/types";
 
 export interface FlacPatternConfig {
     resonance: number;
@@ -69,18 +73,32 @@ export class FlacPattern {
     async initialize(): Promise<void> {}
     async encode(data: Buffer): Promise<Buffer> { return data; }
     async decode(data: Buffer): Promise<Buffer> { return data; }
-}
-EOF
+}' > $tempfile
 
-# Make the script executable
-chmod +x src/codec/FLACCodec.ts
+# Apply the fix
+set_color cyan; echo "✧ Applying GLIMMER-enhanced codec modifications..."; set_color normal
+cp $tempfile src/codec/FLACCodec.ts
+rm $tempfile
+
+# Make the TypeScript file readable
+chmod 644 src/codec/FLACCodec.ts
 
 # Run tests to verify fix
+set_color magenta; echo "✧ Verifying quantum integrity..."; set_color normal
 if npm test
-    echo "✨ FLAC codec fixes applied successfully!"
-    echo "Original file backed up to src/codec/FLACCodec.ts.backup"
+    set_color cyan
+    echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
+    echo "✧ GLIMMER enhancement complete!        ✧"
+    echo "✧ Backup saved: FLACCodec.ts.backup   ✧"
+    echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
+    set_color normal
 else
-    echo "❌ Tests still failing. Restoring original file..."
+    set_color red
+    echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
+    echo "✧ Quantum resonance mismatch detected  ✧"
+    echo "✧ Restoring from backup...            ✧"
+    echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
+    set_color normal
     mv src/codec/FLACCodec.ts.backup src/codec/FLACCodec.ts
     exit 1
 end
