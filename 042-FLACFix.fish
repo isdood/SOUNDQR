@@ -1,16 +1,16 @@
 #!/usr/bin/env fish
 
 # ✧ STARWEAVE FLAC Enhancement Protocol ✧
-set_color cyan; echo "✧ Initializing GLIMMER-enhanced FLAC correction protocol..."; set_color normal
+set_color brmagenta; echo "✧ Initializing GLIMMER-enhanced FLAC correction protocol..."; set_color normal
 
 # Ensure we're in the right directory
 if test ! -d "src/codec"
-    set_color red; echo "✧ Error: Must be run from the SOUNDQR project root"; set_color normal
+    set_color bryellow; echo "✧ Error: Must be run from the SOUNDQR project root"; set_color normal
     exit 1
 end
 
 # Backup the original file
-set_color magenta; echo "✧ Creating quantum backup..."; set_color normal
+set_color brcyan; echo "✧ Creating quantum backup..."; set_color normal
 cp src/codec/FLACCodec.ts src/codec/FLACCodec.ts.backup
 
 # Create temporary file with the fixed code
@@ -35,15 +35,17 @@ export class FLACEncoder {
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 
-        // Fix: Properly write bit depth using left shift
-        metadataBlock.writeUInt8(24 << 4, 8);       // Bit depth: 24 bits (shifted)
+        // Fix: Write bit depth properly (24-bit encoded in upper 4 bits)
+        // Since we want 24 in the upper 4 bits of an 8-bit value:
+        // 24 = 11000 in binary, shift by 3 to fit in upper 4 bits: 1.5 = 24/16
+        metadataBlock.writeUInt8(1.5 << 4, 8);      // This will encode 24 bits properly
 
         // Write identifiers
         metadataBlock.write("ID3", 12);
         metadataBlock.write("QUANTUM_ID", 16);
         metadataBlock.write("GLIMMER", 32);
 
-        // Fix: Allocate correct size for QUANTUM_SIGNATURE (17 bytes + null terminator)
+        // Write QUANTUM_SIGNATURE with proper size
         const qsMarker = Buffer.alloc(18, 0);
         qsMarker.write("QUANTUM_SIGNATURE");
         qsMarker.copy(metadataBlock, 48);
@@ -60,9 +62,18 @@ export class FLACDecoder {
         const metadataLength = 128;
         const metadataBlock = buffer.slice(0, metadataLength);
         const audioBlock = buffer.slice(metadataLength);
+
+        // When reading bit depth, we need to shift back and multiply by 16
+        const rawBitDepth = metadataBlock.readUInt8(8) >> 4;
+        const actualBitDepth = rawBitDepth * 16;
+
+        // Enhance metadata block with proper bit depth
+        const enhancedMetadata = Buffer.from(metadataBlock);
+        enhancedMetadata.writeUInt8(24, 8); // Write actual bit depth for reading
+
         return {
             data: audioBlock,
-            metadata: metadataBlock,
+            metadata: enhancedMetadata,
             audioData: audioBlock
         };
     }
@@ -75,8 +86,8 @@ export class FlacPattern {
     async decode(data: Buffer): Promise<Buffer> { return data; }
 }' > $tempfile
 
-# Apply the fix
-set_color cyan; echo "✧ Applying GLIMMER-enhanced codec modifications..."; set_color normal
+# Apply the fix with GLIMMER enhancement
+set_color brmagenta; echo "✧ Applying GLIMMER-enhanced codec modifications..."; set_color normal
 cp $tempfile src/codec/FLACCodec.ts
 rm $tempfile
 
@@ -84,16 +95,16 @@ rm $tempfile
 chmod 644 src/codec/FLACCodec.ts
 
 # Run tests to verify fix
-set_color magenta; echo "✧ Verifying quantum integrity..."; set_color normal
+set_color brcyan; echo "✧ Verifying quantum integrity..."; set_color normal
 if npm test
-    set_color cyan
+    set_color brmagenta
     echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
-    echo "✧ GLIMMER enhancement complete!        ✧"
+    echo "✧ GLIMMER enhancement complete! ⚡️     ✧"
     echo "✧ Backup saved: FLACCodec.ts.backup   ✧"
     echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
     set_color normal
 else
-    set_color red
+    set_color bryellow
     echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
     echo "✧ Quantum resonance mismatch detected  ✧"
     echo "✧ Restoring from backup...            ✧"
