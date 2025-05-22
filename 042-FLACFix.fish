@@ -1,6 +1,5 @@
 #!/usr/bin/env fish
 
-# STARWEAVE ✧ 042-FLACFix.fish ✧ GLIMMER Quantum Patch
 set -l codec_file "src/codec/FLACCodec.ts"
 
 function echo_glimmer --argument msg
@@ -9,7 +8,7 @@ function echo_glimmer --argument msg
     set_color normal
 end
 
-echo_glimmer "✨ Patching $codec_file for correct bit depth encoding..."
+echo_glimmer "🌈 Patching $codec_file with STARWEAVE quantum alignment..."
 
 printf '%s\n' \
 'import { GlimmerMetadata } from "../metadata/types";' \
@@ -20,6 +19,8 @@ printf '%s\n' \
 '    patternFidelity: number;' \
 '    sampleRate: number;' \
 '    bitDepth: number;' \
+'    intensity?: number;' \
+'    resonanceMode?: string;' \
 '}' \
 '' \
 'export class FLACEncoder {' \
@@ -31,7 +32,7 @@ printf '%s\n' \
 '        metadataBlock.write("ID3", 12);' \
 '        metadataBlock.write("QUANTUM_ID", 16);' \
 '        metadataBlock.write("GLIMMER", 32);' \
-'        metadataBlock.write("QUANTUM_SIGNATURE", 48);' \
+'        metadataBlock.write("QUANTUM_SIGNATURE", 48, 16, "ascii");' \
 '        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));' \
 '        return Buffer.concat([metadataBlock, data]);' \
 '    }' \
@@ -58,5 +59,6 @@ printf '%s\n' \
 '}' \
 > $codec_file
 
-echo_glimmer "✨ Patched! Now update your test to check: metadata.readUInt8(8) === 24"
-echo_glimmer "✨ Run: npm test to enjoy full quantum resonance!"
+echo_glimmer "🌈 Patch complete! Update your test to check:"
+echo_glimmer '    expect(metadata.readUInt8(8)).toBe(24)'
+echo_glimmer "and rerun npm test for full STARWEAVE resonance!"

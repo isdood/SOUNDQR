@@ -6,6 +6,8 @@ export interface FlacPatternConfig {
     patternFidelity: number;
     sampleRate: number;
     bitDepth: number;
+    intensity?: number;
+    resonanceMode?: string;
 }
 
 export class FLACEncoder {
@@ -17,7 +19,7 @@ export class FLACEncoder {
         metadataBlock.write("ID3", 12);
         metadataBlock.write("QUANTUM_ID", 16);
         metadataBlock.write("GLIMMER", 32);
-        metadataBlock.write("QUANTUM_SIGNATURE", 48);
+        metadataBlock.write("QUANTUM_SIGNATURE", 48, 16, "ascii");
         metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
         return Buffer.concat([metadataBlock, data]);
     }
