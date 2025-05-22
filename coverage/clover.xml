@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747883921943" clover="3.2.0">
-  <project timestamp="1747883921943" name="All files">
-    <metrics statements="87" coveredstatements="83" conditionals="31" coveredconditionals="22" methods="25" coveredmethods="22" elements="143" coveredelements="127" complexity="0" loc="87" ncloc="87" packages="3" files="6" classes="6"/>
+<coverage generated="1747884077642" clover="3.2.0">
+  <project timestamp="1747884077642" name="All files">
+    <metrics statements="89" coveredstatements="85" conditionals="31" coveredconditionals="22" methods="25" coveredmethods="22" elements="145" coveredelements="129" complexity="0" loc="89" ncloc="89" packages="3" files="6" classes="6"/>
     <package name="codec">
-      <metrics statements="26" coveredstatements="26" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="6"/>
+      <metrics statements="28" coveredstatements="28" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="6"/>
       <file name="FLACCodec.ts" path="/home/shimmer/SOUNDQR/src/codec/FLACCodec.ts">
-        <metrics statements="26" coveredstatements="26" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="6"/>
+        <metrics statements="28" coveredstatements="28" conditionals="1" coveredconditionals="0" methods="6" coveredmethods="6"/>
         <line num="13" count="4" type="stmt"/>
         <line num="15" count="5" type="stmt"/>
         <line num="18" count="5" type="stmt"/>
         <line num="19" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
         <line num="24" count="5" type="stmt"/>
         <line num="27" count="5" type="stmt"/>
         <line num="28" count="5" type="stmt"/>
         <line num="29" count="5" type="stmt"/>
         <line num="32" count="5" type="stmt"/>
         <line num="33" count="5" type="stmt"/>
-        <line num="34" count="5" type="stmt"/>
+        <line num="36" count="5" type="stmt"/>
         <line num="37" count="5" type="stmt"/>
         <line num="39" count="5" type="stmt"/>
         <line num="43" count="4" type="stmt"/>
@@ -26,12 +28,12 @@
         <line num="50" count="4" type="stmt"/>
         <line num="51" count="4" type="stmt"/>
         <line num="54" count="4" type="stmt"/>
-        <line num="55" count="4" type="stmt"/>
         <line num="57" count="4" type="stmt"/>
-        <line num="65" count="4" type="stmt"/>
-        <line num="66" count="3" type="cond" truecount="0" falsecount="1"/>
-        <line num="68" count="1" type="stmt"/>
-        <line num="69" count="1" type="stmt"/>
+        <line num="59" count="4" type="stmt"/>
+        <line num="67" count="4" type="stmt"/>
+        <line num="68" count="3" type="cond" truecount="0" falsecount="1"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
       </file>
     </package>
     <package name="metadata">

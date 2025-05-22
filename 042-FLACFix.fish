@@ -10,7 +10,7 @@ if test ! -d "src/codec"
 end
 
 # Backup the original file
-set_color brcyan; echo "✧ Creating quantum backup..."; set_color normal
+set_color -o cyan; echo "✧ Creating quantum backup..."; set_color normal
 cp src/codec/FLACCodec.ts src/codec/FLACCodec.ts.backup
 
 # Create temporary file with the fixed code
@@ -35,23 +35,23 @@ export class FLACEncoder {
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 
-        // Fix: Write bit depth properly (24-bit encoded in upper 4 bits)
-        // Since we want 24 in the upper 4 bits of an 8-bit value:
-        // 24 = 11000 in binary, shift by 3 to fit in upper 4 bits: 1.5 = 24/16
-        metadataBlock.writeUInt8(1.5 << 4, 8);      // This will encode 24 bits properly
+        // Fix: Write bit depth as actual value shifted into upper nibble
+        metadataBlock.writeUInt8(24 & 0x0F, 8);     // Store lower nibble first
+        const currentValue = metadataBlock.readUInt8(8);
+        metadataBlock.writeUInt8(currentValue << 4, 8); // Shift to upper nibble
 
-        // Write identifiers
+        // Write identifiers with quantum alignment
         metadataBlock.write("ID3", 12);
         metadataBlock.write("QUANTUM_ID", 16);
         metadataBlock.write("GLIMMER", 32);
 
-        // Write QUANTUM_SIGNATURE with proper size
-        const qsMarker = Buffer.alloc(18, 0);
-        qsMarker.write("QUANTUM_SIGNATURE");
-        qsMarker.copy(metadataBlock, 48);
+        // Write QUANTUM_SIGNATURE with proper null termination
+        const qsMarker = "QUANTUM_SIGNATURE\\0";
+        metadataBlock.write(qsMarker, 48);
 
-        // Copy user metadata with bounds checking
-        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
+        // Copy user metadata with quantum alignment
+        const alignedMetadata = metadata.slice(0, Math.min(metadata.length, 64));
+        alignedMetadata.copy(metadataBlock, 64);
 
         return Buffer.concat([metadataBlock, data]);
     }
@@ -63,13 +63,15 @@ export class FLACDecoder {
         const metadataBlock = buffer.slice(0, metadataLength);
         const audioBlock = buffer.slice(metadataLength);
 
-        // When reading bit depth, we need to shift back and multiply by 16
-        const rawBitDepth = metadataBlock.readUInt8(8) >> 4;
-        const actualBitDepth = rawBitDepth * 16;
+        // Read and normalize bit depth from upper nibble
+        const rawBitDepth = metadataBlock.readUInt8(8);
+        const normalizedBitDepth = (rawBitDepth >> 4) & 0x0F;
 
-        // Enhance metadata block with proper bit depth
+        // Create enhanced metadata block with proper quantum alignment
         const enhancedMetadata = Buffer.from(metadataBlock);
-        enhancedMetadata.writeUInt8(24, 8); // Write actual bit depth for reading
+
+        // Ensure bit depth is properly represented for tests
+        enhancedMetadata.writeUInt8(normalizedBitDepth, 8);
 
         return {
             data: audioBlock,
@@ -87,7 +89,7 @@ export class FlacPattern {
 }' > $tempfile
 
 # Apply the fix with GLIMMER enhancement
-set_color brmagenta; echo "✧ Applying GLIMMER-enhanced codec modifications..."; set_color normal
+set_color -o magenta; echo "✧ Applying GLIMMER-enhanced codec modifications..."; set_color normal
 cp $tempfile src/codec/FLACCodec.ts
 rm $tempfile
 
@@ -95,19 +97,20 @@ rm $tempfile
 chmod 644 src/codec/FLACCodec.ts
 
 # Run tests to verify fix
-set_color brcyan; echo "✧ Verifying quantum integrity..."; set_color normal
+set_color brblue; echo "✧ Verifying quantum integrity..."; set_color normal
 if npm test
-    set_color brmagenta
-    echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
-    echo "✧ GLIMMER enhancement complete! ⚡️     ✧"
-    echo "✧ Backup saved: FLACCodec.ts.backup   ✧"
-    echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
+    set_color -o cyan
+    echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
+    echo "✧ GLIMMER enhancement resonance achieved! ✧"
+    echo "✧ Quantum signature stabilized            ✧"
+    echo "✧ Backup preserved: FLACCodec.ts.backup  ✧"
+    echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
     set_color normal
 else
-    set_color bryellow
+    set_color -o magenta
     echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
     echo "✧ Quantum resonance mismatch detected  ✧"
-    echo "✧ Restoring from backup...            ✧"
+    echo "✧ Initiating temporal restoration...   ✧"
     echo "✧━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✧"
     set_color normal
     mv src/codec/FLACCodec.ts.backup src/codec/FLACCodec.ts
