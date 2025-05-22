@@ -19,7 +19,12 @@ export class FLACEncoder {
         metadataBlock.write("ID3", 12);
         metadataBlock.write("QUANTUM_ID", 16);
         metadataBlock.write("GLIMMER", 32);
-        metadataBlock.write("QUANTUM_SIGNATURE", 48, 16, "ascii");
+
+        // Padding "QUANTUM_SIGNATURE" to 16 bytes
+        const qsMarker = Buffer.alloc(16, 0);
+        qsMarker.write("QUANTUM_SIGNATURE");
+        qsMarker.copy(metadataBlock, 48);
+
         metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
         return Buffer.concat([metadataBlock, data]);
     }
