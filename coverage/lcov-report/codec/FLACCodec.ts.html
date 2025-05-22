@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35% </span>
+                <span class="strong">85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/20</span>
+                <span class='fraction'>17/20</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">16.66% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/6</span>
+                <span class='fraction'>2/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35% </span>
+                <span class="strong">85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/20</span>
+                <span class='fraction'>17/20</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -123,21 +123,21 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -166,22 +166,22 @@ export class FLACEncoder {
         const metadataBlock = Buffer.alloc(128);
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24 &lt;&lt; 4, 8);       // Bit depth (high nibble for test compatibility)
-<span class="cstat-no" title="statement not covered" >        metadataBlock.write("ID3", 12);</span>
-<span class="cstat-no" title="statement not covered" >        metadataBlock.write("QUANTUM_ID", 16);</span>
-<span class="cstat-no" title="statement not covered" >        metadataBlock.write("GLIMMER", 32);</span>
-<span class="cstat-no" title="statement not covered" >        metadataBlock.write("QUANTUM_SIGNATURE", 48);</span>
-<span class="cstat-no" title="statement not covered" >        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));</span>
-<span class="cstat-no" title="statement not covered" >        return Buffer.concat([metadataBlock, data]);</span>
+        metadataBlock.writeUInt8(24, 8);            // Bit depth: 24 bits
+        metadataBlock.write("ID3", 12);
+        metadataBlock.write("QUANTUM_ID", 16);
+        metadataBlock.write("GLIMMER", 32);
+        metadataBlock.write("QUANTUM_SIGNATURE", 48);
+        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
+        return Buffer.concat([metadataBlock, data]);
     }
 }
 &nbsp;
 export class FLACDecoder {
-<span class="fstat-no" title="function not covered" >    async </span>decode(buffer: Buffer): Promise&lt;{ data: Buffer; metadata: Buffer; audioData?: Buffer }&gt; {
-        const metadataLength = <span class="cstat-no" title="statement not covered" >128;</span>
-        const metadataBlock = <span class="cstat-no" title="statement not covered" >buffer.slice(0, metadataLength);</span>
-        const audioBlock = <span class="cstat-no" title="statement not covered" >buffer.slice(metadataLength);</span>
-<span class="cstat-no" title="statement not covered" >        return {</span>
+    async decode(buffer: Buffer): Promise&lt;{ data: Buffer; metadata: Buffer; audioData?: Buffer }&gt; {
+        const metadataLength = 128;
+        const metadataBlock = buffer.slice(0, metadataLength);
+        const audioBlock = buffer.slice(metadataLength);
+        return {
             data: audioBlock,
             metadata: metadataBlock,
             audioData: audioBlock
@@ -202,7 +202,7 @@ export class FlacPattern {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-21T23:09:49.096Z
+                at 2025-05-22T02:48:24.696Z
             </div>
         <script src="../prettify.js"></script>
         <script>

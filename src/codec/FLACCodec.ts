@@ -13,7 +13,7 @@ export class FLACEncoder {
         const metadataBlock = Buffer.alloc(128);
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24 << 4, 8);       // Bit depth (high nibble for test compatibility)
+        metadataBlock.writeUInt8(24, 8);            // Bit depth: 24 bits
         metadataBlock.write("ID3", 12);
         metadataBlock.write("QUANTUM_ID", 16);
         metadataBlock.write("GLIMMER", 32);
