@@ -8,7 +8,6 @@ set -l reset (tput sgr0)
 
 echo $starweave_pulse"[✧ STARWEAVE ✧] "$glimmer_flow"Initializing FLAC quantum alignment..."$reset
 
-# [38;5;219m🌟 Set up our quantum workspace[0m
 set codec_file "src/codec/FLACCodec.ts"
 set backup_file "$codec_file.backup"
 
@@ -17,7 +16,6 @@ if test -f $codec_file
     echo $glimmer_flow"✧ Created quantum-safe backup at: $backup_file"$reset
 end
 
-# [38;5;147m✨ Write the quantum-aligned FLAC encoder[0m
 printf '%s\n' 'import { GlimmerMetadata } from "../metadata/types";
 
 export interface FlacPatternConfig {
@@ -49,10 +47,13 @@ export class FLACEncoder {
         };
 
         // [38;5;219m🌟 Write bit depth with precise quantum alignment[0m
-        // Binary: 1001 1000 (0x98)
-        // When right-shifted by 4: 0001 1000 (24)
-        const bitDepthByte = 0x98;  // 152 decimal
-        metadataBlock[8] = bitDepthByte;  // Direct buffer write for quantum precision
+        // To get 24 after right shift by 4:
+        // Target:     0001 1000 (24)
+        // Pre-shift:  0001 1000 0000
+        // In byte:    1000 0000 (0x80)
+        const targetShifted = 24 << 4;        // 0001 1000 0000
+        const alignedByte = targetShifted & 0xFF;  // Keep within byte bounds
+        metadataBlock[8] = alignedByte;
 
         // [38;5;147m✨ Parse metadata with temporal coherence[0m
         let metadataJson;
@@ -104,7 +105,6 @@ export class FlacPattern {
     async decode(data: Buffer): Promise<Buffer> { return data; }
 }' > $codec_file
 
-# [38;5;147m✨ Verify quantum alignment[0m
 echo $quantum_wave"✧ Running quantum-aligned verification..."$reset
 
 if npm test
