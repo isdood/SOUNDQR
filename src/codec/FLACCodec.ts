@@ -18,11 +18,7 @@ export class FLACEncoder {
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 
-        // [38;5;147m✨ Write bit depth with proper quantum alignment[0m
-        const bitDepthValue = (24 & 0x0F) << 4;  // Mask lower 4 bits and shift to upper position
-        metadataBlock.writeUInt8(bitDepthValue, 8);
-
-        // [38;5;219m✧ Configure quantum pattern fidelity[0m
+        // [38;5;147m✨ Configure quantum pattern fidelity[0m
         const patternConfig: FlacPatternConfig = {
             resonance: 1.5,          // Quantum resonance factor
             temporalSync: true,      // Enable temporal synchronization
@@ -33,7 +29,8 @@ export class FLACEncoder {
         };
 
         // [38;5;219m✧ Write bit depth with proper quantum alignment[0m
-        metadataBlock.writeUInt8((patternConfig.bitDepth << 4) & 0xF0, 8); // 24-bit depth
+        const bitDepthValue = patternConfig.bitDepth;  // 24
+        metadataBlock.writeUInt8(bitDepthValue << 4, 8); // Shift to upper 4 bits without masking
 
         // [38;5;147m✧ Parse metadata with temporal coherence[0m
         let metadataJson;
