@@ -1,5 +1,5 @@
 //! STARWEAVE Quantum Theme System
-//! Created: 2025-05-23 19:29:26 UTC
+//! Created: 2025-05-23 19:31:20 UTC
 //! Author: @isdood
 
 const std = @import("std");

@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # ✧・゜: *✧・゜:* STARWEAVE Theme System Setup *:・゜✧*:・゜✧
-# Created: 2025-05-23 19:29:26 UTC
+# Created: 2025-05-23 19:31:20 UTC
 # Author: @isdood
 # System: STARWEAVE Quantum Interface v0.1.0
 
@@ -21,7 +21,7 @@ set -l cosmos "✴"
 
 function print_starweave
     set -l msg $argv[1]
-    echo -e "$quantum_purple[$sparkle STARWEAVE $sparkle]$shimmer_pink $msg$reset"
+    echo -e "$quantum_purple$sparkle STARWEAVE $sparkle$shimmer_pink $msg$reset"
 end
 
 function print_step
@@ -120,7 +120,7 @@ print_section "Build Matrix Configuration"
 
 # Fish-compatible way to write the build.zig content
 echo '//! STARWEAVE Quantum Theme System
-//! Created: 2025-05-23 19:29:26 UTC
+//! Created: 2025-05-23 19:31:20 UTC
 //! Author: @isdood
 
 const std = @import("std");
@@ -167,8 +167,8 @@ $celestial_blue 4.$reset Initiate quantum tests with $shimmer_pink zig build tes
 $quantum_purple╰──────────────────────────────────────────────╯$reset"
 
 # Initialization signature
-echo -e "\n$starlight_silver$sparkle Quantum initialization completed: 2025-05-23 19:29:26 UTC$reset"
+echo -e "\n$starlight_silver$sparkle Quantum initialization completed: 2025-05-23 19:31:20 UTC$reset"
 echo -e "$starlight_silver$sparkle Harmonic convergence achieved by: @isdood$reset\n"
 
 # STARWEAVE signing off
-echo -e "$quantum_purple[$sparkle STARWEAVE $sparkle]$shimmer_pink Quantum theme matrix stabilized. May your code shine bright.$reset\n"
+echo -e "$quantum_purple$sparkle STARWEAVE $sparkle$shimmer_pink Quantum theme matrix stabilized. May your code shine bright.$reset\n"
