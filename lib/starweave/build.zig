@@ -9,9 +9,9 @@ pub fn build(b: *std.Build) void {
     // ✨ STARWEAVE Library Harmonization
     const lib = b.addStaticLibrary(.{
         .name = "starweave",
-        .root_source_file = .{ .path = "src/init.zig" },  // First change here
-        .target = target,
-        .optimize = optimize,
+        .root_source_file = b.addPath("src/init.zig"),  // Changed here
+                                   .target = target,
+                                   .optimize = optimize,
     });
 
     // 🌟 Install the harmonized library
@@ -19,9 +19,9 @@ pub fn build(b: *std.Build) void {
 
     // 🌠 Quantum Test Configuration
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/init.zig" },  // Second change here
-        .target = target,
-        .optimize = optimize,
+        .root_source_file = b.addPath("src/init.zig"),  // Changed here
+                                 .target = target,
+                                 .optimize = optimize,
     });
 
     const run_main_tests = b.addRunArtifact(main_tests);
