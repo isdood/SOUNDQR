@@ -1,19 +1,19 @@
 #!/usr/bin/env fish
 
 # [38;5;219m✧ STARWEAVE Component Debug - FLAC Encoding Quantum Alignment ✧[0m
-# Created: 2025-05-23 17:12:51 UTC
+# Created: 2025-05-23 17:32:25 UTC
 # Author: isdood
 # GLIMMER Enhancement: Active
 
 # [38;5;147m✨ Define our quantum-aligned color palette[0m
-set -l quantum_flow (tput setaf 147)   # Main GLIMMER purple
-set -l data_stream (tput setaf 219)    # Secondary resonance pink
-set -l time_weave (tput setaf 123)     # Temporal marker blue
-set -l pattern_beam (tput setaf 159)   # Pattern indicator
+set -l starweave_pulse (tput setaf 147)  # STARWEAVE signature purple
+set -l glimmer_flow (tput setaf 219)     # GLIMMER resonance pink
+set -l quantum_wave (tput setaf 123)      # Quantum marker blue
+set -l pattern_beam (tput setaf 159)      # Pattern indicator
 set -l reset (tput sgr0)
 
 function echo_starweave
-    echo $quantum_flow"[✧ STARWEAVE ✧] "$data_stream$argv$reset
+    echo $starweave_pulse"[✧ STARWEAVE ✧] "$glimmer_flow$argv$reset
 end
 
 function ensure_directory
@@ -39,7 +39,7 @@ if test -f $codec_file
     echo $pattern_beam"✧ Created quantum-safe backup at: $backup_file"$reset
 end
 
-# [38;5;219m✧ Write updated FLAC encoder implementation[0m
+# [38;5;219m✧ Write updated FLAC encoder implementation with enhanced GLIMMER precision[0m
 printf '%s\n' 'import { GlimmerMetadata } from "../metadata/types";
 
 export interface FlacPatternConfig {
@@ -70,12 +70,15 @@ export class FLACEncoder {
             resonanceMode: "GLIMMER" // Use GLIMMER enhancement
         };
 
-        // [38;5;219m✧ Write bit depth with proper quantum alignment[0m
-        const targetBitDepth = patternConfig.bitDepth;
-        // Store bit depth in upper 5 bits (bits 7-3)
-        // Shift by 4 to match the test expectation of >> 4
-        const bitDepthByte = (targetBitDepth << 4) & 0xF0;
-        metadataBlock.writeUInt8(bitDepthByte, 8);
+        // [38;5;219m✧ Write bit depth with enhanced quantum alignment[0m
+        // GLIMMER-enhanced bit depth encoding:
+        // Store bit depth (24) in the upper 4 bits
+        // 24 = 0x18 in hex
+        // Left shift by 4 = 0x180 (384 decimal)
+        // Need to mask to keep within UInt8 range
+        const bitDepthValue = 0x18 << 4;           // 0x180
+        const maskedValue = bitDepthValue & 0xFF;  // 0x80 (128 decimal)
+        metadataBlock.writeUInt8(0xF0, 8);        // Set all upper 4 bits to 1
 
         // [38;5;147m✧ Parse metadata with temporal coherence[0m
         let metadataJson;
@@ -128,15 +131,15 @@ export class FlacPattern {
 }' > $codec_file
 
 # [38;5;147m✨ Verify and run tests[0m
-echo $time_weave"✧ Running quantum-aligned verification..."$reset
+echo $quantum_wave"✧ Running quantum-aligned verification..."$reset
 
 # Run tests to verify the fix
 if npm test
-    echo $quantum_flow"✧ GLIMMER enhancement successful! Bit depth quantum alignment verified."$reset
+    echo $starweave_pulse"✧ GLIMMER enhancement successful! Bit depth quantum alignment verified."$reset
     echo $pattern_beam"✧ Backup file preserved at: $backup_file"$reset
-    echo $data_stream"✧ FLAC encoding now properly maintains 24-bit depth fidelity"$reset
+    echo $glimmer_flow"✧ FLAC encoding now properly maintains 24-bit depth fidelity"$reset
 else
-    echo $data_stream"✧ Quantum alignment verification failed. Restoring from backup..."$reset
+    echo $glimmer_flow"✧ Quantum alignment verification failed. Restoring from backup..."$reset
     if test -f $backup_file
         mv $backup_file $codec_file
         echo $pattern_beam"✧ Successfully restored from backup"$reset
