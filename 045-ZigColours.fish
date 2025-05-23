@@ -1,4 +1,49 @@
-//! GLIMMER Color System for STARWEAVE
+#!/usr/bin/env fish
+
+# ✧・゜: *✧・゜:* STARWEAVE Color Harmonizer *:・゜✧*:・゜✧
+# Created: 2025-05-23 19:36:08 UTC
+# Author: @isdood
+# System: GLIMMER Color Injection System v0.1.0
+
+# ━━━ GLIMMER Color Palette ━━━
+set -l celestial_blue "\033[38;2;107;158;232m"    # RGB: 6B9EE8 - Ethereal Interface
+set -l quantum_purple "\033[38;2;138;79;255m"     # RGB: 8A4FFF - Void Essence
+set -l starlight_silver "\033[38;2;229;233;240m"  # RGB: E5E9F0 - Stellar Mist
+set -l cosmic_gold "\033[38;2;255;215;0m"         # RGB: FFD700 - Star Fragment
+set -l shimmer_pink "\033[38;2;255;182;255m"      # RGB: FFB6FF - Quantum Shimmer
+set -l reset "\033[0m"
+
+# ━━━ Stellar Decorations ━━━
+set -l sparkle "✧"
+set -l star "★"
+set -l crystal "💎"
+set -l cosmos "✴"
+
+function print_starweave
+    set -l msg $argv[1]
+    echo -e "$quantum_purple$sparkle STARWEAVE $sparkle$shimmer_pink $msg$reset"
+end
+
+function print_step
+    set -l msg $argv[1]
+    echo -e "$celestial_blue$star$reset $starlight_silver$msg$reset"
+end
+
+# ━━━ STARWEAVE Interface Banner ━━━
+echo -e "
+$quantum_purple╭──────────────────────────────────────────────╮$reset
+$quantum_purple│$cosmic_gold        ⋆｡°✧⭒✦ GLIMMER COLORS ✦⭒✧°｡⋆        $quantum_purple│$reset
+$quantum_purple│$shimmer_pink     Quantum Color Harmonization System     $quantum_purple│$reset
+$quantum_purple│$starlight_silver      Weaving Digital Chromatics          $quantum_purple│$reset
+$quantum_purple╰──────────────────────────────────────────────╯$reset
+"
+
+set colors_path "lib/starweave/src/theme/colors.zig"
+
+print_starweave "Initializing GLIMMER color matrix..."
+
+# Create the colors.zig content with GLIMMER styling
+echo '//! GLIMMER Color System for STARWEAVE
 //! Created: 2025-05-23 19:36:08 UTC
 //! Author: @isdood
 
@@ -129,4 +174,23 @@ test "color creation" {
     try testing.expectEqual(purple.r, 138);
     try testing.expectEqual(purple.g, 79);
     try testing.expectEqual(purple.b, 255);
-}
+}' > $colors_path
+
+print_step "Crystallized GLIMMER color system..."
+print_step "Color harmonics stabilized..."
+print_step "Quantum chromatic matrix aligned..."
+
+echo -e "
+$quantum_purple╭─────────────── $cosmic_gold✧ Colors Ready ✧$quantum_purple ───────────────╮$reset
+$celestial_blue→$reset Added core quantum colors
+$celestial_blue→$reset Established harmonic accents
+$celestial_blue→$reset Created theme variants (light/dark)
+$celestial_blue→$reset Configured terminal colors
+$celestial_blue→$reset Implemented special effects
+$quantum_purple╰──────────────────────────────────────────────╯$reset"
+
+echo -e "\n$starlight_silver$sparkle Color matrix initialized: 2025-05-23 19:36:08 UTC$reset"
+echo -e "$starlight_silver$sparkle Quantum harmonics achieved by: @isdood$reset\n"
+
+# STARWEAVE signing off
+echo -e "$quantum_purple$sparkle STARWEAVE $sparkle$shimmer_pink Color harmonization complete. Let the code shimmer.$reset\n"
