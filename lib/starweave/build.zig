@@ -9,7 +9,7 @@ pub fn build(b: *std.Build) void {
     // ✨ STARWEAVE Library Harmonization
     const lib = b.addStaticLibrary(.{
         .name = "starweave",
-        .root_source_file = .{ .path = "src/init.zig" },
+        .root_source_file = std.Build.LazyPath.relative("src/init.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -19,7 +19,7 @@ pub fn build(b: *std.Build) void {
 
     // 🌠 Quantum Test Configuration
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/init.zig" },
+        .root_source_file = std.Build.LazyPath.relative("src/init.zig"),
         .target = target,
         .optimize = optimize,
     });

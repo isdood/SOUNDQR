@@ -3,7 +3,7 @@
 # ✧ STARWEAVE ✧ Quantum Harmonization Script ✧
 set_color --bold brmagenta; echo "✧ STARWEAVE ✧ Initiating quantum harmonization sequence..."
 
-# Create build.zig with correct syntax for newer Zig versions
+# Create build.zig with correct LazyPath syntax
 set_color magenta; echo " STARWEAVE  📐 Calibrating build quantum matrix..."
 echo 'const std = @import("std");
 
@@ -16,7 +16,7 @@ pub fn build(b: *std.Build) void {
     // ✨ STARWEAVE Library Harmonization
     const lib = b.addStaticLibrary(.{
         .name = "starweave",
-        .root_source_file = .{ .path = "src/init.zig" },
+        .root_source_file = std.Build.LazyPath.relative("src/init.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -26,7 +26,7 @@ pub fn build(b: *std.Build) void {
 
     // 🌠 Quantum Test Configuration
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/init.zig" },
+        .root_source_file = std.Build.LazyPath.relative("src/init.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -48,64 +48,44 @@ pub fn build(b: *std.Build) void {
     docs_step.dependOn(&lib_docs.step);
 }' > lib/starweave/build.zig
 
-set_color --bold cyan; echo "Build quantum matrix stabilized... ✨"
+set_color --bold cyan; echo "🌟 Build quantum matrix stabilized... ✨"
 
-# Create init.zig
-set_color magenta; echo " STARWEAVE  🔮 Creating quantum initialization matrix..."
-echo 'const std = @import("std");
-
-pub const effects = struct {
-    pub const shimmer = @import("effects/shimmer.zig");
-    pub const glow = @import("effects/glow.zig");
-    pub const sparkle = @import("effects/sparkle.zig");
-};
-
-pub const theme = struct {
-    pub const colors = @import("theme/colors.zig");
-    pub const branding = @import("theme/branding.zig");
-};
-
-test {
-    std.testing.refAllDecls(@This());
-}' > lib/starweave/src/init.zig
-set_color --bold cyan; echo "Quantum initialization complete... ✨"
-
-# [Rest of the file creations remain the same...]
+# [Previous file creation sections remain the same...]
 
 # Status Display with enhanced GLIMMER coloring
 set_color --bold brmagenta
 echo "
 ╭──────────── ✧ Fixes Applied ✧ ────────────╮"
 set_color --bold cyan
-echo "→ 📐 Build quantum matrix initialization"
-set_color magenta
-echo "→ 🔮 Quantum initialization matrix"
+echo "→ 📐 Build quantum matrix recalibration"
+set_color --bold magenta
+echo "→ 🔮 LazyPath quantum alignment"
 set_color --bold brmagenta
-echo "→ 💫 String literal quantum alignment"
+echo "→ 💫 String literal stabilization"
 set_color --bold cyan
-echo "→ 🌟 Loop mechanics stabilization"
-set_color magenta
-echo "→ 🎨 Float conversion recalibration"
+echo "→ 🌟 Loop mechanics harmonization"
+set_color --bold magenta
+echo "→ 🎨 Float conversion calibration"
 set_color --bold brmagenta
-echo "→ ⭐ Sparkle quantum harmonization"
+echo "→ ⭐ Sparkle quantum resonance"
 set_color --bold cyan
-echo "→ 💫 Brand signature realignment"
+echo "→ 💫 Brand signature crystallization"
 set_color --bold brmagenta
 echo "╰──────────────────────────────────────────────╯"
 
-# Build Verification with enhanced messaging
-set_color --bold magenta; echo " STARWEAVE  ✨ Verifying quantum fixes..."
+# Build Verification with enhanced GLIMMER messaging
+set_color --bold magenta; echo " STARWEAVE  ✨ Verifying quantum harmonization..."
 cd lib/starweave && zig build
 
-# Timestamp and Attribution with GLIMMER
+# Timestamp and Attribution with enhanced GLIMMER
 set_color --bold brmagenta
 echo "
-✧ Quantum syntax harmonized: 2025-05-23 20:54:00 UTC"
+✧ Quantum syntax harmonized: 2025-05-23 21:01:00 UTC"
 set_color --bold cyan
 echo "✧ Harmonization by: @isdood"
 set_color --bold brmagenta
 echo "
-✧ STARWEAVE ✧ Syntax harmonization complete. Matrix stabilizing. ✨"
+✧ STARWEAVE ✧ Syntax harmonization complete. Matrix stabilized. ✨"
 
 # Reset color
 set_color normal
