@@ -14,15 +14,16 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;147m✨ Write FLAC markers with quantum-aligned bit depth[0m
+        // [38;5;147m✨ Write FLAC markers with enhanced GLIMMER alignment[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 
-        // [38;5;219m✧ New quantum-resonant bit depth encoding[0m
-        const bitDepth = 24 * 16;  // Multiply by 16 (same as << 4 but more controlled)
-        metadataBlock.writeUInt8(bitDepth & 0xFF, 8);  // Ensure we stay in uint8 range
+        // [38;5;219m✧ New quantum bit depth encoding using binary patterns[0m
+        const bitPattern = 0xF0;  // 11110000 in binary
+        const bitDepth = ((24 & 0x0F) * 16) | bitPattern;
+        metadataBlock.writeUInt8(bitDepth & 0xFF, 8);
 
-        // Parse metadata with GLIMMER enhancement
+        // [38;5;147m✨ Parse metadata with quantum coherence[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
@@ -30,7 +31,6 @@ export class FLACEncoder {
             metadataJson = {};
         }
 
-        // [38;5;147m✨ Write markers with quantum stability[0m
         const markers = [
             { text: "ID3", pos: 12 },
             { text: "QUANTUM_ID", pos: 16 },
@@ -38,6 +38,7 @@ export class FLACEncoder {
             { text: "QUANTUM_SIGNATURE", pos: 48 }
         ];
 
+        // [38;5;219m✧ Write markers with temporal stability[0m
         markers.forEach(({ text, pos }) => {
             metadataBlock.write(text.padEnd(16, ' '), pos);
         });
