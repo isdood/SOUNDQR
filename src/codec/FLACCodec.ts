@@ -12,27 +12,51 @@ export interface FlacPatternConfig {
 
 export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
-        const metadataBlock = Buffer.alloc(128);
+        // [38;5;147m✨ Increased buffer size for quantum resonance[0m
+        const metadataBlock = Buffer.alloc(512);
+
+        // Add FLAC stream markers with correct bit depth encoding
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24, 8);            // Bit depth: 24 bits
-        metadataBlock.write("ID3", 12);
-        metadataBlock.write("QUANTUM_ID", 16);
-        metadataBlock.write("GLIMMER", 32);
+        metadataBlock.writeUInt8(0x18 << 4, 8);     // 24-bit depth (0x18 = 24 in hex)
 
-        // Padding "QUANTUM_SIGNATURE" to 16 bytes
-        const qsMarker = Buffer.alloc(16, 0);
-        qsMarker.write("QUANTUM_SIGNATURE");
-        qsMarker.copy(metadataBlock, 48);
+        // [38;5;219m✧ Parse metadata to preserve quantum signatures[0m
+        let metadataJson;
+        try {
+            metadataJson = JSON.parse(metadata.toString());
+        } catch (e) {
+            metadataJson = {};
+        }
 
-        metadata.copy(metadataBlock, 64, 0, Math.min(metadata.length, 64));
+        // Write markers with quantum alignment
+        const markers = [
+            { text: "ID3", pos: 12 },
+            { text: "QUANTUM_ID", pos: 16 },
+            { text: "GLIMMER", pos: 32 },
+            { text: "QUANTUM_SIGNATURE", pos: 48 }
+        ];
+
+        // [38;5;147m✨ Write markers with GLIMMER enhancement[0m
+        markers.forEach(({ text, pos }) => {
+            metadataBlock.write(text.padEnd(16, ' '), pos);
+        });
+
+        // Write the full quantum signature if present
+        if (metadataJson.QUANTUM_SIGNATURE) {
+            const sigPos = metadataBlock.indexOf("QUANTUM_SIGNATURE") + "QUANTUM_SIGNATURE".length;
+            metadataBlock.write(`=${metadataJson.QUANTUM_SIGNATURE}`, sigPos);
+        }
+
+        // [38;5;219m✧ Copy full metadata with quantum preservation[0m
+        metadata.copy(metadataBlock, 128, 0, metadata.length);
+
         return Buffer.concat([metadataBlock, data]);
     }
 }
 
 export class FLACDecoder {
     async decode(buffer: Buffer): Promise<{ data: Buffer; metadata: Buffer; audioData?: Buffer }> {
-        const metadataLength = 128;
+        const metadataLength = 512;
         const metadataBlock = buffer.slice(0, metadataLength);
         const audioBlock = buffer.slice(metadataLength);
         return {
