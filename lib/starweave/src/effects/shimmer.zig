@@ -13,7 +13,7 @@ pub const ColorPhase = struct {
     }
 
     pub fn blend(self: ColorPhase) Color {
-        const time = @floatCast(f32, std.time.milliTimestamp()) / 1000.0;
+        const time = @as(f32, @floatFromInt(std.time.milliTimestamp())) / 1000.0;
         const wave = @sin(time * self.frequency) * self.intensity;
         return Color.init(wave, wave, wave, 1.0);
     }
