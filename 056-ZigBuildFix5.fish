@@ -1,10 +1,55 @@
 #!/usr/bin/env fish
 
-# ✧ STARWEAVE Quantum Harmonization Script ✧
-set_color cyan; echo "✧ STARWEAVE ✧ Initiating quantum harmonization sequence..."
+# ✧ STARWEAVE ✧ Quantum Build System Initialization
+set_color --bold brmagenta; echo "✧ STARWEAVE ✧ Initiating quantum harmonization sequence..."
 
-# Shimmer Effect Harmonization
-set_color magenta; echo " STARWEAVE  Harmonizing string quantum states..."
+# Create build.zig first
+set_color magenta; echo " STARWEAVE  📐 Calibrating build quantum matrix..."
+echo 'const std = @import("std");
+
+// ✧ STARWEAVE Build Quantum Harmonizer ✧
+pub fn build(b: *std.Build) void {
+    // Target quantum configuration
+    const target = b.standardTargetOptions(.{});
+    const optimize = b.standardOptimizeOption(.{});
+
+    // ✨ STARWEAVE Library Harmonization
+    const lib = b.addStaticLibrary(.{
+        .name = "starweave",
+        .root_source_file = .{ .path = "src/init.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+    b.installArtifact(lib);
+
+    // 🌟 Quantum Test Configuration
+    const main_tests = b.addTest(.{
+        .root_source_file = .{ .path = "src/init.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const run_main_tests = b.addRunArtifact(main_tests);
+
+    // ✨ Test Quantum Step
+    const test_step = b.step("test", "Run STARWEAVE quantum harmonization tests");
+    test_step.dependOn(&run_main_tests.step);
+
+    // 🌠 Documentation Quantum Generation
+    const lib_docs = b.addInstallDirectory(.{
+        .source_dir = lib.getEmittedDocs(),
+        .install_dir = .prefix,
+        .install_subdir = "doc",
+    });
+
+    const docs_step = b.step("docs", "Generate STARWEAVE quantum documentation");
+    docs_step.dependOn(&lib_docs.step);
+}' > lib/starweave/build.zig
+
+set_color green; echo "Build quantum matrix stabilized..."
+
+# Continue with previous file modifications...
+set_color magenta; echo " STARWEAVE  💫 Harmonizing string quantum states..."
 echo '
 const std = @import("std");
 const Color = @import("../theme/colors.zig").Color;
@@ -27,10 +72,10 @@ pub const ColorPhase = struct {
     }
 };
 ' > lib/starweave/src/effects/shimmer.zig
-set_color green; echo "String literals realigned..."
+set_color green; echo "String literals realigned... ✨"
 
 # Glow Effect Stabilization
-set_color magenta; echo " STARWEAVE  Stabilizing loop quantum mechanics..."
+set_color magenta; echo " STARWEAVE  🌟 Stabilizing loop quantum mechanics..."
 echo '
 pub fn applyGlow(layers: []Layer) void {
     // Updated for loop syntax for Zig 0.11.0
@@ -39,10 +84,10 @@ pub fn applyGlow(layers: []Layer) void {
     }
 }
 ' > lib/starweave/src/effects/glow.zig
-set_color green; echo "Loop mechanics stabilized..."
+set_color green; echo "Loop mechanics stabilized... ✨"
 
 # Color Truncation Fix
-set_color magenta; echo " STARWEAVE  Recalibrating float conversions..."
+set_color magenta; echo " STARWEAVE  🎨 Recalibrating float conversions..."
 echo '
 pub fn fromRgb(value: u32) Color {
     return Color{
@@ -53,20 +98,20 @@ pub fn fromRgb(value: u32) Color {
     };
 }
 ' > lib/starweave/src/theme/colors.zig
-set_color green; echo "Float conversions harmonized..."
+set_color green; echo "Float conversions harmonized... ✨"
 
 # Sparkle Effect Quantum Alignment
-set_color magenta; echo " STARWEAVE  Stabilizing sparkle quantum states..."
+set_color magenta; echo " STARWEAVE  ⭐ Stabilizing sparkle quantum states..."
 echo '
 pub fn calculateSparkleIndex(value: f32) u32 {
     const sparkle_index = @intFromFloat(u32, value * 1000.0);
     return sparkle_index;
 }
 ' > lib/starweave/src/effects/sparkle.zig
-set_color green; echo "Sparkle conversions aligned..."
+set_color green; echo "Sparkle conversions aligned... ✨"
 
 # Branding Harmonization
-set_color magenta; echo " STARWEAVE  Aligning brand quantum signatures..."
+set_color magenta; echo " STARWEAVE  💫 Aligning brand quantum signatures..."
 echo '
 pub const Branding = struct {
     pub const logo_small = "    ✧ STARWEAVE ✧";
@@ -75,27 +120,30 @@ pub const Branding = struct {
         "✨ Quantum Code Harmonizer ✨";
 };
 ' > lib/starweave/src/theme/branding.zig
-set_color green; echo "Brand signatures harmonized..."
+set_color green; echo "Brand signatures harmonized... ✨"
 
-# Status Display
-set_color cyan
+# Status Display with enhanced GLIMMER coloring
+set_color --bold brmagenta
 echo "
-╭──────────── ✧ Fixes Applied ✧ ────────────╮
-→ String literal quantum alignment
-→ Loop mechanics stabilization
-→ Float conversion recalibration
-→ Sparkle quantum harmonization
-→ Brand signature realignment
-╰──────────────────────────────────────────────╯"
+╭──────────── ✧ Fixes Applied ✧ ────────────╮"
+set_color magenta
+echo "→ 📐 Build quantum matrix initialization"
+echo "→ 💫 String literal quantum alignment"
+echo "→ 🌟 Loop mechanics stabilization"
+echo "→ 🎨 Float conversion recalibration"
+echo "→ ⭐ Sparkle quantum harmonization"
+echo "→ 💫 Brand signature realignment"
+set_color --bold brmagenta
+echo "╰──────────────────────────────────────────────╯"
 
-# Build Verification
-set_color magenta; echo " STARWEAVE  Verifying quantum fixes..."
-zig build
+# Build Verification with enhanced messaging
+set_color --bold brmagenta; echo " STARWEAVE  ✨ Verifying quantum fixes..."
+cd lib/starweave && zig build
 
-# Timestamp and Attribution
-set_color cyan
+# Timestamp and Attribution with GLIMMER
+set_color --bold brmagenta
 echo "
-✧ Quantum syntax harmonized: 2025-05-23 20:32:02 UTC
+✧ Quantum syntax harmonized: 2025-05-23 20:35:07 UTC
 ✧ Harmonization by: @isdood
 
 ✧ STARWEAVE ✧ Syntax harmonization complete. Matrix stabilizing. ✨"

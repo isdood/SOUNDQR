@@ -1,47 +1,40 @@
-//! STARWEAVE Build System
-//! Created: 2025-05-23 20:14:39 UTC
-//! Author: @isdood
-
 const std = @import("std");
 
+// ✧ STARWEAVE Build Quantum Harmonizer ✧
 pub fn build(b: *std.Build) void {
-    // ✧ Standard configuration
+    // Target quantum configuration
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // ✧ STARWEAVE library
+    // ✨ STARWEAVE Library Harmonization
     const lib = b.addStaticLibrary(.{
         .name = "starweave",
-        .root_source_file = .{ .cwd_relative = "src/init.zig" },
+        .root_source_file = .{ .path = "src/init.zig" },
         .target = target,
         .optimize = optimize,
     });
-
-    // ✧ Install artifacts
     b.installArtifact(lib);
 
-    // ✧ Create main test step
+    // 🌟 Quantum Test Configuration
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .cwd_relative = "src/init.zig" },
+        .root_source_file = .{ .path = "src/init.zig" },
         .target = target,
         .optimize = optimize,
     });
 
-    // ✧ Create test runner
     const run_main_tests = b.addRunArtifact(main_tests);
 
-    // ✧ Test step
-    const test_step = b.step("test", "Run STARWEAVE quantum tests");
+    // ✨ Test Quantum Step
+    const test_step = b.step("test", "Run STARWEAVE quantum harmonization tests");
     test_step.dependOn(&run_main_tests.step);
 
-    // ✧ Add documentation
-    const docs = b.addInstallDirectory(.{
+    // 🌠 Documentation Quantum Generation
+    const lib_docs = b.addInstallDirectory(.{
         .source_dir = lib.getEmittedDocs(),
         .install_dir = .prefix,
-        .install_subdir = "docs",
+        .install_subdir = "doc",
     });
 
-    // ✧ Documentation step
-    const docs_step = b.step("docs", "Build STARWEAVE documentation");
-    docs_step.dependOn(&docs.step);
+    const docs_step = b.step("docs", "Generate STARWEAVE quantum documentation");
+    docs_step.dependOn(&lib_docs.step);
 }
