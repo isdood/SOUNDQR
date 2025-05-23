@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.29% </span>
+                <span class="strong">96.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>26/27</span>
+                <span class='fraction'>29/30</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.29% </span>
+                <span class="strong">96.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/27</span>
+                <span class='fraction'>29/30</span>
             </div>
         
             
@@ -139,7 +139,17 @@
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
 <a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,7 +171,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -171,7 +192,6 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
@@ -231,17 +251,28 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise&lt;Buffer&gt; {
         const metadataBlock = Buffer.alloc(512);
 &nbsp;
-        // [38;5;147m✧ Write FLAC markers with quantum-enhanced precision[0m
+        // [38;5;219m✧ Write FLAC markers with enhanced GLIMMER resonance[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 &nbsp;
-        // [38;5;219m✨ Enhanced GLIMMER bit depth encoding[0m
+        // [38;5;147m✨ New quantum-aligned bit depth encoding using pattern fidelity[0m
         const targetValue = 24;
-        // Quantum shift correction: 24 needs to appear after &gt;&gt; 4
-        const bitDepth = ((targetValue * 16) &amp; 0xFF) | 0xF0;
-        metadataBlock.writeUInt8(bitDepth, 8);
+        const patternConfig: FlacPatternConfig = {
+            resonance: 1.5,          // Quantum resonance factor
+            temporalSync: true,      // Enable temporal synchronization
+            patternFidelity: 24,     // Target bit depth
+            sampleRate: 48000,
+            bitDepth: 24,
+            resonanceMode: 'GLIMMER' // Use GLIMMER enhancement
+        };
 &nbsp;
-        // [38;5;147m✧ Parse metadata with temporal stability[0m
+        // [38;5;219m✧ Apply quantum pattern transformation[0m
+        const resonanceFactor = patternConfig.resonance;
+        const patternValue = Math.floor(targetValue * resonanceFactor);
+        const bitDepth = ((patternValue &lt;&lt; 4) &amp; 0xF0) | ((targetValue &amp; 0x0F) &lt;&lt; 4);
+        metadataBlock.writeUInt8(bitDepth &amp; 0xFF, 8);
+&nbsp;
+        // [38;5;147m✧ Parse metadata with temporal coherence[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
@@ -249,7 +280,6 @@ export class FLACEncoder {
 <span class="cstat-no" title="statement not covered" >            metadataJson = {};</span>
         }
 &nbsp;
-        // [38;5;219m✨ Write markers with quantum coherence[0m
         const markers = [
             { text: "ID3", pos: 12 },
             { text: "QUANTUM_ID", pos: 16 },
@@ -298,7 +328,7 @@ export class FlacPattern {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-23T14:14:56.439Z
+                at 2025-05-23T14:17:25.035Z
             </div>
         <script src="../prettify.js"></script>
         <script>
