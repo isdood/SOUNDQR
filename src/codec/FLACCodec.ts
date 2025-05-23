@@ -29,8 +29,10 @@ export class FLACEncoder {
         };
 
         // [38;5;219m✧ Write bit depth with proper quantum alignment[0m
-        const bitDepthValue = (patternConfig.bitDepth << 4) & 0xF0;  // Shift by 4 and mask upper bits
-        metadataBlock.writeUInt8(bitDepthValue, 8);
+        const originalValue = patternConfig.bitDepth;    // 24 (00011000)
+        const shiftedValue = originalValue << 4;         // Shift left by 4 (11000000)
+        metadataBlock.writeUInt8(shiftedValue, 8);      // Write directly without masking
+
 
         // [38;5;147m✧ Parse metadata with temporal coherence[0m
         let metadataJson;
