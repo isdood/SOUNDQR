@@ -1,5 +1,5 @@
 //! STARWEAVE Quantum Core System
-//! Created: 2025-05-23 20:01:02 UTC
+//! Created: 2025-05-23 20:17:04 UTC
 //! Author: @isdood
 
 const std = @import("std");
@@ -44,10 +44,11 @@ pub const StarweaveCore = struct {
 
     /// Apply all quantum effects to text
     pub fn applyEffects(self: *Self, text: []const u8) ![]const u8 {
-        var sparkled = try self.sparkle.apply(text);
+        // Use const for immutable values
+        const sparkled = try self.sparkle.apply(text);
         defer std.heap.page_allocator.free(sparkled);
 
-        var shimmered = try self.shimmer.apply(sparkled);
+        const shimmered = try self.shimmer.apply(sparkled);
         defer std.heap.page_allocator.free(shimmered);
 
         return try self.glow.apply(shimmered);
