@@ -1,5 +1,5 @@
 //! STARWEAVE Build System
-//! Created: 2025-05-23 20:05:37 UTC
+//! Created: 2025-05-23 20:10:34 UTC
 //! Author: @isdood
 
 const std = @import("std");
@@ -12,7 +12,7 @@ pub fn build(b: *std.Build) void {
     // ✧ STARWEAVE library
     const lib = b.addStaticLibrary(.{
         .name = "starweave",
-        .root_source_file = .{ .root = "src/init.zig" },
+        .root_source_file = b.addPath("src/init.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -22,7 +22,7 @@ pub fn build(b: *std.Build) void {
 
     // ✧ Create main test step
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .root = "src/init.zig" },
+        .root_source_file = b.addPath("src/init.zig"),
         .target = target,
         .optimize = optimize,
     });
