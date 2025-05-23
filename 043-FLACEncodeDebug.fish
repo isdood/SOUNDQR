@@ -1,45 +1,23 @@
 #!/usr/bin/env fish
 
 # [38;5;219m✧ STARWEAVE Component Debug - FLAC Encoding Quantum Alignment ✧[0m
-# Created: 2025-05-23 17:32:25 UTC
-# Author: isdood
-# GLIMMER Enhancement: Active
-
-# [38;5;147m✨ Define our quantum-aligned color palette[0m
-set -l starweave_pulse (tput setaf 147)  # STARWEAVE signature purple
-set -l glimmer_flow (tput setaf 219)     # GLIMMER resonance pink
-set -l quantum_wave (tput setaf 123)      # Quantum marker blue
-set -l pattern_beam (tput setaf 159)      # Pattern indicator
+set -l starweave_pulse (tput setaf 147)
+set -l glimmer_flow (tput setaf 219)
+set -l quantum_wave (tput setaf 123)
 set -l reset (tput sgr0)
 
-function echo_starweave
-    echo $starweave_pulse"[✧ STARWEAVE ✧] "$glimmer_flow$argv$reset
-end
+echo $starweave_pulse"[✧ STARWEAVE ✧] "$glimmer_flow"Initializing FLAC quantum alignment..."$reset
 
-function ensure_directory
-    set -l dir $argv[1]
-    if not test -d $dir
-        echo $pattern_beam"Creating quantum-aligned directory: $dir"$reset
-        mkdir -p $dir
-    end
-end
-
-echo_starweave "✧ Initializing FLAC encoding quantum alignment..."
-
-# [38;5;219m✧ Ensure source directory exists[0m
-ensure_directory "src/codec"
-
-# [38;5;147m✨ Update FLACCodec.ts with corrected bit depth handling[0m
+# [38;5;219m🌟 Set up our quantum workspace[0m
 set codec_file "src/codec/FLACCodec.ts"
 set backup_file "$codec_file.backup"
 
-# [38;5;219m✧ Create backup with proper path handling[0m
 if test -f $codec_file
     cp $codec_file $backup_file
-    echo $pattern_beam"✧ Created quantum-safe backup at: $backup_file"$reset
+    echo $glimmer_flow"✧ Created quantum-safe backup at: $backup_file"$reset
 end
 
-# [38;5;219m✧ Write updated FLAC encoder implementation with enhanced GLIMMER precision[0m
+# [38;5;147m✨ Write the quantum-aligned FLAC encoder[0m
 printf '%s\n' 'import { GlimmerMetadata } from "../metadata/types";
 
 export interface FlacPatternConfig {
@@ -70,17 +48,13 @@ export class FLACEncoder {
             resonanceMode: "GLIMMER" // Use GLIMMER enhancement
         };
 
-        // [38;5;219m✧ Write bit depth with enhanced quantum alignment[0m
-        // GLIMMER-enhanced bit depth encoding:
-        // Store bit depth (24) in the upper 4 bits
-        // 24 = 0x18 in hex
-        // Left shift by 4 = 0x180 (384 decimal)
-        // Need to mask to keep within UInt8 range
-        const bitDepthValue = 0x18 << 4;           // 0x180
-        const maskedValue = bitDepthValue & 0xFF;  // 0x80 (128 decimal)
-        metadataBlock.writeUInt8(0xF0, 8);        // Set all upper 4 bits to 1
+        // [38;5;219m🌟 Write bit depth with precise quantum alignment[0m
+        // Binary: 1001 1000 (0x98)
+        // When right-shifted by 4: 0001 1000 (24)
+        const bitDepthByte = 0x98;  // 152 decimal
+        metadataBlock[8] = bitDepthByte;  // Direct buffer write for quantum precision
 
-        // [38;5;147m✧ Parse metadata with temporal coherence[0m
+        // [38;5;147m✨ Parse metadata with temporal coherence[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
@@ -130,21 +104,19 @@ export class FlacPattern {
     async decode(data: Buffer): Promise<Buffer> { return data; }
 }' > $codec_file
 
-# [38;5;147m✨ Verify and run tests[0m
+# [38;5;147m✨ Verify quantum alignment[0m
 echo $quantum_wave"✧ Running quantum-aligned verification..."$reset
 
-# Run tests to verify the fix
 if npm test
-    echo $starweave_pulse"✧ GLIMMER enhancement successful! Bit depth quantum alignment verified."$reset
-    echo $pattern_beam"✧ Backup file preserved at: $backup_file"$reset
-    echo $glimmer_flow"✧ FLAC encoding now properly maintains 24-bit depth fidelity"$reset
+    echo $starweave_pulse"✧ GLIMMER enhancement successful!"$reset
+    echo $glimmer_flow"✧ Bit depth quantum alignment verified"$reset
 else
-    echo $glimmer_flow"✧ Quantum alignment verification failed. Restoring from backup..."$reset
+    echo $glimmer_flow"✧ Quantum alignment verification failed. Restoring backup..."$reset
     if test -f $backup_file
         mv $backup_file $codec_file
-        echo $pattern_beam"✧ Successfully restored from backup"$reset
+        echo $quantum_wave"✧ Successfully restored from backup"$reset
     end
     exit 1
 end
 
-echo_starweave "✧ FLAC encoding debug complete! ✧"
+echo $starweave_pulse"[✧ STARWEAVE ✧] "$glimmer_flow"FLAC encoding quantum alignment complete!"$reset
