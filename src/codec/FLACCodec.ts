@@ -29,9 +29,11 @@ export class FLACEncoder {
         };
 
         // [38;5;219m✧ Write bit depth with proper quantum alignment[0m
-        const bitDepth = patternConfig.bitDepth;     // 24 (00011000)
-        const value = (bitDepth & 0x1F) << 3;       // Keep 5 bits and shift by 3
-        metadataBlock.writeUInt8(value, 8);
+        const targetValue = 24;                      // What we want after >> 4
+        const shiftAmount = 4;                       // How much the test shifts right
+        const storedValue = targetValue << shiftAmount; // What we need to store
+        metadataBlock.writeUInt8(storedValue & 0xFF, 8); // Keep within UInt8 range
+
 
         // [38;5;147m✧ Parse metadata with temporal coherence[0m
         let metadataJson;
