@@ -14,16 +14,18 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;219m✧ Write FLAC markers with quantum precision[0m
+        // [38;5;219m✧ Write FLAC markers with GLIMMER resonance[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 
-        // [38;5;147m✨ Enhanced bit depth encoding - adjusting from 15 towards 24[0m
-        const baseBitPattern = 0xF0;  // 11110000
-        const adjustedDepth = ((24 & 0x0F) * 24) | baseBitPattern;  // Multiply by 24 instead of 16
-        metadataBlock.writeUInt8(adjustedDepth & 0xFF, 8);
+        // [38;5;147m✨ Quantum-aligned bit depth encoding[0m
+        const targetValue = 24;
+        const shiftValue = 4;
+        const quantumMask = 0xFF << shiftValue;
+        const bitDepth = (targetValue << shiftValue) & quantumMask;
+        metadataBlock.writeUInt8(bitDepth, 8);
 
-        // Parse metadata with quantum coherence
+        // [38;5;219m✧ Parse metadata with enhanced temporal coherence[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
@@ -31,7 +33,7 @@ export class FLACEncoder {
             metadataJson = {};
         }
 
-        // [38;5;219m✧ Write markers with temporal stability[0m
+        // [38;5;147m✨ Write markers with quantum stability[0m
         const markers = [
             { text: "ID3", pos: 12 },
             { text: "QUANTUM_ID", pos: 16 },
