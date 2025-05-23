@@ -18,9 +18,9 @@ export class FLACEncoder {
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 
-        // [38;5;219m✧ New quantum-stable bit depth encoding[0m
-        const bitDepth = (24 & 0xFF) << 3;  // Preserve value before shifting
-        metadataBlock.writeUInt8(bitDepth, 8);
+        // [38;5;219m✧ New quantum-resonant bit depth encoding[0m
+        const bitDepth = 24 * 16;  // Multiply by 16 (same as << 4 but more controlled)
+        metadataBlock.writeUInt8(bitDepth & 0xFF, 8);  // Ensure we stay in uint8 range
 
         // Parse metadata with GLIMMER enhancement
         let metadataJson;
@@ -30,7 +30,7 @@ export class FLACEncoder {
             metadataJson = {};
         }
 
-        // [38;5;147m✨ Write markers with temporal preservation[0m
+        // [38;5;147m✨ Write markers with quantum stability[0m
         const markers = [
             { text: "ID3", pos: 12 },
             { text: "QUANTUM_ID", pos: 16 },
