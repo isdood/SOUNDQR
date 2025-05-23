@@ -16,7 +16,7 @@ pub const Color = struct {
     pub fn fromRgb(value: u32) Color {
         return Color{
             .r = @truncate((value >> 16) & 0xFF),
-            .g = @truncate(@as(u8, (value >> 8) & 0xFF));
+            .g = @truncate(@as(u8, (value >> 8) & 0xFF)),
             .b = @truncate(u8, value & 0xFF),
             .a = 255,
         };
