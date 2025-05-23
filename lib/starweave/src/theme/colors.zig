@@ -1,10 +1,24 @@
+pub const Color = struct {
+    r: u8,
+    g: u8,
+    b: u8,
+    a: u8,
 
-pub fn fromRgb(value: u32) Color {
-    return Color{
-        .r = @truncate(u8, (value >> 16) & 0xFF),
-        .g = @truncate(u8, (value >> 8) & 0xFF),
-        .b = @truncate(u8, value & 0xFF),
-        .a = 255,
-    };
-}
+    pub fn init(r: f32, g: f32, b: f32, a: f32) Color {
+        return Color{
+            .r = @floatToInt(u8, r * 255.0),
+            .g = @floatToInt(u8, g * 255.0),
+            .b = @floatToInt(u8, b * 255.0),
+            .a = @floatToInt(u8, a * 255.0),
+        };
+    }
 
+    pub fn fromRgb(value: u32) Color {
+        return Color{
+            .r = @truncate(u8, (value >> 16) & 0xFF),
+            .g = @truncate(u8, (value >> 8) & 0xFF),
+            .b = @truncate(u8, value & 0xFF),
+            .a = 255,
+        };
+    }
+};

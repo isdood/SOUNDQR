@@ -1,4 +1,3 @@
-
 const std = @import("std");
 const Color = @import("../theme/colors.zig").Color;
 
@@ -19,4 +18,3 @@ pub const ColorPhase = struct {
         return Color.init(wave, wave, wave, 1.0);
     }
 };
-
