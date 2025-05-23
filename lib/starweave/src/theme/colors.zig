@@ -9,7 +9,7 @@ pub const Color = struct {
             .r = @intFromFloat(r * 255.0),
             .g = @as(u8, @intFromFloat(g * 255.0)),
             .b = @as(u8, @intFromFloat(b * 255.0)),
-            .a = @floatToInt(u8, a * 255.0),
+            .a = @as(u8, @intFromFloat(a * 255.0)),
         };
     }
 
