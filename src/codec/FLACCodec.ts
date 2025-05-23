@@ -21,8 +21,8 @@ export class FLACEncoder {
         // [38;5;147m✨ Quantum-aligned bit depth encoding[0m
         const targetValue = 24;
         const shiftValue = 4;
-        const quantumMask = 0xFF << shiftValue;
-        const bitDepth = (targetValue << shiftValue) & quantumMask;
+        // Mask first, then shift to stay within uint8 range
+        const bitDepth = ((targetValue & 0x0F) << shiftValue) | 0xF0;
         metadataBlock.writeUInt8(bitDepth, 8);
 
         // [38;5;219m✧ Parse metadata with enhanced temporal coherence[0m
