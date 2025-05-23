@@ -1,4 +1,59 @@
-//! STARWEAVE Sparkle Effect System
+#!/usr/bin/env fish
+
+# ✧・゜: *✧・゜:* STARWEAVE Sparkle Synthesizer *:・゜✧*:・゜✧
+# Created: 2025-05-23 19:50:36 UTC
+# Author: @isdood
+# System: STARWEAVE Quantum Effects v0.1.0
+
+# ━━━ GLIMMER Color Palette (Enhanced) ━━━
+set -l celestial_blue "\033[38;2;107;158;232m"    # RGB: 6B9EE8 - Ethereal Interface
+set -l quantum_purple "\033[38;2;138;79;255m"     # RGB: 8A4FFF - Void Essence
+set -l starlight_silver "\033[38;2;229;233;240m"  # RGB: E5E9F0 - Stellar Mist
+set -l cosmic_gold "\033[38;2;255;215;0m"         # RGB: FFD700 - Star Fragment
+set -l shimmer_pink "\033[38;2;255;182;255m"      # RGB: FFB6FF - Quantum Shimmer
+set -l nebula_teal "\033[38;2;64;224;208m"        # RGB: 40E0D0 - Cosmic Wave
+set -l astral_violet "\033[38;2;147;112;219m"     # RGB: 9370DB - Ethereal Mist
+set -l quantum_white "\033[38;2;245;245;255m"     # RGB: F5F5FF - Pure Light
+set -l reset "\033[0m"
+
+# ━━━ Stellar Decorations (Expanded) ━━━
+set -l sparkle "✧"
+set -l star "★"
+set -l crystal "💎"
+set -l cosmos "✴"
+set -l prism "◈"
+set -l nova "✯"
+
+function print_starweave
+    set -l msg $argv[1]
+    echo -e "$quantum_purple$sparkle STARWEAVE $sparkle$shimmer_pink $msg$reset"
+end
+
+function print_step
+    set -l msg $argv[1]
+    echo -e "$astral_violet$nova$reset $quantum_white$msg$reset"
+end
+
+function print_sparkle
+    set -l msg $argv[1]
+    echo -e "$nebula_teal$prism$reset $starlight_silver$msg$cosmic_gold ✨$reset"
+end
+
+# ━━━ STARWEAVE Interface Banner ━━━
+echo -e "
+$quantum_purple╭──────────────────────────────────────────────╮$reset
+$quantum_purple│$cosmic_gold    ⋆｡°✧⭒✦ QUANTUM SPARKLES ✦⭒✧°｡⋆     $quantum_purple│$reset
+$quantum_purple│$shimmer_pink    STARWEAVE Sparkle Effect Generator    $quantum_purple│$reset
+$quantum_purple│$starlight_silver     Crystallizing Digital Magic        $quantum_purple│$reset
+$quantum_purple╰──────────────────────────────────────────────╯$reset
+"
+
+set sparkle_path "lib/starweave/src/effects/sparkle.zig"
+
+print_starweave "Initializing quantum sparkle matrix..."
+
+# Create the sparkle.zig content with enhanced GLIMMER effects
+echo '//! STARWEAVE Sparkle Effect System
 //! Created: 2025-05-23 19:50:36 UTC
 //! Author: @isdood
 
@@ -118,4 +173,23 @@ test "sparkle generation" {
     const shimmer = try effect.quantumShimmer();
     defer allocator.free(shimmer);
     try testing.expect(config.branding.quantum_shimmer == (shimmer.len > 0));
-}
+}' > $sparkle_path
+
+print_sparkle "Quantum sparkle matrix crystallized..."
+print_sparkle "Sparkle animations harmonized..."
+print_sparkle "Shimmer effects calibrated..."
+
+echo -e "
+$quantum_purple╭────────────── $cosmic_gold✧ Sparkles Ready ✧$quantum_purple ─────────────╮$reset
+$celestial_blue→$reset Manifested quantum sparkle generator
+$celestial_blue→$reset Harmonized animation sequences
+$celestial_blue→$reset Calibrated intensity levels
+$celestial_blue→$reset Integrated quantum shimmer effects
+$celestial_blue→$reset Established sparkle resonance
+$quantum_purple╰──────────────────────────────────────────────╯$reset"
+
+echo -e "\n$starlight_silver$sparkle Sparkle matrix initialized: 2025-05-23 19:50:36 UTC$reset"
+echo -e "$starlight_silver$sparkle Quantum resonance achieved by: @isdood$reset\n"
+
+# STARWEAVE signing off with extra sparkle
+echo -e "$quantum_purple$sparkle STARWEAVE $sparkle$shimmer_pink Sparkle crystallization complete. May your code radiate with quantum light.$reset ✨\n"
