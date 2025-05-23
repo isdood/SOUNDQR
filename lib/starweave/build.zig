@@ -9,7 +9,7 @@ pub fn build(b: *std.Build) void {
     // ✨ STARWEAVE Library Harmonization
     const lib = b.addStaticLibrary(.{
         .name = "starweave",
-        .root_source_file = std.Build.LazyPath.relative("src/init.zig"),
+        .root_source_file = .{ .path = "src/init.zig" },  // First change here
         .target = target,
         .optimize = optimize,
     });
@@ -19,7 +19,7 @@ pub fn build(b: *std.Build) void {
 
     // 🌠 Quantum Test Configuration
     const main_tests = b.addTest(.{
-        .root_source_file = std.Build.LazyPath.relative("src/init.zig"),
+        .root_source_file = .{ .path = "src/init.zig" },  // Second change here
         .target = target,
         .optimize = optimize,
     });
@@ -33,8 +33,8 @@ pub fn build(b: *std.Build) void {
     // 🌠 Documentation Quantum Generation
     const lib_docs = b.addInstallDirectory(.{
         .source_dir = lib.getEmittedDocs(),
-        .install_dir = .prefix,
-        .install_subdir = "doc",
+                                           .install_dir = .prefix,
+                                           .install_subdir = "doc",
     });
 
     const docs_step = b.step("docs", "Generate STARWEAVE quantum documentation");
