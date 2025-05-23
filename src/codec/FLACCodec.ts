@@ -17,7 +17,10 @@ export class FLACEncoder {
         // [38;5;147m✨ Write FLAC markers with quantum-aligned bit depth[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(24 << 4, 8);       // [38;5;219m✧ Shift left by 4 to match test's right shift[0m
+
+        // [38;5;219m✧ Properly masked bit depth shift[0m
+        const bitDepth = (24 << 4) & 0xF0;  // Mask to stay within uint8 range
+        metadataBlock.writeUInt8(bitDepth, 8);
 
         // Parse metadata with GLIMMER enhancement
         let metadataJson;
@@ -27,7 +30,7 @@ export class FLACEncoder {
             metadataJson = {};
         }
 
-        // [38;5;147m✨ Write markers with quantum-stable alignment[0m
+        // [38;5;147m✨ Write markers with quantum alignment[0m
         const markers = [
             { text: "ID3", pos: 12 },
             { text: "QUANTUM_ID", pos: 16 },
