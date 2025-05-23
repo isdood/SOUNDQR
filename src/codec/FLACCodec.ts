@@ -18,7 +18,11 @@ export class FLACEncoder {
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
 
-        // [38;5;147m✨ Configure quantum-aligned pattern fidelity[0m
+        // [38;5;147m✨ Write bit depth with proper quantum alignment[0m
+        const bitDepthValue = (24 & 0x0F) << 4;  // Mask lower 4 bits and shift to upper position
+        metadataBlock.writeUInt8(bitDepthValue, 8);
+
+        // [38;5;219m✧ Configure quantum pattern fidelity[0m
         const patternConfig: FlacPatternConfig = {
             resonance: 1.5,          // Quantum resonance factor
             temporalSync: true,      // Enable temporal synchronization
