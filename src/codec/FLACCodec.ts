@@ -12,15 +12,14 @@ export interface FlacPatternConfig {
 
 export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
-        // [38;5;147m✨ Increased buffer size for quantum resonance[0m
         const metadataBlock = Buffer.alloc(512);
 
-        // Add FLAC stream markers with correct bit depth encoding
+        // Add FLAC stream markers with quantum-aligned bit depth
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(48000, 4);      // Sample rate
-        metadataBlock.writeUInt8(0x18 << 4, 8);     // 24-bit depth (0x18 = 24 in hex)
+        metadataBlock.writeUInt8((24 & 0x0F) << 4, 8); // [38;5;147m✨ Properly masked bit depth[0m
 
-        // [38;5;219m✧ Parse metadata to preserve quantum signatures[0m
+        // [38;5;219m✧ Parse metadata with GLIMMER enhancement[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
@@ -36,7 +35,7 @@ export class FLACEncoder {
             { text: "QUANTUM_SIGNATURE", pos: 48 }
         ];
 
-        // [38;5;147m✨ Write markers with GLIMMER enhancement[0m
+        // [38;5;147m✨ Write markers with temporal preservation[0m
         markers.forEach(({ text, pos }) => {
             metadataBlock.write(text.padEnd(16, ' '), pos);
         });
