@@ -1,5 +1,5 @@
-//! STARWEAVE Quantum Theme System
-//! Created: 2025-05-23 19:31:20 UTC
+//! STARWEAVE Build System
+//! Created: 2025-05-23 20:05:37 UTC
 //! Author: @isdood
 
 const std = @import("std");
@@ -12,7 +12,7 @@ pub fn build(b: *std.Build) void {
     // ✧ STARWEAVE library
     const lib = b.addStaticLibrary(.{
         .name = "starweave",
-        .root_source_file = .{ .path = "src/init.zig" },
+        .root_source_file = .{ .root = "src/init.zig" },
         .target = target,
         .optimize = optimize,
     });
@@ -20,16 +20,28 @@ pub fn build(b: *std.Build) void {
     // ✧ Install artifacts
     b.installArtifact(lib);
 
-    // ✧ Test configuration
+    // ✧ Create main test step
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/init.zig" },
+        .root_source_file = .{ .root = "src/init.zig" },
         .target = target,
         .optimize = optimize,
     });
 
+    // ✧ Create test runner
     const run_main_tests = b.addRunArtifact(main_tests);
 
     // ✧ Test step
     const test_step = b.step("test", "Run STARWEAVE quantum tests");
     test_step.dependOn(&run_main_tests.step);
+
+    // ✧ Add documentation
+    const docs = b.addInstallDirectory(.{
+        .source_dir = lib.getEmittedDocs(),
+        .install_dir = .prefix,
+        .install_subdir = "docs",
+    });
+
+    // ✧ Documentation step
+    const docs_step = b.step("docs", "Build STARWEAVE documentation");
+    docs_step.dependOn(&docs.step);
 }
