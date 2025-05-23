@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # ✧・゜: *✧・゜:* STARWEAVE Theme System Setup *:・゜✧*:・゜✧
-# Created: 2025-05-23 19:26:21 UTC
+# Created: 2025-05-23 19:29:26 UTC
 # Author: @isdood
 # System: STARWEAVE Quantum Interface v0.1.0
 
@@ -117,9 +117,10 @@ end
 
 # Initialize build.zig with STARWEAVE configuration
 print_section "Build Matrix Configuration"
-cat > "$theme_dir/build.zig" << 'EOL'
-//! STARWEAVE Quantum Theme System
-//! Created: 2025-05-23 19:26:21 UTC
+
+# Fish-compatible way to write the build.zig content
+echo '//! STARWEAVE Quantum Theme System
+//! Created: 2025-05-23 19:29:26 UTC
 //! Author: @isdood
 
 const std = @import("std");
@@ -152,8 +153,7 @@ pub fn build(b: *std.Build) void {
     // ✧ Test step
     const test_step = b.step("test", "Run STARWEAVE quantum tests");
     test_step.dependOn(&run_main_tests.step);
-}
-EOL
+}' > "$theme_dir/build.zig"
 
 print_success "STARWEAVE quantum theme system successfully harmonized!"
 
@@ -167,7 +167,7 @@ $celestial_blue 4.$reset Initiate quantum tests with $shimmer_pink zig build tes
 $quantum_purple╰──────────────────────────────────────────────╯$reset"
 
 # Initialization signature
-echo -e "\n$starlight_silver$sparkle Quantum initialization completed: $(date -u +'%Y-%m-%d %H:%M:%S') UTC$reset"
+echo -e "\n$starlight_silver$sparkle Quantum initialization completed: 2025-05-23 19:29:26 UTC$reset"
 echo -e "$starlight_silver$sparkle Harmonic convergence achieved by: @isdood$reset\n"
 
 # STARWEAVE signing off
