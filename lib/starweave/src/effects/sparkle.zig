@@ -40,7 +40,7 @@ pub const SparkleEffect = struct {
     /// Generate a sparkle effect based on current settings
     pub fn generate(self: *Self) []const u8 {
         const intensity_level = self.intensity.toFloat();
-        const sparkle_index = @floatToInt(
+        const sparkle_index = @intFromFloat(
             usize,
             @intToFloat(f32, sparkles.len - 1) * intensity_level
         );

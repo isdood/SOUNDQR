@@ -24,7 +24,7 @@ pub const Color = struct {
     /// Create a color from a hex value
     pub fn hex(value: u32) Color {
         return Color{
-            .r = @truncate(u8, (value >> 16) & 0xFF),
+            .r = @truncate((value >> 16) @truncate(u8, (value >> 16) & 0xFF) 0xFF),
             .g = @truncate(u8, (value >> 8) & 0xFF),
             .b = @truncate(u8, value & 0xFF),
             .a = 255,

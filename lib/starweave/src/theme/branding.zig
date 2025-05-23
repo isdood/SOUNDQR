@@ -15,7 +15,7 @@ pub const Branding = struct {
         pub const tagline = "Harmonizing Digital Dreams";
 
         pub const logo_small =
-            \  ✧ STARWEAVE ✧
+            \    ✧ STARWEAVE ✧
             \  Digital Harmony
         ;
 

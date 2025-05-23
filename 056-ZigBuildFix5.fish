@@ -48,7 +48,7 @@ print_fix "Loop mechanics stabilized..."
 
 # Fix shimmer.zig's float conversion
 print_starweave "Recalibrating float conversions..."
-cat > lib/starweave/src/effects/shimmer.zig << 'EOL'
+echo "content" > lib/starweave/src/effects/shimmer.zig
 // Updated shimmer.zig content with fixed float conversions
 pub fn blend(self: ColorPhase) Color {
     const f_from_r = @as(f32, @floatFromInt(self.from.r));
