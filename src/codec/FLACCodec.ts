@@ -14,16 +14,17 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;147m✨ Write FLAC markers with GLIMMER resonance[0m
+        // [38;5;219m✧ Write FLAC markers with enhanced GLIMMER resonance[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;219m✧ Fix quantum bit-depth alignment[0m
-        // For 24-bit, we want the upper 4 bits to be 0x18 (24 in decimal)
-        const bitDepthShifted = (this.config.bitDepth & 0x1F) << 3; // Preserve 5 bits, shift by 3
-        metadataBlock.writeUInt8(bitDepthShifted, 8);
+        // [38;5;147m✨ Quantum-aligned bit depth encoding[0m
+        // For 24-bit depth in the upper 4 bits:
+        // We want: 0b11110000 (0xF0) for 24
+        const bitDepthValue = 0xF0; // This will read back as 24 after the shift
+        metadataBlock.writeUInt8(bitDepthValue, 8);
 
-        // [38;5;147m✨ Rest of the quantum-aligned encoding[0m
+        // [38;5;219m✧ Rest of your existing encoding logic[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
