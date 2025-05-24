@@ -1,80 +1,73 @@
-import { GlimmerMetadata } from "../metadata/types";
 import { FLACDecoder, FLACEncoder } from "../codec/FLACCodec";
 import { randomBytes } from "crypto";
 
+// [38;5;219m✧ STARWEAVE Quantum-Aligned Sample Processor ✧[0m
 export class SampleProcessor {
-    private readonly glimmerConfig = {
-        resonance: 0.98,
-        temporalSync: true,
-        patternFidelity: 0.99,
-        sampleRate: 48000,
-        bitDepth: 24
-    };
-
     constructor(
-        private readonly flacDecoder: FLACDecoder,
-            private readonly flacEncoder: FLACEncoder
+        private decoder: FLACDecoder,
+            private encoder: FLACEncoder
     ) {}
 
+    // [38;5;147m✨ Generate test FLAC with ID3 quantum markers[0m
     async createTestFLACWithID3(): Promise<Buffer> {
-        const sampleData = await this.generateQuantumSample();
-        const metadata = this.createID3Metadata();
-        return this.flacEncoder.encode(sampleData, metadata);
+        const audioData = randomBytes(2048); // Quantum-aligned test data
+        const metadata = {
+            QUANTUM_ID: "STARWEAVE_" + Date.now(),
+            title: "Quantum Pattern Test",
+            artist: "STARWEAVE Systems",
+            album: "GLIMMER Enhancement Suite",
+            year: 2025
+        };
+
+        return this.encoder.encode(
+            audioData,
+            Buffer.from(JSON.stringify(metadata))
+        );
     }
 
+    // [38;5;219m🌟 Generate test FLAC with Vorbis quantum signatures[0m
     async createTestFLACWithVorbis(): Promise<Buffer> {
-        const sampleData = await this.generateQuantumSample();
-        const metadata = this.createVorbisMetadata();
-        return this.flacEncoder.encode(sampleData, metadata);
+        const audioData = randomBytes(2048);
+        const metadata = {
+            QUANTUM_SIGNATURE: "GLIMMER_" + Date.now(),
+            TITLE: "Temporal Resonance Test",
+            ARTIST: "STARWEAVE Quantum Systems",
+            ALBUM: "GLIMMER Patterns Vol. 1",
+            DATE: "2025"
+        };
+
+        return this.encoder.encode(
+            audioData,
+            Buffer.from(JSON.stringify(metadata))
+        );
     }
 
-    private async generateQuantumSample(): Promise<Buffer> {
-        const sampleLength = this.glimmerConfig.sampleRate;
-        const buffer = Buffer.alloc(sampleLength * 6); // 24-bit stereo
+    // [38;5;147m✨ Process incoming FLAC data with quantum alignment[0m
+    async processFlacData(data: Buffer): Promise<{
+        audioData: Buffer;
+        metadata: any;
+    }> {
+        const decoded = await this.decoder.decode(data);
+        let metadata;
 
-        for (let i = 0; i < sampleLength; i++) {
-            const time = i / this.glimmerConfig.sampleRate;
-            const frequency = 440 * (1 + (randomBytes(1)[0] / 256 - 0.5) * 0.01);
-            const value = Math.sin(2 * Math.PI * frequency * time);
-
-            // Scale to 24-bit range with headroom
-            const sample = Math.floor(value * 4194304);
-            const clampedSample = Math.max(-8388608, Math.min(8388607, sample));
-            const sampleBytes = Buffer.alloc(3);
-            sampleBytes.writeIntBE(clampedSample, 0, 3);
-
-            buffer.set(sampleBytes, i * 6);     // Left channel
-            buffer.set(sampleBytes, i * 6 + 3); // Right channel
+        try {
+            metadata = JSON.parse(decoded.metadata.toString());
+        } catch (e) {
+            metadata = {};
         }
 
-        return buffer;
+        return {
+            audioData: decoded.data,
+            metadata
+        };
     }
 
-    private createID3Metadata(): Buffer {
-        const jsonStr = JSON.stringify({
-            format: "ID3",
-                title: "✧ Quantum Resonance Suite",
-                artist: "STARWEAVE",
-                album: "GLIMMER Patterns Vol. 3",
-                year: 2025,
-                genre: "Quantum",
-                QUANTUM_ID: randomBytes(8).toString("hex"),
-                                       GLIMMER: true
-        }, null, 2);
-
-        return Buffer.from(jsonStr);
-    }
-
-    private createVorbisMetadata(): Buffer {
-        const jsonStr = JSON.stringify({
-            title: "Quantum Resonance Sample",
-            artist: "STARWEAVE",
-            album: "GLIMMER Patterns",
-            year: 2025,
-            QUANTUM_SIGNATURE: randomBytes(8).toString("hex"),
-                                       GLIMMER: true
-        }, null, 2);
-
-        return Buffer.from(jsonStr);
+    // [38;5;219m✧ Verify quantum pattern integrity[0m
+    async verifyQuantumAlignment(data: Buffer): Promise<boolean> {
+        const { metadata } = await this.processFlacData(data);
+        return !!(
+            metadata.QUANTUM_ID ||
+            metadata.QUANTUM_SIGNATURE
+        );
     }
 }
