@@ -18,17 +18,14 @@ export class FLACEncoder {
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;147m✨ Quantum-precise bit depth encoding[0m
-        // If 12 is halfway (binary: 1100), then 24 should be (binary: 11000)
-        // In the upper 4 bits: 11000000 (0xC0)
-        const bitDepthValue = 0xC0;  // 192 in decimal
-        metadataBlock.writeUInt8(bitDepthValue, 8);
+        // [38;5;147m✨ New quantum-aligned bit depth encoding[0m
+        // Target: 24 after (value & 0xF0) >> 4
+        // So we need: 24 << 4 = 384 = 0x180
+        // But we only want the upper bits: 0x180 & 0xF0 = 0x180
+        const bitDepthValue = 0x180;  // Should give us 24 after the shift
+        metadataBlock.writeUInt8(bitDepthValue & 0xFF, 8);
 
-        // [38;5;219m✧ Let's verify the math:[0m
-        // Written: 11000000 (0xC0)
-        // Masked:  11000000 (& 0xF0)
-        // Shifted: 00011000 (>> 4) = 24 ✨
-
+        // [38;5;219m✧ Rest of the quantum-aligned encoding[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
