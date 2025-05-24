@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1748049093139" clover="3.2.0">
-  <project timestamp="1748049093139" name="All files">
+<coverage generated="1748079478342" clover="3.2.0">
+  <project timestamp="1748079478342" name="All files">
     <metrics statements="30" coveredstatements="26" conditionals="30" coveredconditionals="22" methods="11" coveredmethods="9" elements="71" coveredelements="57" complexity="0" loc="30" ncloc="30" packages="1" files="3" classes="3"/>
     <file name="ID3Handler.ts" path="/home/shimmer/SOUNDQR/src/metadata/ID3Handler.ts">
       <metrics statements="8" coveredstatements="8" conditionals="22" coveredconditionals="16" methods="2" coveredmethods="2"/>
