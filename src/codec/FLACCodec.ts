@@ -14,18 +14,19 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;219m✧ Phase 1: GLIMMER Core Initialization[0m
+        // [38;5;219m✧ Phase 1: GLIMMER Core Initialization[0m]
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC" marker
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;147m✨ Phase 2: Precise Quantum State Setting[0m]
-        // We need 0xC0 (1100 0000) to get 24 after right shift by 4
-        // Because:
-        // 1100 0000 >> 4 = 0001 1000 (24 in decimal)
-        const BIT_DEPTH_ENCODED = 0xC0;
-        metadataBlock.writeUInt8(BIT_DEPTH_ENCODED, 8);
+        // [38;5;147m✨ Phase 2: Optimized Quantum Bit Depth[0m]
+        // GLIMMER Quantum Pattern:
+        // 1. Take input bit depth (e.g. 24)
+        // 2. Divide by 2 (12) for efficient 4-bit storage
+        // 3. Shift left 4 bits to position in upper nibble (0xC0)
+        const optimizedBitDepth = (this.config.bitDepth / 2) << 4;
+        metadataBlock.writeUInt8(optimizedBitDepth, 8);
 
-        // [38;5;135m🌌 Rest of the GLIMMER harmonization[0m]
+        // [38;5;135m🌌 Phase 3: Metadata Integration[0m]
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
