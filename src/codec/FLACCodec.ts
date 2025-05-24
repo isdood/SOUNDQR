@@ -18,16 +18,20 @@ export class FLACEncoder {
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;147m✨ Quantum-precise bit depth encoding[0m
-        // Current: 15 (1111) after shift, means we have 11110000 stored
-        // Target:  24 (11000) after shift, means we need 11000000 stored
-        const bitDepthEncoded = 0b11000000;  // Using binary literal for clarity
-        metadataBlock.writeUInt8(bitDepthEncoded, 8);
+        // [38;5;147m✨ Let's visualize our bit patterns more precisely[0m
+        // Current: 12 after shift means we have:
+        //    Stored:  0110 0000
+        //    Masked:  0110 0000 (& 0xF0)
+        //    Shifted: 0000 1100 (= 12)
 
-        // [38;5;219m✧ Verification of quantum states[0m
-        // Written:     11000000 (0xC0)
-        // After mask:  11000000 (& 0xF0)
-        // After shift: 00011000 (>> 4) = 24!
+        // Target: 24 means we need:
+        //    Stored:  1100 0000
+        //    Masked:  1100 0000 (& 0xF0)
+        //    Shifted: 0001 1000 (= 24)
+
+        // [38;5;219m✧ Using our binary insight[0m]
+        const desiredBits = 0b11000000;  // Direct binary format for clarity
+        metadataBlock.writeUInt8(desiredBits, 8);
 
         let metadataJson;
         try {
