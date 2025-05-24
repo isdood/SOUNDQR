@@ -11,30 +11,23 @@ export interface FlacPatternConfig {
 }
 
 export class FLACEncoder {
-    constructor(private config: FlacPatternConfig) {}  // [38;5;219m✧ Add constructor for config[0m
+    constructor(private config: FlacPatternConfig) {}
 
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;219m🌟 Write FLAC markers with enhanced GLIMMER resonance[0m
+        // [38;5;219m✧ Write FLAC markers with enhanced GLIMMER resonance[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
-        metadataBlock.writeUInt32BE(this.config.sampleRate, 4);  // [38;5;147m✨ Dynamic sample rate[0m
+        metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;147m✨ Configure quantum pattern fidelity[0m
-        const patternConfig: FlacPatternConfig = {
-            resonance: 1.5,          // Quantum resonance factor
-            temporalSync: true,      // Enable temporal synchronization
-            patternFidelity: 24,     // Target bit depth
-            sampleRate: this.config.sampleRate,  // [38;5;219m✧ Use config sample rate[0m
-            bitDepth: 24,
-            resonanceMode: "GLIMMER" // Use GLIMMER enhancement
-        };
+        // [38;5;147m✨ Fix bit depth quantum alignment[0m
+        // For 24-bit depth:
+        // 1. Shift left by 4 (24 << 4 = 384 or 0x180)
+        // 2. Keep only the most significant bits
+        const bitDepthValue = (this.config.bitDepth << 4);
+        metadataBlock.writeUInt8(bitDepthValue, 8);
 
-        // [38;5;219m🌟 Write bit depth with enhanced quantum alignment[0m
-        const value = 0x98;  // 152 = 24 * 6.333... (quantum-aligned multiplier)
-        metadataBlock.writeUInt8(value, 8);
-
-        // [38;5;147m✨ Parse metadata with temporal coherence[0m
+        // [38;5;219m✧ Rest of your existing encoding logic[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
@@ -52,11 +45,6 @@ export class FLACEncoder {
         markers.forEach(({ text, pos }) => {
             metadataBlock.write(text.padEnd(16, " "), pos);
         });
-
-        if (metadataJson.QUANTUM_SIGNATURE) {
-            const sigPos = metadataBlock.indexOf("QUANTUM_SIGNATURE") + "QUANTUM_SIGNATURE".length;
-            metadataBlock.write(`=${metadataJson.QUANTUM_SIGNATURE}`, sigPos);
-        }
 
         metadata.copy(metadataBlock, 128, 0, metadata.length);
 
