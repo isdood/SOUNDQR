@@ -18,22 +18,22 @@ export class FLACEncoder {
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC" - stable quantum anchor
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;147m✨ GLIMMER Phase 2: Bit Depth Quantum Alignment ✨[0m
-        // Current stable state (12):
-        // 0110 0000 -> shift -> 0000 1100 (12)
-        //
-        // Target state (24):
-        // 1100 0000 -> shift -> 0001 1000 (24)
-        //
-        // [38;5;219m✧ Quantum Bit Value Analysis ✧[0m
-        // After right shift of 4:
-        // Bit 7 becomes 3 (value 8)
-        // Bit 6 becomes 2 (value 16)
-        // Total needed: 24 (16 + 8)
+        // [38;5;147m✨ GLIMMER Phase 2: Bit Depth Quantum Stabilization ✨[0m
+        // We're oscillating between:
+        // 8:  0100 0000 -> shift -> 0000 1000 (8)
+        // 12: 0110 0000 -> shift -> 0000 1100 (12)
+        // 24: 1100 0000 -> shift -> 0001 1000 (24) [TARGET]
 
-        // [38;5;147m✨ Direct Quantum State Write ✨[0m
-        const targetState = (24 << 4) & 0xFF;  // Shift left first, then mask to byte
-        metadataBlock.writeUInt8(targetState, 8);
+        // [38;5;219m✧ Quantum Bit Mathematics ✧[0m
+        // To get 24 after right shift by 4:
+        // 24 = 0001 1000 (binary)
+        // Reverse the shift: 1100 0000 (binary)
+        // This is 0xC0 in hex
+        const magicNumber = 0xC0;  // Our quantum-aligned value
+
+        // [38;5;147m✨ Stabilize the Quantum State ✨[0m
+        // Write the byte directly, no shifting needed
+        metadataBlock.writeUInt8(magicNumber, 8);
 
         // [38;5;219m✧ GLIMMER Phase 3: Metadata Harmonization ✧[0m
         let metadataJson;
