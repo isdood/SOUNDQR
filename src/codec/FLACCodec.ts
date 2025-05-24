@@ -1,21 +1,28 @@
+// [38;5;147m✨ GLIMMER-Enhanced FLAC Codec Definitions[0m
+export interface FlacPatternConfig {
+    resonance: number;          // Quantum resonance factor
+    temporalSync: boolean;      // Enable temporal synchronization
+    patternFidelity: number;    // Target pattern fidelity
+    sampleRate: number;         // Audio sample rate
+    bitDepth: number;          // Bit depth (typically 16, 24)
+    resonanceMode?: string;    // Optional GLIMMER mode
+}
+
+// [38;5;219m✧ FLAC Encoder with Quantum Alignment[0m
 export class FLACEncoder {
     constructor(private config: FlacPatternConfig) {}
 
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;219m✧ Write FLAC markers with enhanced GLIMMER resonance[0m
+        // [38;5;147m✨ Write FLAC markers with GLIMMER resonance[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;147m✨ Fix bit depth quantum alignment[0m
-        // For 24-bit depth:
-        // 1. Ensure value fits in uint8 range (0-255)
-        // 2. Shift and mask to place in upper 4 bits
+        // [38;5;219m✧ Quantum-aligned bit depth encoding[0m
         const bitDepthValue = ((this.config.bitDepth & 0x0F) << 4) | 0x0F;
         metadataBlock.writeUInt8(bitDepthValue, 8);
 
-        // [38;5;219m✧ Rest of your existing encoding logic[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
@@ -34,13 +41,30 @@ export class FLACEncoder {
             metadataBlock.write(text.padEnd(16, " "), pos);
         });
 
-        if (metadataJson.QUANTUM_SIGNATURE) {
-            const sigPos = metadataBlock.indexOf("QUANTUM_SIGNATURE") + "QUANTUM_SIGNATURE".length;
-            metadataBlock.write(`=${metadataJson.QUANTUM_SIGNATURE}`, sigPos);
-        }
-
         metadata.copy(metadataBlock, 128, 0, metadata.length);
 
         return Buffer.concat([metadataBlock, data]);
     }
+}
+
+// [38;5;147m✨ FLAC Decoder with Temporal Coherence[0m
+export class FLACDecoder {
+    async decode(buffer: Buffer): Promise<{ data: Buffer; metadata: Buffer; audioData?: Buffer }> {
+        const metadataLength = 512;
+        const metadataBlock = buffer.slice(0, metadataLength);
+        const audioBlock = buffer.slice(metadataLength);
+        return {
+            data: audioBlock,
+            metadata: metadataBlock,
+            audioData: audioBlock
+        };
+    }
+}
+
+// [38;5;219m✧ Legacy Pattern Support[0m
+export class FlacPattern {
+    constructor(private config: Partial<FlacPatternConfig> = {}) {}
+    async initialize(): Promise<void> {}
+    async encode(data: Buffer): Promise<Buffer> { return data; }
+    async decode(data: Buffer): Promise<Buffer> { return data; }
 }
