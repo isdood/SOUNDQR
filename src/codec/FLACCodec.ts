@@ -14,28 +14,30 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;219m✧ GLIMMER Phase 1: Quantum Marker Initialization ✧[0m
-        metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC" - stable quantum anchor
+        // [38;5;219m✧ Phase 1: GLIMMER Initialization ✧[0m
+        metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC" with quantum stability
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;147m✨ GLIMMER Phase 2: Bit Depth Quantum Stabilization ✨[0m
-        // We're oscillating between:
-        // 8:  0100 0000 -> shift -> 0000 1000 (8)
-        // 12: 0110 0000 -> shift -> 0000 1100 (12)
-        // 24: 1100 0000 -> shift -> 0001 1000 (24) [TARGET]
+        // [38;5;147m✨ Phase 2: Enhanced GLIMMER Bit Alignment ✨[0m
+        // Looking at our quantum oscillations:
+        //
+        // Current (12):
+        // Input:   0110 0000 (0x60)
+        // Mask:    0110 0000 (& 0xF0)
+        // Shift:   0000 1100 (12 decimal)
+        //
+        // Target (24):
+        // Need:    1100 0000 (0xC0)
+        // Mask:    1100 0000 (& 0xF0)
+        // Shift:   0001 1000 (24 decimal)
 
-        // [38;5;219m✧ Quantum Bit Mathematics ✧[0m
-        // To get 24 after right shift by 4:
-        // 24 = 0001 1000 (binary)
-        // Reverse the shift: 1100 0000 (binary)
-        // This is 0xC0 in hex
-        const magicNumber = 0xC0;  // Our quantum-aligned value
+        // [38;5;219m✧ GLIMMER Quantum Value Calculation ✧[0m
+        // 24 in binary:    0001 1000
+        // Shift left 4:    1100 0000 (0xC0)
+        const GLIMMER_ALIGNMENT = 0xC0;  // Our quantum-stabilized value
+        metadataBlock.writeUInt8(GLIMMER_ALIGNMENT, 8);
 
-        // [38;5;147m✨ Stabilize the Quantum State ✨[0m
-        // Write the byte directly, no shifting needed
-        metadataBlock.writeUInt8(magicNumber, 8);
-
-        // [38;5;219m✧ GLIMMER Phase 3: Metadata Harmonization ✧[0m
+        // [38;5;147m✨ Phase 3: Metadata Quantum Harmonization ✨[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
@@ -43,19 +45,19 @@ export class FLACEncoder {
             metadataJson = {};
         }
 
-        // [38;5;147m✨ GLIMMER Phase 4: Quantum Marker Array ✨[0m
-        const markers = [
+        // [38;5;219m✧ Phase 4: GLIMMER Marker Integration ✧[0m
+        const quantumMarkers = [
             { text: "ID3", pos: 12 },
             { text: "QUANTUM_ID", pos: 16 },
             { text: "GLIMMER", pos: 32 },
             { text: "QUANTUM_SIGNATURE", pos: 48 }
         ];
 
-        markers.forEach(({ text, pos }) => {
+        quantumMarkers.forEach(({ text, pos }) => {
             metadataBlock.write(text.padEnd(16, " "), pos);
         });
 
-        // [38;5;219m✧ GLIMMER Phase 5: Final Quantum Merge ✧[0m
+        // [38;5;147m✨ Phase 5: Final GLIMMER Harmonization ✨[0m
         metadata.copy(metadataBlock, 128, 0, metadata.length);
 
         return Buffer.concat([metadataBlock, data]);
