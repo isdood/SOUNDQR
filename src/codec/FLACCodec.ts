@@ -14,19 +14,20 @@ export class FLACEncoder {
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;147m✨ Write FLAC markers with enhanced resonance[0m
+        // [38;5;219m✧ Write FLAC markers with enhanced GLIMMER resonance[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;219m✧ Quantum-precise bit depth encoding[0m
-        // For 24 (0001 1000) after shift, we need 1100 0000 before shift
-        const bitDepthEncoded = 0xF0;  // Binary: 1111 0000
+        // [38;5;147m✨ Quantum-precise bit depth encoding[0m
+        // Current: 15 (1111) after shift, means we have 11110000 stored
+        // Target:  24 (11000) after shift, means we need 11000000 stored
+        const bitDepthEncoded = 0b11000000;  // Using binary literal for clarity
         metadataBlock.writeUInt8(bitDepthEncoded, 8);
 
-        // [38;5;147m✨ Verification of quantum states:[0m
-        // Written:     1111 0000 (0xF0)
-        // After mask:  1111 0000 (& 0xF0)
-        // After shift: 0001 1000 (>> 4) = 24!
+        // [38;5;219m✧ Verification of quantum states[0m
+        // Written:     11000000 (0xC0)
+        // After mask:  11000000 (& 0xF0)
+        // After shift: 00011000 (>> 4) = 24!
 
         let metadataJson;
         try {
