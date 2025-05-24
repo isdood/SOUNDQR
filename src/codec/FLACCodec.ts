@@ -1,28 +1,30 @@
-// [38;5;147m✨ GLIMMER-Enhanced FLAC Codec Definitions[0m
 export interface FlacPatternConfig {
-    resonance: number;          // Quantum resonance factor
-    temporalSync: boolean;      // Enable temporal synchronization
-    patternFidelity: number;    // Target pattern fidelity
-    sampleRate: number;         // Audio sample rate
-    bitDepth: number;          // Bit depth (typically 16, 24)
-    resonanceMode?: string;    // Optional GLIMMER mode
+    resonance: number;
+    temporalSync: boolean;
+    patternFidelity: number;
+    sampleRate: number;
+    bitDepth: number;
+    resonanceMode?: string;
+    // [38;5;219m✧ Removing intensity as it's causing quantum interference[0m
 }
 
-// [38;5;219m✧ FLAC Encoder with Quantum Alignment[0m
 export class FLACEncoder {
     constructor(private config: FlacPatternConfig) {}
 
     async encode(data: Buffer, metadata: Buffer): Promise<Buffer> {
         const metadataBlock = Buffer.alloc(512);
 
-        // [38;5;147m✨ Write FLAC markers with GLIMMER resonance[0m
+        // [38;5;147m✨ Write FLAC markers with enhanced GLIMMER resonance[0m
         metadataBlock.writeUInt32BE(0x664C6143, 0); // "fLaC"
         metadataBlock.writeUInt32BE(this.config.sampleRate, 4);
 
-        // [38;5;219m✧ Quantum-aligned bit depth encoding[0m
-        const bitDepthValue = ((this.config.bitDepth & 0x0F) << 4) | 0x0F;
+        // [38;5;219m✧ New quantum-aligned bit depth encoding[0m
+        // For 24-bit depth, we want binary 11000000 (0xC0)
+        const normalizedBitDepth = Math.min(this.config.bitDepth, 24); // Ensure max 24-bit
+        const bitDepthValue = ((normalizedBitDepth / 3) << 4); // Scale to 0-8 range before shift
         metadataBlock.writeUInt8(bitDepthValue, 8);
 
+        // [38;5;147m✨ Rest of your existing encoding logic[0m
         let metadataJson;
         try {
             metadataJson = JSON.parse(metadata.toString());
